@@ -1,0 +1,95 @@
+<script>
+	import LeafletMap from '$components/map/leaflet/LeafletMap.svelte';
+
+	let mapObject = {
+		divId: 'basicMap',
+		centre: [-31.952345, 152.295649],
+		zoomControl: false,
+		doubleClickZoom: false,
+		scrollWheelZoom: false,
+		zoom: 12,
+		minZoom: 12,
+		maxZoom: 12,
+		maxBounds: null,
+		dragging: false
+	};
+
+	export let mapData;
+</script>
+
+<svelte:head>
+	<title>About</title>
+</svelte:head>
+
+<section class="wrapper h-full grid text-gray-900">
+	<div class="main-headlines text-center mx-auto">
+		<h1 class="title-font font-bold hidden sm:block sm:text-4xl sm:mt-4 text-orange-600">
+			Strengthen OUR Community
+		</h1>
+		<h3 class="pt-4">
+			This project is about empowering our community to take responsibility for being prepared and
+			working together to make a difference.
+		</h3>
+	</div>
+	<div class="about-content text-center mx-auto">
+		<h3 class="pt-4">Our aim is to: Prepare, Connect and Rebound</h3>
+	</div>
+	<div class="main-list">
+		<p class="mb-2">The project focuses on four areas:</p>
+		<ol type="1" class="mt-0">
+			<li class="m-1">
+				<span class="font-semibold">The Burrell Creek Hall</span>
+				- as an information hub, a place where up-to-date accurate, current information is available.
+			</li>
+			<li class="m-1">
+				<span class="font-semibold">KYNGs</span>
+				- Know Your Neighbour Groups Community groups who work together to provide information, connection
+				and support.
+			</li>
+			<li class="m-1">
+				<span class="font-semibold">Digital online Mapping</span>
+				- this website. A digital representation of our local information, that we own and update.
+			</li>
+			<li class="m-1">
+				<span class="font-semibold">Workshops</span>
+				- locally run workshops to increase community preparedness, through knowledge sharing.
+			</li>
+		</ol>
+
+		<p class="my-3 font-semibold text-center">
+			This map shows the properties that have participated
+		</p>
+	</div>
+	<div class="main-map flex justify-center flex-auto">
+		<LeafletMap {mapObject} {mapData} />
+	</div>
+</section>
+
+<style>
+	.main-headlines {
+		grid-area: headlines;
+	}
+	.main-list {
+		grid-area: list;
+	}
+	.about-content {
+		grid-area: content-words;
+	}
+	.main-map {
+		grid-area: map-area;
+	}
+	/* .main-footer {
+		grid-area: footer;
+	} */
+	.wrapper {
+		display: grid;
+		/* grid-template-rows: 45px auto 1fr 2fr; */
+		/* grid-auto-rows: min-content; */
+		grid-template-areas:
+			'headlines'
+			'content-words'
+			'list'
+			'map-area';
+		grid-template-rows: auto auto auto 1fr;
+	}
+</style>

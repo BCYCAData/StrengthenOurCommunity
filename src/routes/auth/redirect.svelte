@@ -1,0 +1,79 @@
+<script>
+	// @ts-nocheck
+
+	import { page } from '$app/stores';
+	import PasswordEntry from '$components/form/auth/PasswordEntry.svelte';
+
+	const url = new URLSearchParams($page.url.hash.substring(1));
+	const redirectType = new URLSearchParams($page.url.hash.substring(1)).get('type');
+	const message = new URLSearchParams($page.url.hash.substring(1)).get('message');
+</script>
+
+<svelte:head>
+	<title>Redirect</title>
+</svelte:head>
+
+{#if redirectType === 'invite'}
+	<PasswordEntry {redirectType} />
+{:else if redirectType === 'signup'}
+	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
+		<h1 class="title-font mt-2 font-bold underline hidden sm:block sm:text-2xl text-orange-600">
+			Thank you for joining our Strengthen Our Community Project.
+		</h1>
+		<p class="text-base mt-3 mb-0 sm:text-lg ">
+			We hope that the questions in our project survey prompt you to review your preparedness for
+			fire and flood. By completing our project survey you are helping to protect our community.
+		</p>
+		<p class="text-base mt-3 mb-0 sm:text-lg ">
+			You are the only person who will see your information.
+		</p>
+		<p class="text-base mt-3 mb-0 sm:text-lg ">
+			We will never sell your data, it will only ever be shared with emergency services in an
+			emergency situation. However, they will not see any of your personal information.
+		</p>
+		<p class="text-base mt-3 mb-0 sm:text-lg ">
+			If you have any questions don’t hesitate to contact either Helen 0424 515 963 or Christine
+			0488 288 661.
+		</p>
+		<a
+			type="button"
+			class="no-underline w-1/3 text-center py-3 rounded-full bg-orange-500 text-stone-100 hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
+			href="/survey"
+		>
+			Complete the Survey
+		</a>
+	</section>
+{:else if redirectType === 'recovery'}
+	<PasswordEntry {redirectType} />
+{:else if message && redirectType === null}
+	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
+		<h1 class="title-font font-bold underline hidden sm:block sm:text-2xl text-orange-600">
+			Strengthen OUR Community
+		</h1>
+		<div class="bg-green-100 rounded-lg mt-2 text-gray-900 items-center w-full">
+			<p class="my-1 text-xl">You need to validate your new email address.</p>
+			<p>{message}</p>
+		</div>
+	</section>
+{:else if redirectType === 'email_change'}
+	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
+		<h1 class="title-font font-bold underline hidden sm:block sm:text-2xl text-orange-600">
+			Strengthen OUR Community
+		</h1>
+		<div class="bg-green-100 rounded-lg mt-2 text-gray-900 items-center w-full">
+			<p class="my-1 text-xl">Your login email has been changed.</p>
+		</div>
+	</section>
+{:else}
+	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
+		<h1 class="title-font font-bold underline hidden sm:block sm:text-2xl text-orange-600">
+			Strengthen OUR Community
+		</h1>
+		<div class="bg-green-100 rounded-lg mt-2 text-gray-900 items-center w-full">
+			<p class="my-1 text-xl">Your request has been lodged.</p>
+			<p class="my-1 text-xl">Please check you email inbox to confirm your details.</p>
+			<p>You may need to 'Send/Receive'.</p>
+			<p>If nothing is showing check your 'Spam' folder.</p>
+		</div>
+	</section>
+{/if}
