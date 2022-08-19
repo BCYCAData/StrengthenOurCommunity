@@ -1,4 +1,3 @@
-import { json } from '@sveltejs/kit';
 // @ts-nocheck
 import { supabaseClient } from '$lib/dbClient';
 
@@ -9,9 +8,13 @@ export const POST = async ({ locals, request }) => {
 	});
 	if (error) {
 		console.log('reset user error:', error);
-		return json({ error }, {
-			status: 400
-		});
+		return {
+			status: 400,
+			body: { error }
+		};
 	}
-	return new Response(undefined, { status: 302, headers: { Location: '/about' } });
+	return {
+		headers: { Location: '/about' },
+		status: 302
+	};
 };

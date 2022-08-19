@@ -1,4 +1,3 @@
-import { json } from '@sveltejs/kit';
 import { supabaseClient } from '$lib/dbClient';
 
 export const POST = async ({ locals, request }) => {
@@ -12,24 +11,31 @@ export const POST = async ({ locals, request }) => {
 		});
 		if (error) {
 			console.log('update password settings error:', error.message);
-			return json({ errorMessage: error.message }, {
-				status: 400
-			});
+			return {
+				status: 400,
+				body: { errorMessage: error.message }
+			};
 		}
-		return json({ successMessage: 'Your password has been changed.' }, {
-			headers: { Location: '/profile/settings/password' }
-		});
+		return {
+			headers: { Location: '/profile/settings/password' },
+			status: 200,
+			body: { successMessage: 'Your password has been changed.' }
+		};
 	} else if (email) {
 		const { user, error } = await supabaseClient.auth.update({
 			email: email
 		});
 		if (error) {
 			console.log('update email settings error:', error);
-			return json({ error }, {
-				status: 400
-			});
+			return {
+				status: 400,
+				body: { error }
+			};
 		}
 	}
 
-	return new Response(undefined, { status: 302, headers: { Location: '/profile/settings' } });
+	return {
+		headers: { Location: '/profile/settings' },
+		status: 302
+	};
 };
