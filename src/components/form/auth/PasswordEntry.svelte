@@ -113,7 +113,7 @@
 			</ul>
 			<input type="hidden" id="mode" name="mode" value={redirectType} />
 			{#if redirectType === 'recovery'}
-				<input id="token" name="token" value={accessToken} />
+				<input type="hidden" id="token" name="token" value={accessToken} />
 			{/if}
 
 			<button
