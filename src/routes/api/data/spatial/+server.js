@@ -1,3 +1,4 @@
+import { json } from '@sveltejs/kit';
 import { supabaseClient } from '$lib/dbClient';
 
 export async function POST({ request }) {
@@ -6,21 +7,16 @@ export async function POST({ request }) {
 		.select('gurasid,principaladdresssiteoid,addressstringoid,addresspointtype,geom');
 	if (error) {
 		console.log('error addressData:', error);
-		return {
-			status: 400,
-			body: { error }
-		};
+		return json({ error }, {
+			status: 400
+		});
 	}
 	if (data.length === 1) {
 		let addressData = data[0];
 
-		return {
-			status: 200,
-			body: { addressData }
-		};
+		return json({ addressData });
 	}
-	return {
-		status: 400,
-		body: {}
-	};
+	return json({}, {
+		status: 400
+	});
 }
