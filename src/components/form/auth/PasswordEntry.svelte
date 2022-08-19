@@ -1,6 +1,6 @@
 <script>
 	export let redirectType;
-	// export let accessToken;
+	export let accessToken;
 
 	let strength = 0;
 	let validations = [];
@@ -112,9 +112,9 @@
 				</li>
 			</ul>
 			<input type="hidden" id="mode" name="mode" value={redirectType} />
-			<!-- {#if redirectType === 'recovery' || redirectType === 'email_change'}
-				<input type="hidden" id="token" name="token" value={accessToken} />
-			{/if} -->
+			{#if redirectType === 'recovery'}
+				<input id="token" name="token" value={accessToken} />
+			{/if}
 
 			<button
 				type="submit"

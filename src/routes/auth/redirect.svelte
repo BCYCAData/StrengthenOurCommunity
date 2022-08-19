@@ -7,6 +7,7 @@
 	const url = new URLSearchParams($page.url.hash.substring(1));
 	const redirectType = url.get('type');
 	const message = url.get('message');
+	const accessToken = url.get('access_token');
 </script>
 
 <svelte:head>
@@ -44,8 +45,8 @@
 		</a>
 	</section>
 {:else if redirectType === 'recovery'}
-	<!-- <PasswordEntry {redirectType} {accessToken} /> -->
-	<PasswordEntry {redirectType} />
+	<PasswordEntry {redirectType} {accessToken} />
+	<!-- <PasswordEntry {redirectType} /> -->
 {:else if message && redirectType === null}
 	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
 		<h1 class="title-font font-bold underline hidden sm:block sm:text-2xl text-orange-600">

@@ -6,7 +6,6 @@ export const GET = async ({ request }) => {
 	const { data, error } = await supabaseClient
 		.from('address_point_extract_wgs84')
 		.select('geom,addresspointtype');
-	console.log(data);
 	if (error) {
 		console.log('error get Addresspoints:', error);
 		return {
