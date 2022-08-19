@@ -1,13 +1,10 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
-	// import { TiledMapLayer } from 'esri-leaflet';
 
 	export let mapObject;
 	export let mapData;
 
 	let map;
-
-	// leaflet.esri.tiledMapLayer("http://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Imagery/MapServer", {}).addTo(map);
 
 	onMount(async () => {
 		const leaflet = await import('leaflet');
@@ -20,8 +17,6 @@
 			zoomControl: mapObject.zoomControl,
 			doubleClickZoom: mapObject.doubleClickZoom,
 			scrollWheelZoom: mapObject.scrollWheelZoom
-			// layers: [osmMapTiles]
-			// layers: [ssnswMapTiles]
 		});
 		if (!mapObject.dragging) {
 			map.dragging.disable();
@@ -58,7 +53,6 @@
 				for (let j = 0; j < g.length; j++) {
 					let p = g[j].geom.coordinates;
 					let n = g[j].addresspointtype;
-					console.log(n);
 					let lon = p[0];
 					let lat = p[1];
 					let markerLocation = new leaflet.LatLng(lat, lon, 0);
@@ -68,7 +62,6 @@
 					} else {
 						marker.setStyle({ color: '#a5a5a5', weight: 0, radius: 3, fillOpacity: 0.8 });
 					}
-
 					map.addLayer(marker);
 				}
 			}
@@ -83,9 +76,3 @@
 </script>
 
 <div class="w-7/8 h-full z-0" id={mapObject.divId} />
-
-<!-- <div id="map" class="flex justify-center m-0 h-full w-3/4" /> -->
-
-<!-- <style>
-	@import 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';
-</style> -->

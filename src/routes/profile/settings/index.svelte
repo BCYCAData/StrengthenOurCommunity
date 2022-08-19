@@ -9,7 +9,7 @@
 	let modalVisible = false;
 
 	beforeNavigate(({}) => {
-		if (!unsaved) return; // nothing to do
+		if (!unsaved) return;
 		modalVisible = !modalVisible;
 	});
 </script>
