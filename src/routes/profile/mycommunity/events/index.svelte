@@ -64,7 +64,7 @@
 	<!-- community_meeting_choices -->
 	<div class="flex flex-row justify-between items-center px-4 mt-2">
 		<label class="mt-1 text-lg font-bold mb-1" for="community_meeting_choices_list">
-			What community events would be useful to you?
+			What Community Events are you interested in?
 		</label>
 		<div class="flex flex-col rounded-lg bg-orange-50 p-1">
 			{#each communityMeetingOptions as { value, lable }}

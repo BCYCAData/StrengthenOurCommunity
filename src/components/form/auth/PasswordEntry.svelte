@@ -53,7 +53,7 @@
 			<input
 				id="password"
 				type={showPassword ? 'text' : 'password'}
-				class="block border border-orange-700 w-full py-3 rounded mb-4"
+				class="block border border-orange-700 w-full py-3 text-xl rounded mb-4"
 				name="password"
 				required={true}
 				placeholder="New Password"
@@ -78,7 +78,7 @@
 			<input
 				id="confirmPassword"
 				type={showPassword ? 'text' : 'password'}
-				class="block border border-orange-700 w-full py-3 rounded mb-4"
+				class="block border border-orange-700 w-full py-3 text-xl rounded mb-4"
 				name="confirmPassword"
 				required={true}
 				placeholder="Confirm New Password"

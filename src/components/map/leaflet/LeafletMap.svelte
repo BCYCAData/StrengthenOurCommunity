@@ -21,25 +21,25 @@
 		if (!mapObject.dragging) {
 			map.dragging.disable();
 		}
-		// const ssNSWBaseLayer = leaflet.tileLayer
+		// leaflet.tileLayer
 		// 	.wms('http://maps.six.nsw.gov.au/arcgis/services/public/NSW_Base_Map/MapServer/WmsServer', {
 		// 		layers: 'LPIMap_PlacePoint',
 		// 		attribution: '© Spatial Services NSW'
 		// 	})
 		// 	.addTo(map);
-		// const ssNSWTopoLayer = leaflet.tileLayer
+		// leaflet.tileLayer
 		// 	.wms('https://maps.six.nsw.gov.au/arcgis/services/public/NSW_Topo_Map/MapServer/WmsServer', {
 		// 		layers: '0',
 		// 		attribution: '© Spatial Services NSW'
 		// 	})
 		// 	.addTo(map);
-		const osmMapTiles = leaflet
+		leaflet
 			.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				maxZoom: 12,
 				attribution: '© OpenStreetMap'
 			})
 			.addTo(map);
-		// const openTopoLayer = leaflet
+		// leaflet
 		// 	.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 		// 		maxZoom: 17,
 		// 		attribution:

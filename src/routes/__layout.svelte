@@ -35,7 +35,7 @@
 					>
 						Terms of Service
 					</a>
-					<h3>Prepare Connect Rebound</h3>
+					<h3 id="footer-text">Prepare Connect Rebound</h3>
 					<a
 						class:active={$page.url.pathname.endsWith('/policies/privacy')}
 						sveltekit:prefetch
@@ -52,5 +52,8 @@
 <style>
 	#wrapper {
 		grid-template-rows: auto 1fr auto;
+	}
+	#footer-text {
+		word-spacing: 30px;
 	}
 </style>

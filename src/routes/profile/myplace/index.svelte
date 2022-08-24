@@ -212,7 +212,9 @@
 	<!-- truck_access -->
 	<div class="flex flex-row justify-between items-center px-4 mt-2">
 		<label class="text-lg font-bold mb-1" for="truck_access_list">
-			Is there easy access to property and paddocks?
+			Is there easy truck access to the buildings,
+			<br />
+			 boundaries and paddocks?
 		</label>
 		<div class="flex flex-col rounded-lg bg-orange-50 p-1">
 			{#each accessOptions as { value, lable }}
@@ -261,7 +263,7 @@
 	<!--Occupants -->
 	<div class="flex flex-row justify-between items-center px-4 mt-2">
 		<label class="mt-1 text-lg font-bold mb-1" for="residents_profile">
-			How many people usually live here:
+			How many people usually live here?
 		</label>
 		<div
 			class="flex flex-row justify-around list-none rounded-lg bg-orange-50 p-1 mx-2"

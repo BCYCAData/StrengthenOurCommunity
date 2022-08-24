@@ -106,7 +106,7 @@
 
 <TextAreaInput
 	lableClass="font-bold text-base sm:text-lg"
-	headingText="If there are assets other the residence (eg crops, sheds with equipment or antique cars) you consider essential, please describe them here."
+	headingText="If there are assets, other than the residence, that you consider essential (eg crops, sheds with equipment or antique cars) please describe them here."
 	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
 	nameText="other_essential_assets"
 	textAreaClass="w-full resize-y sm:text-lg"

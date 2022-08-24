@@ -64,7 +64,7 @@
 	<!-- number_dog number_cats number_birds number_other_pets -->
 	<div class="flex flex-row justify-between items-center px-4 mt-2">
 		<label class="mt-1 text-lg font-bold mb-1" for="animals_profile">
-			How many pets do you usually have at this property:
+			How many pets do you usually have at this property?
 		</label>
 		<div
 			class="flex flex-row justify-around list-none rounded-lg bg-orange-50 p-1 mx-2"
@@ -171,8 +171,8 @@
 		</div>
 	</div>
 	<TextAreaInput
-		lableClass="font-bold pl-4 pt-4 text-base sm:text-lg"
-		headingText="If there are assets other the residence (eg crops, sheds with equipment or antique cars) you consider essential, please describe them here."
+		lableClass="font-bold px-4 pt-4 text-base sm:text-lg"
+		headingText="If there are assets, other than the residence, that you consider essential (eg crops, sheds with equipment or antique cars) please describe them here."
 		divClass="px-4 pt-2 rounded-lg bg-orange-500 sm:text-lg"
 		nameText="other_essential_assets"
 		textAreaClass="w-full resize-y sm:text-lg"

@@ -6,7 +6,7 @@
 
 <div class="wrapper h-full grid bg-orange-100">
 	<header class="main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center ">
-		<div class="text-orange-900">Burrell Creek Youth & Community Association Inc.</div>
+		<div class="font-bold text-orange-900">Burrell Creek Youth & Community Association Inc.</div>
 	</header>
 	<section class="crumbs p-0 max-h-[35px] bg-stone-200">
 		<Breadcrumbs path={$page.url.pathname} />
@@ -94,7 +94,7 @@
 				Please make sure you click every heading in the menu on the left <br />
 				AND
 				<br />
-				answer all the questions.
+				Check your answers to all the questions.
 			</h3>
 		</div>
 	</div>

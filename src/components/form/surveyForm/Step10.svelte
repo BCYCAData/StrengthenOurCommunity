@@ -7,7 +7,7 @@
 	export let surveyData;
 </script>
 
-<h3 class="text-base sm:text-lg">What community events would be useful to you?</h3>
+<h3 class="text-base sm:text-lg">What Community Events are you interested in?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0 my-0">
 		{#each communityMeetingOptions as { value, lable }}

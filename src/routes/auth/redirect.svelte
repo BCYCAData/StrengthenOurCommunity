@@ -33,9 +33,9 @@
 			emergency situation. However, they will not see any of your personal information.
 		</p>
 		<p class="text-base mt-3 mb-0 sm:text-lg ">
-			If you have any questions don’t hesitate to contact either Helen 0424 515 963 or Christine
-			0488 288 661.
+			If you have any questions don’t hesitate to contact either
 		</p>
+		<p class="text-base mt-3 mb-0 sm:text-lg ">Helen 0424 515 963 or Christine 0488 288 661</p>
 		<a
 			type="button"
 			class="no-underline w-1/3 text-center py-3 rounded-full bg-orange-500 text-stone-100 hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"

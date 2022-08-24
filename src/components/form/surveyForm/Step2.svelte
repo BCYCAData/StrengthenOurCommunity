@@ -169,7 +169,9 @@
 	{/each}
 </div>
 
-<h3 class="text-base sm:text-lg">Is there easy truck access to the property and paddocks?</h3>
+<h3 class="text-base sm:text-lg">
+	Is there easy truck access to the buildings, boundaries and paddocks?
+</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0 m-0">
 		{#each accessOptions as { value, lable }}

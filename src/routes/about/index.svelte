@@ -7,9 +7,9 @@
 		zoomControl: false,
 		doubleClickZoom: false,
 		scrollWheelZoom: false,
-		zoom: 12,
-		minZoom: 12,
-		maxZoom: 12,
+		zoom: 11.6,
+		minZoom: 11.6,
+		maxZoom: 11.5,
 		maxBounds: null,
 		dragging: false
 	};
@@ -34,20 +34,20 @@
 	<div class="about-content text-center mx-auto">
 		<h3 class="pt-4">Our aim is to: Prepare, Connect and Rebound</h3>
 	</div>
-	<div class="main-list">
+	<div class="main-list  mx-auto">
 		<p class="mb-2">The project focuses on four areas:</p>
 		<ol type="1" class="mt-0">
 			<li class="m-1">
 				<span class="font-semibold">The Burrell Creek Hall</span>
-				- as an information hub, a place where up-to-date accurate, current information is available.
+				- an emergency information hub, a place where up-to-date accurate, current information is available.
 			</li>
 			<li class="m-1">
 				<span class="font-semibold">KYNGs</span>
-				- Know Your Neighbour Groups Community groups who work together to provide information, connection
+				- Know Your Neighbour Groups - Community groups who work together to provide information, connection
 				and support.
 			</li>
 			<li class="m-1">
-				<span class="font-semibold">Digital online Mapping</span>
+				<span class="font-semibold">Digital Online Mapping</span>
 				- this website. A digital representation of our local information, that we own and update.
 			</li>
 			<li class="m-1">
