@@ -72,7 +72,7 @@
 			class="text-center py-1 px-5 rounded-full bg-orange-500 text-stone-100 hover:bg-orange-700 focus:outline-none my-1"
 			on:click={() => (modalVisible = !modalVisible)}
 		>
-			Create an account
+			Create an Account
 		</button>
 	</div>
 </div>

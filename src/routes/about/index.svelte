@@ -3,7 +3,7 @@
 
 	let mapObject = {
 		divId: 'basicMap',
-		centre: [-31.952345, 152.295649],
+		centre: [-31.955815, 152.300884], //-31.955814913,152.300883592
 		zoomControl: false,
 		doubleClickZoom: false,
 		scrollWheelZoom: false,
@@ -60,7 +60,7 @@
 			This map shows the properties that have participated
 		</p>
 	</div>
-	<div class="main-map flex justify-center flex-auto">
+	<div class="main-map flex justify-center flex-auto mx-auto w-2/3">
 		<LeafletMap {mapObject} {mapData} />
 	</div>
 </section>

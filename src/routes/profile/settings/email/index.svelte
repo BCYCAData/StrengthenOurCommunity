@@ -5,7 +5,7 @@
 	export let successMessage = '';
 	export let errorMessage = '';
 
-	let heading = 'Please Enter an Email Address';
+	let heading = 'Please enter an Email Address';
 	let submitText = 'Set New Email';
 	let email = '';
 
@@ -22,7 +22,7 @@
 <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2 mt-3">
 	<div class="bg-stone-200 px-6 py-8 rounded shadow-md text-gray-900 w-full">
 		<form method="POST">
-			<h1 class="mb-8 text-3xl text-center">{heading}</h1>
+			<h1 class="mb-8 text-xl text-center">{heading}</h1>
 			<label class="inline uppercase tracking-wide text-orange-600 text-xs font-bold" for="email">
 				Email:
 			</label>

@@ -32,35 +32,10 @@
 	on:change={() => {
 		unsaved = true;
 	}}
-	class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+	class="flex flex-col py-3 mx-auto w-full text-orange-900 bg-orange-300"
 	action="/profile/myplace/assets"
 	method="POST"
 >
-	<!-- <div class="flex flex-row">
-			<div class="w-1/2" />
-			<button
-				class="w-1/4 mx-3 mb-3 rounded-lg text-base font-semibold bg-[#0099E8] text-stone-100 border border-purple-700"
-				on:click={() => {
-					unsaved = false;
-				}}
-				hidden={!unsaved}
-				type="submit"
-				form="profileAssetsForm"
-			>
-				Save My Answers
-			</button>
-			<button
-				class="w-1/4 mx-auto mb-3 rounded-lg text-base font-semibold bg-[#27C7BD] text-stone-100 border border-purple-700"
-				on:click={() => {
-					unsaved = false;
-					location.reload();
-				}}
-				hidden={!unsaved}
-				type="button"
-			>
-				Cancel
-			</button>
-		</div> -->
 	<!-- number_dog number_cats number_birds number_other_pets -->
 	<div class="flex flex-row justify-between items-center px-4 mt-2">
 		<label class="mt-1 text-lg font-bold mb-1" for="animals_profile">
@@ -173,7 +148,7 @@
 	<TextAreaInput
 		lableClass="font-bold px-4 pt-4 text-base sm:text-lg"
 		headingText="If there are assets, other than the residence, that you consider essential (eg crops, sheds with equipment or antique cars) please describe them here."
-		divClass="px-4 pt-2 rounded-lg bg-orange-500 sm:text-lg"
+		divClass="px-4 pt-2 rounded-lg sm:text-lg"
 		nameText="other_essential_assets"
 		textAreaClass="w-full resize-y sm:text-lg"
 		bind:inputValue={profileAssets.other_essential_assets}

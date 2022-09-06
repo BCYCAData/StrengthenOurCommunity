@@ -32,7 +32,7 @@
 	on:change={() => {
 		unsaved = true;
 	}}
-	class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+	class="flex flex-col py-3 mx-auto w-full text-orange-900 bg-orange-300"
 	action="/profile/mycommunity/events"
 	method="POST"
 >
@@ -89,7 +89,7 @@
 		lableClass="font-bold pl-4 pt-4 text-base sm:text-lg"
 		headingText="If there are other events you would be interested in, please add them
 			below."
-		divClass="px-4 pt-2 rounded-lg bg-orange-500 sm:text-lg"
+		divClass="px-4 pt-2 rounded-lg sm:text-lg"
 		nameText="other_community_meeting"
 		textAreaClass="w-full resize-y sm:text-lg"
 		bind:inputValue={profileEvents.other_community_meeting}

@@ -31,7 +31,7 @@
 	on:change={() => {
 		unsaved = true;
 	}}
-	class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+	class="flex flex-col py-3 mx-auto w-full text-orange-900 bg-orange-300"
 	action="/profile/myplace/hazards"
 	method="POST"
 >
@@ -90,7 +90,7 @@
 	<TextAreaInput
 		lableClass="font-bold pl-4 pt-4 text-base sm:text-lg"
 		headingText="Are there any other hazards on the property that should be noted?"
-		divClass="px-4 pt-2 rounded-lg bg-orange-500 sm:text-lg"
+		divClass="px-4 pt-2 rounded-lg sm:text-lg"
 		nameText="other_site_hazards"
 		textAreaClass="w-full resize-y sm:text-lg"
 		bind:inputValue={profileHazards.other_site_hazards}
@@ -120,7 +120,7 @@
 	<TextAreaInput
 		lableClass="font-bold pl-4 pt-4 text-base sm:text-lg"
 		headingText="Are there other areas that concern you or represent a potential threat?"
-		divClass="px-4 pt-2 rounded-lg bg-orange-500 sm:text-lg"
+		divClass="px-4 pt-2 rounded-lg sm:text-lg"
 		nameText="other_hazards"
 		textAreaClass="w-full resize-y sm:text-lg"
 		bind:inputValue={profileHazards.other_hazards}

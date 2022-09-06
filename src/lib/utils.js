@@ -1,19 +1,3 @@
-// @ts-nocheck
-import locations from '$lib/geojsonData/locations';
-
-export const suburbAliases = (street, suburb) => {
-	const result = locations.suburbAlias.filter(function (item) {
-		return item.name == suburb;
-	});
-	let aliases = [`${street.toUpperCase()} ${suburb.toUpperCase()}`];
-	if (result.length > 0) {
-		for (let address of result[0].alternative) {
-			aliases = [...aliases, `${street.toUpperCase()} ${address.toUpperCase()}`];
-		}
-	}
-	return aliases;
-};
-
 let validations = [];
 export const passwordStrength = (password) => {
 	validations = [

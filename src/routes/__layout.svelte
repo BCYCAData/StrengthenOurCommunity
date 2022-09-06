@@ -20,9 +20,19 @@
 		<header class="col-span-8 row-span-1">
 			<Navbar />
 		</header>
-		<main class="col-span-8 row-span-22">
+		<main class="col-span-8 row-span-21">
 			<slot />
 		</main>
+		<div class="col-span-8 row-span-1">
+			<div class="flex mx-auto items-center text-center w-2/3">
+				<img src="/ag.png" alt="Australian Government logo" width="auto" height="40" />
+				<p class="text-sm">
+					This is a Bushfire Community Recovery & Resilience Fund project through the joint
+					Commonwealth/State Disaster Recovery Funding Arrangements
+				</p>
+				<img src="/nswg.jpg" alt="NSW Government logo" width="auto" height="40" />
+			</div>
+		</div>
 		{#if showFooter}
 			<footer class="col-span-8 row-span-1 sticky bottom-0">
 				<div

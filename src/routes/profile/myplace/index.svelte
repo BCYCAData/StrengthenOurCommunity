@@ -38,7 +38,7 @@
 	on:change={() => {
 		unsaved = true;
 	}}
-	class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+	class="flex flex-col py-3 mx-auto w-full text-orange-900 bg-orange-300"
 	action="/profile/myplace"
 	method="POST"
 >
@@ -214,7 +214,7 @@
 		<label class="text-lg font-bold mb-1" for="truck_access_list">
 			Is there easy truck access to the buildings,
 			<br />
-			 boundaries and paddocks?
+			boundaries and paddocks?
 		</label>
 		<div class="flex flex-col rounded-lg bg-orange-50 p-1">
 			{#each accessOptions as { value, lable }}
@@ -265,35 +265,32 @@
 		<label class="mt-1 text-lg font-bold mb-1" for="residents_profile">
 			How many people usually live here?
 		</label>
-		<div
-			class="flex flex-row justify-around list-none rounded-lg bg-orange-50 p-1 mx-2"
-			name="residents_profile"
-		>
+		<div class="flex flex-row  rounded-lg bg-orange-50 p-1 mx-2" name="residents_profile">
 			<NumberInput
 				name="residents0_18"
-				lable="0-18 years"
-				lableClass="text-orange-900 text-lg px-2 font-bold mb-1"
+				lable="0-18 yrs "
+				lableClass="text-orange-900 text-lg px-1 font-bold mb-1"
 				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileMyPlace.residents0_18}
 			/>
 			<NumberInput
 				name="residents19_50"
-				lable="19-50 years"
-				lableClass="text-orange-900 text-lg px-2 font-bold mb-1"
+				lable="19-50 yrs "
+				lableClass="text-orange-900 text-lg px-1 font-bold mb-1"
 				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileMyPlace.residents19_50}
 			/>
 			<NumberInput
 				name="residents51_70"
-				lable="51-70 years"
-				lableClass="text-orange-900 text-lg px-2 font-bold mb-1"
+				lable="51-70 yrs "
+				lableClass="text-orange-900 text-lg px-1 font-bold mb-1"
 				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileMyPlace.residents51_70}
 			/>
 			<NumberInput
 				name="residents71_"
-				lable="71 years +"
-				lableClass="text-orange-900 text-lg px-2 font-bold mb-1"
+				lable="71+ yrs"
+				lableClass="text-orange-900 text-lg px-1 font-bold mb-1"
 				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileMyPlace.residents71_}
 			/>
