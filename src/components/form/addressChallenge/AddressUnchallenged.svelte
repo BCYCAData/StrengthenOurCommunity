@@ -25,7 +25,7 @@
 		loading = !loading;
 		let data = {};
 		try {
-			const response = await fetch('/api/data/propertyNSWSS', {
+			const response = await fetch('/api/data/validateAddress', {
 				method: 'POST',
 				body: JSON.stringify({
 					streetAddress: streetaddress.toUpperCase(),

@@ -1,5 +1,6 @@
 <script>
 	import LeafletMap from '$components/map/leaflet/LeafletMap.svelte';
+	// import MaplibreGLMap from '$components/map/maplibre-gl/MaplibreGLMap.svelte';
 
 	let mapObject = {
 		divId: 'basicMap',
@@ -60,8 +61,10 @@
 			This map shows the properties that have participated
 		</p>
 	</div>
-	<div class="main-map flex justify-center flex-auto mx-auto w-2/3">
+	<!-- <div class="main-map flex w-full"> -->
+	<div class="main-map flex justify-center flex-auto w-full">
 		<LeafletMap {mapObject} {mapData} />
+		<!-- <MaplibreGlMap /> -->
 	</div>
 </section>
 
@@ -85,11 +88,12 @@
 		display: grid;
 		/* grid-template-rows: 45px auto 1fr 2fr; */
 		/* grid-auto-rows: min-content; */
+		grid-template-columns: 1fr 2fr auto 2fr 1fr;
 		grid-template-areas:
-			'headlines'
-			'content-words'
-			'list'
-			'map-area';
+			'headlines headlines headlines headlines headlines '
+			'content-words content-words content-words content-words content-words '
+			'list list list list list '
+			'. map-area map-area map-area .';
 		grid-template-rows: auto auto auto 1fr;
 	}
 </style>

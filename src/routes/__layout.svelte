@@ -13,6 +13,7 @@
 	import '../app.css';
 	import 'uno.css';
 	import '../../node_modules/leaflet/dist/leaflet.css';
+	import '../../node_modules/maplibre-gl/dist/maplibre-gl.css';
 </script>
 
 <SupaAuthHelper {supabaseClient} {session}>
@@ -24,13 +25,25 @@
 			<slot />
 		</main>
 		<div class="col-span-8 row-span-1">
-			<div class="flex mx-auto items-center text-center w-2/3">
-				<img src="/ag.png" alt="Australian Government logo" width="auto" height="40" />
-				<p class="text-sm">
+			<div class="flex items-center text-center content-center justify-around w-full">
+				<img
+					class="ml-2 mb-2 md:ml-26"
+					src="/ag.png"
+					alt="Australian Government logo"
+					width="auto"
+					height="40"
+				/>
+				<p class="text-[0.6rem] md:text-sm">
 					This is a Bushfire Community Recovery & Resilience Fund project through the joint
 					Commonwealth/State Disaster Recovery Funding Arrangements
 				</p>
-				<img src="/nswg.jpg" alt="NSW Government logo" width="auto" height="40" />
+				<img
+					class="mr-2 mb-2 md:mr-26"
+					src="/nswg.jpg"
+					alt="NSW Government logo"
+					width="auto"
+					height="40"
+				/>
 			</div>
 		</div>
 		{#if showFooter}

@@ -22,6 +22,11 @@ const config = {
 			$components: 'src/components',
 			$stores: './src/stores'
 		}
+	},
+	vitePlugin: {
+		experimental: {
+			inspector: true
+		}
 	}
 };
 
