@@ -111,10 +111,10 @@ async function resetProfile(survey, locals, request) {
 				})
 				.eq('email_address', locals.user.email);
 
-			const { data: surveyCheck, error: errorSurveyCheck } = await supabaseServerClient(request)
-				.from('survey_responses')
-				.select('invited')
-				.eq('email_address', locals.user.email);
+			// const { data: surveyCheck, error: errorSurveyCheck } = await supabaseServerClient(request)
+			// 	.from('survey_responses')
+			// 	.select('invited')
+			// 	.eq('email_address', locals.user.email);
 			if (errorSurveyUpdate) {
 				let messageSurveyUpdate = errorSurveyUpdate.message;
 				console.log('error Update Survey Responses:', messageSurveyUpdate);

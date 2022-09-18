@@ -19,14 +19,13 @@ export async function POST({ request }) {
 		};
 	} else {
 		let resultData = addressData[0];
-		console.log('addressData', resultData.status);
 		return {
 			status: resultData.return_status,
 			body: {
 				community_name: resultData.community,
 				principaladdresssiteoid: resultData.principaladdresssiteoid,
 				address: resultData.valid_address,
-				address_point: resultData.addresspoint_geom,
+				addressPoint: resultData.addresspoint_geom,
 				gurasid: resultData.gurasid,
 				message: resultData.message
 			}

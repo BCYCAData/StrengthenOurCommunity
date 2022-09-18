@@ -34,8 +34,6 @@ export async function POST({ request }) {
 	}
 
 	if (session) {
-		console.log('Session');
-		// const response = await fetch('http://127.0.0.1:5173/api/auth/callback', {
 		const response = await fetch(`${supabaseRedirectBase}/api/auth/callback`, {
 			method: 'POST',
 			headers: new Headers({ 'Content-Type': 'application/json' }),

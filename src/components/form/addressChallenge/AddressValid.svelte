@@ -4,6 +4,10 @@
 	export let searchAddress;
 	export let validAddress;
 	export let community;
+	export let principaladdresssiteoid; //: resultData.principaladdresssiteoid,
+	// export let addressPointLon; //: resultData.addresspoint_geom,
+	// export let addressPointLat; //: resultData.addresspoint_geom,
+	export let gurasid; //: resultData.gurasid
 
 	let email = '';
 	let strength = 0;
@@ -46,7 +50,6 @@
 	}
 
 	function togglePassword(node, showPassword) {
-		console.log('node', node);
 		return {
 			update(showPassword) {
 				if (showPassword) {
@@ -74,6 +77,9 @@
 		community.
 	</p>
 </div>
+{principaladdresssiteoid}
+{gurasid}
+
 <div class="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 	<div class="px-6 py-2 rounded shadow-md text-gray-900 w-full">
 		<div class="mt-2 mb-3">
@@ -81,6 +87,13 @@
 		</div>
 		<!-- <form on:submit|preventDefault={handleSubmit}> -->
 		<form action="/api/auth/signup" method="POST">
+			<input
+				id="principaladdresssiteoid"
+				type="number"
+				name="principaladdresssiteoid"
+				bind:value={principaladdresssiteoid}
+			/>
+			<input id="gurasid" type="number" name="gurasid" bind:value={gurasid} />
 			<label class="inline uppercase tracking-wide text-orange-600 text-xs font-bold" for="email">
 				Email:
 			</label>

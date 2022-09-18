@@ -41,7 +41,6 @@
 	}
 
 	function togglePassword(node, showPassword) {
-		console.log('node', node);
 		return {
 			update(showPassword) {
 				if (showPassword) {

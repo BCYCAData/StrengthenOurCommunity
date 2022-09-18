@@ -15,7 +15,9 @@
 </svelte:head>
 
 {#if redirectType === 'invite'}
-	<PasswordEntry {redirectType} {accessToken} />
+	<PasswordEntry {redirectType} {accessToken} {url} />
+	<!-- {redirectType}
+	{accessToken} -->
 {:else if redirectType === 'signup'}
 	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
 		<h1 class="title-font mt-2 font-bold underline hidden sm:block sm:text-2xl text-orange-600">

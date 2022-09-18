@@ -1,6 +1,7 @@
 <script>
 	export let redirectType;
 	export let accessToken;
+	export let url;
 
 	let strength = 0;
 	let validations = [];
@@ -46,7 +47,6 @@
 	}
 
 	function togglePassword(node, showPassword) {
-		console.log('node', node);
 		return {
 			update(showPassword) {
 				if (showPassword) {
@@ -99,7 +99,7 @@
 					on:mouseenter={() => (showPassword = true)}
 					on:mouseleave={() => (showPassword = false)}
 				>
-					{showPassword ? '👁' : '👁'}
+					{showPassword ? '👁️' : '👁️'}
 					<!-- {showPassword ? '🙈' : '🐵'} -->
 				</span>
 			</label>
@@ -150,6 +150,7 @@
 			<input type="hidden" id="mode" name="mode" value={redirectType} />
 			<!-- {#if redirectType === 'recovery'} -->
 			<input type="hidden" id="token" name="token" value={accessToken} />
+			<input id="url" name="url" value={url} />
 			<!-- <input type="text" id="token" name="token" value={accessToken} /> -->
 			<!-- {/if} -->
 			<button
