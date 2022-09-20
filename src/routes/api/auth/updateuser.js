@@ -19,7 +19,7 @@ export const POST = async ({ locals, request }) => {
 		const { data: addressData, error: addressError } = await supabaseClient.rpc(
 			'get_address_from_survey_email',
 			{
-				email_input: 'bcycadata@outlook.com'
+				email_input: userEmail
 			}
 		);
 		if (addressError) {

@@ -6,27 +6,26 @@ export const POST = async ({ request }) => {
 	let email = body.get('email');
 	let gurasid = body.get('gurasid');
 	let principaladdresssiteoid = body.get('principaladdresssiteoid');
-	const { error } = await supabaseClient.auth.signUp(
+	const { error: errorSignUp } = await supabaseClient.auth.signUp(
 		{
 			email: email,
 			password: password
 		},
 		{
 			data: {
-				gurasid: parseInt(gurasid),
-				principaladdresssiteoid: parseInt(principaladdresssiteoid)
+				gid: parseInt(gurasid),
+				oid: parseInt(principaladdresssiteoid)
 			}
 		},
-
 		{
 			redirectTo: `${supabaseRedirectBase}/auth/redirect`
 		}
 	);
-	if (error) {
-		console.log('signup error:', error);
+	if (errorSignUp) {
+		console.log('signup error:', errorSignUp);
 		return {
 			status: 400,
-			body: { error }
+			body: { errorSignUp }
 		};
 	}
 	return {

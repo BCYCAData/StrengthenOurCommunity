@@ -22,7 +22,6 @@ export const GET = async ({ locals, request }) =>
 				};
 			}
 			if (survey[0]) {
-				let surveyData = survey[0];
 				await resetProfile(survey[0], locals, request);
 			}
 			const { data: profileComments, error: errorComments } = await supabaseServerClient(request)
@@ -110,11 +109,6 @@ async function resetProfile(survey, locals, request) {
 					invited: locals.user.id
 				})
 				.eq('email_address', locals.user.email);
-
-			// const { data: surveyCheck, error: errorSurveyCheck } = await supabaseServerClient(request)
-			// 	.from('survey_responses')
-			// 	.select('invited')
-			// 	.eq('email_address', locals.user.email);
 			if (errorSurveyUpdate) {
 				let messageSurveyUpdate = errorSurveyUpdate.message;
 				console.log('error Update Survey Responses:', messageSurveyUpdate);

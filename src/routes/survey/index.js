@@ -9,6 +9,21 @@ export const GET = async ({ locals, request }) =>
 			user: locals.user
 		},
 		async () => {
+			const { data: surveyData, error: surveyError } = await supabaseClient.rpc(
+				'user_has_survey_results',
+				{
+					email_input: userEmail
+				}
+			);
+			if (surveyError) {
+				surveyData = false;
+			}
+			if (surveyData) {
+				return {
+					headers: { Location: '/profile' },
+					status: 302
+				};
+			}
 			const { data: profile, error } = await supabaseServerClient(request)
 				.from('profile')
 				.select('*')

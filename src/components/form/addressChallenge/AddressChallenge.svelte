@@ -10,8 +10,6 @@
 	let validAddress = '';
 	let community = '';
 	let principaladdresssiteoid; //: resultData.principaladdresssiteoid,
-	// let addressPointLon; //: resultData.addresspoint_geom,
-	// let addressPointLat; //: resultData.addresspoint_geom,
 	let gurasid; //: resultData.gurasid
 </script>
 
@@ -29,7 +27,6 @@
 	<AddressIneligible {searchAddress} />
 {/if}
 {#if status === 401}
-	<!-- <AddressEligible {searchAddress} {validAddress} {community} {principaladdresssiteoid} {gurasid} /> -->
 	<AddressEligible {searchAddress} {validAddress} {community} />
 {/if}
 {#if status >= 500}

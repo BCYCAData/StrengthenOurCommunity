@@ -96,6 +96,7 @@
 				<br />
 				Check your answers to all the questions.
 			</h3>
+			<button>Show My Community</button>
 		</div>
 	</div>
 </div>

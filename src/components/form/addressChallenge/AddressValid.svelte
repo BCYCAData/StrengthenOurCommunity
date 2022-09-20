@@ -4,10 +4,8 @@
 	export let searchAddress;
 	export let validAddress;
 	export let community;
-	export let principaladdresssiteoid; //: resultData.principaladdresssiteoid,
-	// export let addressPointLon; //: resultData.addresspoint_geom,
-	// export let addressPointLat; //: resultData.addresspoint_geom,
-	export let gurasid; //: resultData.gurasid
+	export let oid;
+	export let gid;
 
 	let email = '';
 	let strength = 0;
@@ -60,7 +58,6 @@
 			}
 		};
 	}
-
 	let errorMessage = '';
 </script>
 
@@ -77,23 +74,14 @@
 		community.
 	</p>
 </div>
-{principaladdresssiteoid}
-{gurasid}
-
 <div class="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 	<div class="px-6 py-2 rounded shadow-md text-gray-900 w-full">
 		<div class="mt-2 mb-3">
 			Please enter your email address and a password to completes the registration process.
 		</div>
-		<!-- <form on:submit|preventDefault={handleSubmit}> -->
 		<form action="/api/auth/signup" method="POST">
-			<input
-				id="principaladdresssiteoid"
-				type="number"
-				name="principaladdresssiteoid"
-				bind:value={principaladdresssiteoid}
-			/>
-			<input id="gurasid" type="number" name="gurasid" bind:value={gurasid} />
+			<input id="oid" type="hidden" name="oid" bind:value={oid} />
+			<input id="gid" type="hidden" name="id" bind:value={gid} />
 			<label class="inline uppercase tracking-wide text-orange-600 text-xs font-bold" for="email">
 				Email:
 			</label>

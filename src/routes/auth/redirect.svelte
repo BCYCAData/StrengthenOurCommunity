@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { page } from '$app/stores';
 	import PasswordEntry from '$components/form/auth/PasswordEntry.svelte';
 
@@ -16,8 +14,6 @@
 
 {#if redirectType === 'invite'}
 	<PasswordEntry {redirectType} {accessToken} {url} />
-	<!-- {redirectType}
-	{accessToken} -->
 {:else if redirectType === 'signup'}
 	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
 		<h1 class="title-font mt-2 font-bold underline hidden sm:block sm:text-2xl text-orange-600">
@@ -48,7 +44,6 @@
 	</section>
 {:else if redirectType === 'recovery'}
 	<PasswordEntry {redirectType} {accessToken} />
-	<!-- <PasswordEntry {redirectType} /> -->
 {:else if message && redirectType === null}
 	<section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl">
 		<h1 class="title-font font-bold underline hidden sm:block sm:text-2xl text-orange-600">
