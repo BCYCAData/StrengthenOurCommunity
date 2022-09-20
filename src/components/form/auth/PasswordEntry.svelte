@@ -1,7 +1,7 @@
 <script>
 	export let redirectType;
 	export let accessToken;
-	export let url;
+	// export let url;
 
 	let strength = 0;
 	let validations = [];
@@ -149,7 +149,7 @@
 
 			<input type="hidden" id="mode" name="mode" value={redirectType} />
 			<input type="hidden" id="token" name="token" value={accessToken} />
-			<input id="url" name="url" value={url} />
+			<!-- <input type="hidden" id="url" name="url" value={url} /> -->
 			<button
 				type="submit"
 				class="w-full text-center py-3 rounded-full bg-orange-500 text-stone-100 hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"

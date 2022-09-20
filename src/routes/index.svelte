@@ -1,6 +1,3 @@
-<!-- <script context="module">
-	export const prerender = true;
-</script> -->
 <script>
 	import { page } from '$app/stores';
 	import Modal from '$components/Modal.svelte';
