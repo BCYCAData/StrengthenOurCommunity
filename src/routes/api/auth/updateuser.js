@@ -14,12 +14,10 @@ export const POST = async ({ locals, request }) => {
 		};
 	}
 	if (body.get('mode') === 'invite') {
-		const currentUser = await locals.user;
-		const userEmail = JSON.stringify(currentUser.email);
 		const { data: addressData, error: addressError } = await supabaseClient.rpc(
 			'get_address_from_survey_email',
 			{
-				email_input: userEmail
+				email_input: locals.user.email
 			}
 		);
 		if (addressError) {

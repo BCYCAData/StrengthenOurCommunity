@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
-import { getFormBody } from '$lib/utils';
+import { getFormBody, resetProfile } from '$lib/utils';
+import { supabaseClient } from '$lib/dbClient';
 
 export const GET = async ({ locals, request }) =>
 	withApiAuth(
@@ -9,20 +10,29 @@ export const GET = async ({ locals, request }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: surveyData, error: surveyError } = await supabaseClient.rpc(
+			const { data: survey, error: surveyError } = await supabaseClient.rpc(
 				'user_has_survey_results',
 				{
-					email_input: userEmail
+					email_input: locals.user.email
 				}
 			);
-			if (surveyError) {
-				surveyData = false;
-			}
-			if (surveyData) {
-				return {
-					headers: { Location: '/profile' },
-					status: 302
-				};
+			if (survey) {
+				const { data: survey, error: errorSurvey } = await supabaseServerClient(request)
+					.from('survey_responses')
+					.select('*')
+					.eq('email_address', locals.user.email)
+					.is('invited', null);
+				if (errorSurvey) {
+					console.log('error Get Survey:', errorSurvey.message);
+					let message = errorSurvey.message;
+					return {
+						status: 400,
+						body: { message }
+					};
+				}
+				if (survey[0]) {
+					await resetProfile(survey[0], locals, request);
+				}
 			}
 			const { data: profile, error } = await supabaseServerClient(request)
 				.from('profile')

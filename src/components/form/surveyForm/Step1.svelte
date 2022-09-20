@@ -1,4 +1,3 @@
-<!-- <div class="mx-auto"> -->
 <h1 class="title-font mx-auto text-center font-bold underline sm:text-2xl text-orange-600">
 	Strengthen OUR Community
 </h1>
@@ -22,4 +21,3 @@
 	With your help we can build a safer, connected community for us all.
 </p>
 <p class="pt-2 sm:text-lg">Thanks for your time and comments.</p>
-<!-- </div> -->

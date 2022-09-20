@@ -21,7 +21,6 @@
 
 <section class="mx-auto h-full w-full text-gray-900 bg-orange-300">
 	<div class="mx-auto h-full w-full sm:w-11/12  bg-orange-100">
-		<!-- <div class="mx-auto h-full w-full sm:w-8/12"> -->
 		<SurveyFormContainer active_step={steps[currentActive - 1]} {surveyData} />
 		<div class="mx-auto w-full sm:w-8/12">
 			<ProgressBar

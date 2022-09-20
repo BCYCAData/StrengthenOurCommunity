@@ -1,11 +1,30 @@
 <script>
 	import { page } from '$app/stores';
 	import PasswordEntry from '$components/form/auth/PasswordEntry.svelte';
+	import { onMount } from 'svelte';
 
 	const url = new URLSearchParams($page.url.hash.substring(1));
 	const redirectType = url.get('type');
 	const message = url.get('message');
 	const accessToken = url.get('access_token');
+
+	let haveSurvey = false;
+
+	onMount(async () => {
+		if (redirectType === 'signup') {
+			const response = await fetch('/api/data/userdata', {
+				method: 'POST',
+				body: JSON.stringify({
+					token: accessToken
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const data = await response.json();
+			haveSurvey = data.redirect;
+		}
+	});
 </script>
 
 <svelte:head>
@@ -19,10 +38,18 @@
 		<h1 class="title-font mt-2 font-bold underline hidden sm:block sm:text-2xl text-orange-600">
 			Thank you for joining our Strengthen Our Community Project.
 		</h1>
-		<p class="text-base mt-3 mb-0 sm:text-lg ">
-			We hope that the questions in our project survey prompt you to review your preparedness for
-			fire and flood. By completing our project survey you are helping to protect our community.
-		</p>
+		{#if haveSurvey}
+			<p class="text-base mt-3 mb-0 sm:text-lg ">
+				We hope that the questions in our project survey prompt you to review your preparedness for
+				fire and flood. Please step through our project survey again and ensure you answers are
+				still valid. By doing this you are helping to protect our community.
+			</p>
+		{:else}
+			<p class="text-base mt-3 mb-0 sm:text-lg ">
+				We hope that the questions in our project survey prompt you to review your preparedness for
+				fire and flood. By completing our project survey you are helping to protect our community.
+			</p>
+		{/if}
 		<p class="text-base mt-3 mb-0 sm:text-lg ">
 			You are the only person who will see your information.
 		</p>
