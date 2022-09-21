@@ -1,5 +1,5 @@
 <script>
-	import LeafletMap from '$components/map/leaflet/LeafletMap.svelte';
+	import MapLeaflet from '$components/map/leaflet/MapLeaflet.svelte';
 	// import MaplibreGLMap from '$components/map/maplibre-gl/MaplibreGLMap.svelte';
 
 	let mapObject = {
@@ -63,7 +63,7 @@
 	</div>
 	<!-- <div class="main-map flex w-full"> -->
 	<div class="main-map flex justify-center flex-auto w-full">
-		<LeafletMap {mapObject} {mapData} />
+		<MapLeaflet {mapObject} {mapData} />
 		<!-- <MaplibreGlMap /> -->
 	</div>
 </section>

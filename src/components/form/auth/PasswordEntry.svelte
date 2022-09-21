@@ -16,7 +16,7 @@
 
 	if (redirectType == 'invite') {
 		heading = 'Thank you for accepting our invitation.';
-		submitText = 'Please Set a Password';
+		submitText = 'Create my password now!';
 	} else if (redirectType == 'recovery') {
 		heading = 'Please enter your new password.';
 		submitText = 'Set New Password';

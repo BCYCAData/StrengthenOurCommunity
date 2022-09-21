@@ -2,41 +2,41 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import Breadcrumbs from '$components/Breadcrumbs.svelte';
-	import Modal from '$components/Modal.svelte';
-	import LeafletMap from '$components/map/leaflet/LeafletMap.svelte';
-	import AboutMapData from '$components/map/leaflet/AboutMapData.svelte';
+	// import Modal from '$components/Modal.svelte';
+	// import LeafletMap from '$components/map/leaflet/LeafletMap.svelte';
+	// import AboutMapData from '$components/map/leaflet/AboutMapData.svelte';
 	// import MaplibreGLMap from '$components/map/maplibre-gl/MaplibreGLMap.svelte';
 
-	let mapObject = {
-		divId: 'basicMap',
-		centre: [-31.955815, 152.300884], //-31.955814913,152.300883592
-		zoomControl: false,
-		doubleClickZoom: false,
-		scrollWheelZoom: false,
-		zoom: 11.6,
-		minZoom: 11.6,
-		maxZoom: 11.5,
-		maxBounds: null,
-		dragging: false
-	};
+	// let mapObject = {
+	// 	divId: 'basicMap',
+	// 	centre: [-31.955815, 152.300884], //-31.955814913,152.300883592
+	// 	zoomControl: false,
+	// 	doubleClickZoom: false,
+	// 	scrollWheelZoom: false,
+	// 	zoom: 11.6,
+	// 	minZoom: 11.6,
+	// 	maxZoom: 11.5,
+	// 	maxBounds: null,
+	// 	dragging: false
+	// };
 
-	export let mapData;
+	// export let mapData;
 
-	let modalVisible = false;
+	// let modalVisible = false;
 </script>
 
 <div class="wrapper h-full grid bg-orange-100">
 	<header class="main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center ">
 		<h3 class="font-bold text-orange-900">Burrell Creek Youth & Community Association Inc.</h3>
 	</header>
-	{#if modalVisible}
+	<!-- {#if modalVisible}
 		<Modal on:exit={() => (modalVisible = !modalVisible)}>
 			<div class="main-map flex justify-center flex-auto w-full">
 				<AboutMapData />
 				<LeafletMap {mapObject} {mapData} />
 			</div>
 		</Modal>
-	{/if}
+	{/if} -->
 	<section class="crumbs p-0 max-h-[35px] bg-stone-200">
 		<Breadcrumbs path={$page.url.pathname} />
 	</section>

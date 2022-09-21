@@ -98,7 +98,7 @@ export async function resetProfile(survey, locals, request) {
 				.eq('id', locals.user.id);
 			if (errorProfileUpdate) {
 				let message = errorProfileUpdate.message;
-				console.log('error Update Profile from Survey:', message);
+				console.log('error Update Profile from Survey:', errorProfileUpdate);
 				return {
 					status: 400,
 					body: { message }
