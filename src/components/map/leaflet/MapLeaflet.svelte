@@ -91,6 +91,6 @@
 </script>
 
 <div
-	class="mx-auto flex w-full h-full items-center justify-center border-double border-orange-600 z-0"
+	class="mx-auto flex w-full h-full items-center justify-center border-double border-orange-100 z-0"
 	id={mapObject.divId}
 />
