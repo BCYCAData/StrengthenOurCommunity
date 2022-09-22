@@ -14,6 +14,7 @@
 		information: ['Information', 'carbon:group'],
 		events: ['Events', 'carbon:group'],
 		workshops: ['Workshops', 'carbon:group'],
+		map: ['Community Map', 'carbon:group'],
 		settings: ['Settings', 'carbon:settings'],
 		password: ['Change Password', 'carbon:settings'],
 		email: ['Change Email', 'carbon:settings']

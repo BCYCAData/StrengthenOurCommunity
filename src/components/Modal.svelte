@@ -2,6 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
+	export let divH = '';
+
 	/* This component emits an "exit" event when the user requests to exit */
 	const dispatch = createEventDispatcher();
 	const onKeyDown = (/** @type {{ keyCode: number; }} */ e) => {
@@ -13,7 +15,7 @@
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
-<div class="container bg-stone-200">
+<div class="container bg-stone-200 {divH}">
 	<div class="shadow" transition:fade={{ duration: 200 }} />
 	<div
 		id="popup-modal"

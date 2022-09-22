@@ -2,41 +2,12 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import Breadcrumbs from '$components/Breadcrumbs.svelte';
-	// import Modal from '$components/Modal.svelte';
-	// import LeafletMap from '$components/map/leaflet/LeafletMap.svelte';
-	// import AboutMapData from '$components/map/leaflet/AboutMapData.svelte';
-	// import MaplibreGLMap from '$components/map/maplibre-gl/MaplibreGLMap.svelte';
-
-	// let mapObject = {
-	// 	divId: 'basicMap',
-	// 	centre: [-31.955815, 152.300884], //-31.955814913,152.300883592
-	// 	zoomControl: false,
-	// 	doubleClickZoom: false,
-	// 	scrollWheelZoom: false,
-	// 	zoom: 11.6,
-	// 	minZoom: 11.6,
-	// 	maxZoom: 11.5,
-	// 	maxBounds: null,
-	// 	dragging: false
-	// };
-
-	// export let mapData;
-
-	// let modalVisible = false;
 </script>
 
 <div class="wrapper h-full grid bg-orange-100">
 	<header class="main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center ">
 		<h3 class="font-bold text-orange-900">Burrell Creek Youth & Community Association Inc.</h3>
 	</header>
-	<!-- {#if modalVisible}
-		<Modal on:exit={() => (modalVisible = !modalVisible)}>
-			<div class="main-map flex justify-center flex-auto w-full">
-				<AboutMapData />
-				<LeafletMap {mapObject} {mapData} />
-			</div>
-		</Modal>
-	{/if} -->
 	<section class="crumbs p-0 max-h-[35px] bg-stone-200">
 		<Breadcrumbs path={$page.url.pathname} />
 	</section>
@@ -95,6 +66,9 @@
 						<li class="hover:bg-orange-300 rounded mt-1">
 							<a href="/profile/mycommunity/events">Events</a>
 						</li>
+						<li class="hover:bg-orange-300 rounded mt-1">
+							<a href="/profile/mycommunity/map">Comminity Map</a>
+						</li>
 					</ul>
 				</li>
 				<li class="sm:mt-2 hover:bg-orange-300 rounded items-center">
@@ -115,19 +89,16 @@
 				</li>
 			</ul>
 		</div>
+		<p class="ml-2 ">
+			Please make sure you click every heading in the menu on the left <br />
+			AND Check your answers to all the questions.
+		</p>
 	</aside>
 	<div class="messaging bg-stone-200">
 		<div class="flex flex-row justify-around pt-2 text-xl">Messages</div>
 		<div class="flex flex-col h-full my-4 mx-4">
-			<h3>
-				Please make sure you click every heading in the menu on the left <br />
-				AND
-				<br />
-				Check your answers to all the questions.
-			</h3>
-			<!-- <div class="m-auto">
-				<button on:click={() => (modalVisible = !modalVisible)}>Show My Community</button>
-			</div> -->
+			<p class="m-2">Congratulations you are now eligible for your FREE Emergency Starter Kit.</p>
+			<p class="m-2">We will be in touch soon.</p>
 		</div>
 	</div>
 </div>
