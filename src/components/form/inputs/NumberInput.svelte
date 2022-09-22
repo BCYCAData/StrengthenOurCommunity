@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	export let name;
 	export let lable;
 	export let inputClass;

@@ -1,4 +1,3 @@
-// @ts-nocheck
 export const residencyOptions = [
 	{ value: 1, lable: 'Resident at the property fulltime ' },
 	{ value: 2, lable: 'Present large proportion of time' },

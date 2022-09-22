@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { handleAuth } from '@supabase/auth-helpers-sveltekit';
 import { sequence } from '@sveltejs/kit/hooks';
 

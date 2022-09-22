@@ -17,7 +17,7 @@
 	$: canGo = validateAddress(streetaddress);
 	$: searchAddress = `${streetaddress.toUpperCase()} ${suburb.toUpperCase()}`;
 	function validateAddress(streetaddress) {
-		var streetRegEx = /^(\d+).*/;
+		let streetRegEx = /^(\d+).*/;
 		return streetRegEx.test(String(streetaddress).toLowerCase());
 	}
 
@@ -46,8 +46,6 @@
 				validAddress = data.address;
 				principaladdresssiteoid = data.principaladdresssiteoid;
 				gurasid = data.gurasid;
-				// addressPointLat = data.addressPoint.coordinates[1];
-				// addressPointLon = data.addressPoint.coordinates[0];
 			} else if (response.status === 500 || response.status === 503) {
 				// status = 'serviceNotAvailable';
 				status = response.status;
@@ -64,8 +62,6 @@
 				validAddress = data.address;
 				principaladdresssiteoid = data.principaladdresssiteoid;
 				gurasid = data.gurasid;
-				// addressPointLat = data.addressPoint.coordinates[1];
-				// addressPointLon = data.addressPoint.coordinates[0];
 			} else {
 				// status = 'anErrorOccurred';
 				status = 418;

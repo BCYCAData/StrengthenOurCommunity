@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { yesNoOptions, accessOptions } from '$lib/profileOptions';
 	import { formatMobile, formatPhone } from '$lib/utils';
 

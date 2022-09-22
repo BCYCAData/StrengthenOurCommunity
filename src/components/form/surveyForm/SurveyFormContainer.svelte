@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import Step1 from '$components/form/surveyForm/Step1.svelte';
 	import Step2 from '$components/form/surveyForm/Step2.svelte';
 	import Step3 from '$components/form/surveyForm/Step3.svelte';

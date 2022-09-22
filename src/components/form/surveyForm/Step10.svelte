@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { communityMeetingOptions } from '$lib/profileOptions';
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 

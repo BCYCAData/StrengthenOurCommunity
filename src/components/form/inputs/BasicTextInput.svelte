@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	export let headingText;
 	export let nameText;
 	export let requiredText;
@@ -11,7 +9,6 @@
 <div>
 	<h3>{headingText}</h3>
 	<div class="py-2 px-2 p-0 rounded-lg bg-orange-100">
-		<!-- <li> -->
 		<input
 			type="text"
 			id={nameText}
@@ -21,6 +18,5 @@
 			placeholder={placeholderText}
 			autocomplete={autocompleteText}
 		/>
-		<!-- </li> -->
 	</div>
 </div>

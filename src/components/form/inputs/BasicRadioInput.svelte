@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	export let headingRadio;
 	export let optionsArrayRadio;
 	export let nameRadio;

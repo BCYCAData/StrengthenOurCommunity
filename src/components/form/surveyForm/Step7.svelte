@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import {
 		yesNoSendOptions,
 		fireFightingExperienceOptions,

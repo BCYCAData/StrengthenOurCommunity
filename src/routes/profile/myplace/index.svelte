@@ -1,5 +1,4 @@
 <script>
-	// @ts-nocheck
 	import { beforeNavigate } from '$app/navigation';
 	import { yesNoOptions, residencyOptions, accessOptions } from '$lib/profileOptions';
 
@@ -42,31 +41,6 @@
 	action="/profile/myplace"
 	method="POST"
 >
-	<!-- <div class="flex flex-row">
-			<div class="w-1/2" />
-			<button
-				class="w-1/4 mx-3 mb-3 rounded-lg text-base font-semibold bg-[#0099E8] text-stone-100 border border-purple-700"
-				on:click={() => {
-					unsaved = false;
-				}}
-				hidden={!unsaved}
-				type="submit"
-				form="profileMyPlaceForm"
-			>
-				Save My Answers
-			</button>
-			<button
-				class="w-1/4 mx-auto mb-3 rounded-lg text-base font-semibold bg-[#27C7BD] text-stone-100 border border-purple-700"
-				on:click={() => {
-					unsaved = false;
-					location.reload();
-				}}
-				hidden={!unsaved}
-				type="button"
-			>
-				Cancel
-			</button>
-		</div> -->
 	<!-- Property address -->
 	<div class="flex flex-row mx-2">
 		<div class="flex flex-col basis-full mx-2">
@@ -172,7 +146,6 @@
 				/>
 			</div>
 		</div>
-		<!-- {/if} -->
 	</div>
 
 	<!-- residency_profile -->

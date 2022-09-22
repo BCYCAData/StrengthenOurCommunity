@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	export let steps = [];
 	export let currentActive = 1;
 	let circles, progress;

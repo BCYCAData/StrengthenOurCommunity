@@ -20,11 +20,12 @@
 			zoomOffset: -1,
 			minZoom: 1,
 			attribution:
-				'\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+				'\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e \u003ca href="https://www.spatial.nsw.gov.au" target="_blank"\u003e\u0026copy; Spatial Services NSW \u003c/a\u003e',
 			crossOrigin: true
 		}
 	};
 
+	// '© State of New South Wales (Spatial Services, a business unit of the Department of Customer Service NSW). For current information go to spatial.nsw.gov.au.’
 	async function getMapData() {
 		const response = await fetch('/api/data/addressPoints');
 		const data = await response.json();
@@ -36,7 +37,7 @@
 {#await mapData}
 	<p>...waiting</p>
 {:then mapData}
-	<div class="main-map w-full h-full ">
+	<div class="flex flex-1  border-double border-stone-100">
 		<MapLeaflet {mapObject} {mapTileLayer} {mapData} />
 		<!-- <MaplibreGlMap /> -->
 	</div>

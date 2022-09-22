@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { residencyOptions, yesNoOptions } from '$lib/profileOptions';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 

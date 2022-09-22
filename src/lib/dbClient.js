@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { createSupabaseClient } from '@supabase/auth-helpers-sveltekit';
 
 export const supabaseRedirectBase = import.meta.env.VITE_SUPABASE_REDIRECT_URL_BASE.toString();

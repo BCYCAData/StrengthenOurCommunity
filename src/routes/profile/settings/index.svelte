@@ -1,5 +1,4 @@
 <script>
-	// @ts-nocheck
 	import { beforeNavigate } from '$app/navigation';
 
 	import Modal from '$components/Modal.svelte';

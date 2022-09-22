@@ -91,7 +91,14 @@
 		</div>
 		<p class="ml-2 ">
 			Please make sure you click every heading in the menu on the left <br />
-			AND Check your answers to all the questions.
+			<b>and</b>
+			check your answers to all the questions.
+		</p>
+		<p class="ml-2 ">
+			Remember this is <b>your</b>
+			data. To help keep
+			<b>you</b>
+			prepared.
 		</p>
 	</aside>
 	<div class="messaging bg-stone-200">

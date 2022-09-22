@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { stayInTouchOptions } from '$lib/profileOptions';
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 

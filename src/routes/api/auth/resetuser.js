@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { supabaseClient } from '$lib/dbClient';
 
 export const POST = async ({ request }) => {

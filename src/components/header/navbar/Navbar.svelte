@@ -1,5 +1,4 @@
 <script>
-	// @ts-nocheck
 	import Logo from '$components/header/logo/Logo.svelte';
 	import { page, session } from '$app/stores';
 

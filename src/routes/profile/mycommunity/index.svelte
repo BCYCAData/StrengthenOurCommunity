@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { beforeNavigate } from '$app/navigation';
 	import { stayInTouchOptions } from '$lib/profileOptions';
 
@@ -41,31 +39,6 @@
 	action="/profile/mycommunity"
 	method="POST"
 >
-	<!-- <div class="flex flex-row">
-			<div class="w-1/2" />
-			<button
-				class="w-1/4 mx-3 mb-3 rounded-lg text-base font-semibold bg-[#0099E8] text-stone-100 border border-purple-700"
-				on:click={() => {
-					unsaved = false;
-				}}
-				hidden={!unsaved}
-				type="submit"
-				form="profileCommunityForm"
-			>
-				Save My Answers
-			</button>
-			<button
-				class="w-1/4 mx-auto mb-3 rounded-lg text-base font-semibold bg-[#27C7BD] text-stone-100 border border-purple-700"
-				on:click={() => {
-					unsaved = false;
-					location.reload();
-				}}
-				hidden={!unsaved}
-				type="button"
-			>
-				Cancel
-			</button>
-		</div> -->
 	<!--stay_in_touch_choices -->
 	<div class="flex flex-row justify-between items-center px-4 mt-2">
 		<label class="tracking-wide mr-4 mt-1 text-lg font-bold mb-1" for="stay_in_touch_choices_list">

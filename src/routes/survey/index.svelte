@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import SurveyFormContainer from '$components/form/surveyForm/SurveyFormContainer.svelte';
 	import ProgressBar from '$components/form/ProgressBar.svelte';
 
@@ -49,5 +47,4 @@
 			</div>
 		</div>
 	</div>
-	<!-- </div> -->
 </section>

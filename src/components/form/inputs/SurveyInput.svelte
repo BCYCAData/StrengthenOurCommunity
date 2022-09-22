@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	/**@type {string}
 	 * @description Text for the question
 	 */

@@ -1,5 +1,4 @@
 <script>
-	// @ts-nocheck
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 

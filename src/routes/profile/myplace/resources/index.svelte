@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { beforeNavigate } from '$app/navigation';
 	import {
 		staticWaterOptions,

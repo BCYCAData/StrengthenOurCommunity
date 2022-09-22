@@ -4,10 +4,6 @@
 	export let searchAddress;
 	export let validAddress;
 	export let community;
-	// export let principaladdresssiteoid; //: resultData.principaladdresssiteoid,
-	// export let addressPointLon; //: resultData.addresspoint_geom,
-	// export let addressPointLat; //: resultData.addresspoint_geom,
-	// export let gurasid; //: resultData.gurasid
 </script>
 
 <div class="bg-green-100 mt-1 rounded-lg">

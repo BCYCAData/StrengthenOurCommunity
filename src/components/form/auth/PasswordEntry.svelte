@@ -1,7 +1,6 @@
 <script>
 	export let redirectType;
 	export let accessToken;
-	// export let url;
 
 	let strength = 0;
 	let validations = [];

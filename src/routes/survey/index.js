@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 import { getFormBody, resetProfile } from '$lib/utils';
 import { supabaseClient } from '$lib/dbClient';

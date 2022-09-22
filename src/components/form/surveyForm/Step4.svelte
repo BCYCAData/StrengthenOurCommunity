@@ -1,6 +1,4 @@
 <script>
-	// @ts-nocheck
-
 	import { yesNoMaybeOptions, yesNoOptions } from '$lib/profileOptions';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';

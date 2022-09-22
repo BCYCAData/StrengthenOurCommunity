@@ -3,8 +3,6 @@
 </script>
 
 <script>
-	// @ts-nocheck
-
 	import { page, session } from '$app/stores';
 	import { supabaseClient } from '$lib/dbClient';
 	import { SupaAuthHelper } from '@supabase/auth-helpers-svelte';
