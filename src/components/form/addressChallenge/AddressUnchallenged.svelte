@@ -5,8 +5,10 @@
 	export let status;
 	export let validAddress;
 	export let community;
-	export let gurasid;
-	export let principaladdresssiteoid;
+	export let gid;
+	export let oid;
+	// export let gurasid;
+	// export let principaladdresssiteoid;
 
 	let loading = false;
 	let streetaddress = '';
@@ -44,8 +46,8 @@
 				data = await response.json();
 				community = data.community_name;
 				validAddress = data.address;
-				principaladdresssiteoid = data.principaladdresssiteoid;
-				gurasid = data.gurasid;
+				oid = data.principaladdresssiteoid;
+				gid = data.gurasid;
 			} else if (response.status === 500 || response.status === 503) {
 				// status = 'serviceNotAvailable';
 				status = response.status;
@@ -60,8 +62,8 @@
 				data = await response.json();
 				community = data.community_name;
 				validAddress = data.address;
-				principaladdresssiteoid = data.principaladdresssiteoid;
-				gurasid = data.gurasid;
+				oid = data.principaladdresssiteoid;
+				gid = data.gurasid;
 			} else {
 				// status = 'anErrorOccurred';
 				status = 418;

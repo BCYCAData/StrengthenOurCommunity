@@ -65,10 +65,10 @@ export async function resetProfile(survey, locals, request) {
 					residents51_70: survey.residents51_70,
 					residents71_: survey.residents71_,
 					vulnerable_residents: survey.vulnerableResidents,
-					number_dogs: survey.numberDogs,
-					number_cats: survey.numberCats,
-					number_birds: survey.numberBirds,
-					number_other_pets: survey.numberOtherPets,
+					number_dogs: survey.numberDogs === 'More' ? 6 : survey.numberDogs,
+					number_cats: survey.numberCats === 'More' ? 6 : survey.numberCats,
+					number_birds: survey.numberBirds === 'More' ? 6 : survey.numberBirds,
+					number_other_pets: survey.numberOtherPets === 'More' ? 6 : survey.numberOtherPets,
 					live_stock_present: survey.liveStockPresent,
 					live_stock_safe_area: survey.liveStockSafeArea,
 					share_livestock_safe_area: survey.shareLiveStockSafeArea,
@@ -81,7 +81,8 @@ export async function resetProfile(survey, locals, request) {
 					fire_hazard_reduction: setArray(survey.fireHazardReduction),
 					land_adjacent_hazard: survey.landAdjacentHazard,
 					other_hazards: survey.otherHazards,
-					rfs_survival_plan: survey.rfsSurvivalPlan,
+					rfs_survival_plan: survey.rfsSurvivalPlan === 'Y' ? true : false,
+					send_rfs_survival_plan: survey.rfsSurvivalPlan === 'S' ? true : false,
 					fire_fighting_experience: survey.fireFightingExperience,
 					plan_to_leave_before_fire: survey.planToLeaveBeforeFire,
 					plan_to_leave_before_flood: survey.planToLeaveBeforeFlood,
@@ -131,4 +132,18 @@ function setArray(value) {
 	let result = new Array();
 	result[0] = value;
 	return result;
+}
+
+function setSendRFSPlan(value) {
+	if (value === 'S') {
+		return true;
+	}
+	return false;
+}
+
+function setRFSPlan(value) {
+	if (value === 'Y') {
+		return true;
+	}
+	return false;
 }

@@ -67,7 +67,7 @@
 							<a href="/profile/mycommunity/events">Events</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/mycommunity/map">Comminity Map</a>
+							<a href="/profile/mycommunity/map">Community Map</a>
 						</li>
 					</ul>
 				</li>

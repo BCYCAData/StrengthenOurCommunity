@@ -9,8 +9,9 @@
 	let status = 100; // unchallenged
 	let validAddress = '';
 	let community = '';
-	let principaladdresssiteoid; //: resultData.principaladdresssiteoid,
-	let gurasid; //: resultData.gurasid
+	let oid = ''; //: resultData.principaladdresssiteoid,
+	let gid = ''; //: resultData.gurasid	// let principaladdresssiteoid; //: resultData.principaladdresssiteoid,
+	// let gurasid; //: resultData.gurasid
 </script>
 
 {#if status === 100 || status === 400 || status === 404}
@@ -19,8 +20,8 @@
 		bind:status
 		bind:searchAddress
 		bind:community
-		bind:principaladdresssiteoid
-		bind:gurasid
+		bind:oid
+		bind:gid
 	/>
 {/if}
 {#if status === 403}
@@ -33,5 +34,5 @@
 	<AddressSystemError />
 {/if}
 {#if status === 200}
-	<AddressValid {searchAddress} {validAddress} {community} {principaladdresssiteoid} {gurasid} />
+	<AddressValid {searchAddress} {validAddress} {community} {oid} {gid} />
 {/if}
