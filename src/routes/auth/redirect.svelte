@@ -22,6 +22,7 @@
 				}
 			});
 			const data = await response.json();
+			console.log(data);
 			haveSurvey = data.redirect;
 		}
 	});
@@ -40,16 +41,15 @@
 		</h1>
 		{#if haveSurvey}
 			<p class="text-base mt-3 mb-0 sm:text-lg ">
-				We hope that the questions in our project survey prompt you to review your preparedness for
-				fire and flood. Please step through our project survey again and ensure you answers are
-				still valid. By doing this you are helping to protect our community.
-			</p>
-		{:else}
-			<p class="text-base mt-3 mb-0 sm:text-lg ">
-				We hope that the questions in our project survey prompt you to review your preparedness for
-				fire and flood. By completing our project survey you are helping to protect our community.
+				Please step through our project survey again and ensure you answers are still valid and
+				answer the new ones we have added. <b>Don't forget to save your answers at step 12.</b>
 			</p>
 		{/if}
+		<p class="text-base mt-3 mb-0 sm:text-lg ">
+			We hope that the questions in our project survey prompt you to review your preparedness for
+			fire and flood. By completing our project survey you are helping to protect our community.
+		</p>
+
 		<p class="text-base mt-3 mb-0 sm:text-lg ">
 			You are the only person who will see your information.
 		</p>

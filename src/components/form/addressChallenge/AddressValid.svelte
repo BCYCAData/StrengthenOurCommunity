@@ -81,7 +81,7 @@
 		</div>
 		<form action="/api/auth/signup" method="POST">
 			<input id="oid" type="hidden" name="oid" bind:value={oid} />
-			<input id="gid" type="hidden" name="id" bind:value={gid} />
+			<input id="gid" type="hidden" name="gid" bind:value={gid} />
 			<label class="inline uppercase tracking-wide text-orange-600 text-xs font-bold" for="email">
 				Email:
 			</label>

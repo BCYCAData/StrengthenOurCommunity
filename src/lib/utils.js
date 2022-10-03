@@ -111,6 +111,7 @@ export async function resetProfile(survey, locals, request) {
 					invited: locals.user.id
 				})
 				.eq('email_address', locals.user.email);
+			console.log('updated survey_responses', locals.user.email, locals.user.id);
 			if (errorSurveyUpdate) {
 				let messageSurveyUpdate = errorSurveyUpdate.message;
 				console.log('error Update Survey Responses:', messageSurveyUpdate);

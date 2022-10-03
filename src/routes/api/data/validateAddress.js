@@ -19,8 +19,6 @@ export async function POST({ request }) {
 		};
 	} else {
 		let resultData = addressData[0];
-		console.log('gurasid', resultData.gurasid);
-		console.log('principaladdresssiteoid', resultData.principaladdresssiteoid);
 		return {
 			status: resultData.return_status,
 			body: {
