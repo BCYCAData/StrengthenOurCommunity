@@ -12,6 +12,8 @@
 	import 'uno.css';
 	import '../../node_modules/leaflet/dist/leaflet.css';
 	import '../../node_modules/maplibre-gl/dist/maplibre-gl.css';
+
+	console.log('main_user.id', $session?.user?.id);
 </script>
 
 <SupaAuthHelper {supabaseClient} {session}>

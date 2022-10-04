@@ -2,7 +2,7 @@
 	import { beforeNavigate } from '$app/navigation';
 	import {
 		staticWaterOptions,
-		yesNoOptions,
+		yesNoMaybeOptions,
 		fireFightingResources,
 		fireHazardReductionOptions
 	} from '$lib/profileOptions';
@@ -131,9 +131,13 @@
 			Do you have a Stortz fitting attached to a water tank?
 		</label>
 		<div class="flex flex-row rounded-lg bg-orange-50 p-1 mx-2">
-			{#each yesNoOptions as { value, lable }}
+			{#each yesNoMaybeOptions as { value, lable }}
 				<li class="list-none sm:text-base sm:font-semibold sm:p-1" name="have_stortz_list">
 					<input
+						on:change={() => {
+							profileResources.have_stortz = value;
+							console.log(value);
+						}}
 						name="have_stortz"
 						type="radio"
 						bind:group={profileResources.have_stortz}
@@ -144,9 +148,9 @@
 			{/each}
 		</div>
 	</div>
-
+	{profileResources.have_stortz}
 	<!-- stortz_size -->
-	<div class:hidden={profileResources.have_stortz !== true}>
+	<div class:hidden={profileResources.have_stortz !== 'Y'}>
 		<div class="flex flex-row justify-start items-center px-4 mt-2">
 			<label class="mt-1 text-lg font-bold mb-1" for="stortz_size">
 				Please include the size (mm)
