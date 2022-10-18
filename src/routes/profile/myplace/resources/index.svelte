@@ -147,7 +147,6 @@
 			{/each}
 		</div>
 	</div>
-	{profileResources.have_stortz}
 	<!-- stortz_size -->
 	<div class:hidden={profileResources.have_stortz !== 'Y'}>
 		<div class="flex flex-row justify-start items-center px-4 mt-2">
