@@ -1,27 +1,17 @@
 <script>
 	import Icon from '@iconify/svelte';
+
 	export let path;
-	let pathLables = {
-		profile: ['Profile', 'carbon:home'],
-		aboutme: ['About Me', 'carbon:user'],
-		myplace: ['My Place', 'carbon:location'],
-		assets: ['Assets', 'carbon:location'],
-		resources: ['Firefighting Resources', 'carbon:location'],
-		hazards: ['Firefighting Hazards', 'carbon:location'],
-		mycommunity: ['My Community', 'carbon:group'],
-		information: ['Information', 'carbon:group'],
-		events: ['Events', 'carbon:group'],
-		workshops: ['Workshops', 'carbon:group'],
-		map: ['Community Map', 'carbon:group'],
-		settings: ['Settings', 'carbon:settings'],
-		password: ['Change Password', 'carbon:settings'],
-		email: ['Change Email', 'carbon:settings']
-	};
+	export let pathLables;
+
 	let crumbs;
+
+	console.log(pathLables);
+
 	$: {
 		// Remove zero-length tokens.
 		const tokens = path.split('/').filter((t) => t !== '');
-
+		console.log(tokens);
 		// Create { label, href } pairs for each token.
 		let tokenPath = '';
 		crumbs = tokens.map((t) => {

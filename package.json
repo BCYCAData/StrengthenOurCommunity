@@ -33,6 +33,7 @@
 		"@supabase/auth-helpers-sveltekit": "^0.6.8",
 		"@supabase/supabase-js": "^1.35.4",
 		"esri-leaflet": "^3.0.8",
+		"jspdf": "^2.5.1",
 		"leaflet": "^1.8.0",
 		"maplibre-gl": "^2.4.0"
 	}

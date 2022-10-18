@@ -4,20 +4,10 @@
 	import Breadcrumbs from '$components/Breadcrumbs.svelte';
 
 	let pathLables = {
-		profile: ['Profile', 'carbon:home'],
-		aboutme: ['About Me', 'carbon:user'],
-		myplace: ['My Place', 'carbon:location'],
-		assets: ['Assets', 'carbon:location'],
-		resources: ['Firefighting Resources', 'carbon:location'],
-		hazards: ['Firefighting Hazards', 'carbon:location'],
-		mycommunity: ['My Community', 'carbon:group'],
-		information: ['Information', 'carbon:group'],
-		events: ['Events', 'carbon:group'],
-		workshops: ['Workshops', 'carbon:group'],
-		map: ['Community Map', 'carbon:group'],
-		settings: ['Settings', 'carbon:settings'],
-		password: ['Change Password', 'carbon:settings'],
-		email: ['Change Email', 'carbon:settings']
+		admin: ['Administration', 'carbon:user-admin'],
+		reports: ['Reports', 'carbon:report-data'],
+		emergency: ['Emergency', 'carbon:report-data'],
+		rfs: ['RFS Information', 'carbon:report-data']
 	};
 </script>
 
@@ -32,7 +22,7 @@
 		<slot />
 	</section>
 	<aside class="side p-1 flex flex-col bg-stone-200">
-		<div class="flex flex-row justify-around pt-2 text-xl">Profile Menu</div>
+		<div class="flex flex-row justify-around pt-2 text-xl">Administration Menu</div>
 		<div class="flex flex-col rounded-lg bg-orange-600">
 			<ul
 				class="flex flex-row justify-around mx-0 px-2 sm:flex-1 sm:flex-nowrap sm:flex-col list-none"
@@ -40,48 +30,58 @@
 			>
 				<li class="sm:mt-2 hover:bg-orange-300 rounded items-center">
 					<div class="flex flex-row items-center justify-start">
-						<a class="flex items-center" href="/profile/aboutme">
-							<Icon icon="carbon:user" style="font-size: 24px" />
-							<span class="hidden px-2 mt-1 font-semibold sm:inline">About Me</span>
+						<a class="flex items-center" href="/admin/reports">
+							<Icon icon="carbon:report-data" style="font-size: 24px" />
+							<span class="hidden px-2 mt-1 font-semibold sm:inline">Reports</span>
 						</a>
-					</div>
-				</li>
-				<li class="sm:mt-2 hover:bg-orange-300 rounded items-center">
-					<div class="flex flex-row items-center justify-start">
-						<a href="/profile/myplace">
-							<Icon class="text-stone-50" icon="carbon:location" style="font-size: 24px" />
-						</a>
-						<a class="hidden mx-2 font-semibold sm:inline" href="/profile/myplace">My Place</a>
 					</div>
 					<ul class="list-none bg-orange-600">
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/myplace/assets">Assets</a>
+							<a href="/admin/reports/emergency">Emergency</a>
+						</li>
+						<ul class="list-none bg-orange-600">
+							<li class="hover:bg-orange-300 rounded mt-1">
+								<a href="/admin/reports/emergency/rfs">RFS Information</a>
+							</li>
+						</ul>
+					</ul>
+				</li>
+				<!-- <li class="sm:mt-2 hover:bg-orange-300 rounded items-center">
+					<div class="flex flex-row items-center justify-start">
+						<a href="/admin/myplace">
+							<Icon class="text-stone-50" icon="carbon:location" style="font-size: 24px" />
+						</a>
+						<a class="hidden mx-2 font-semibold sm:inline" href="/admin/myplace">My Place</a>
+					</div>
+					<ul class="list-none bg-orange-600">
+						<li class="hover:bg-orange-300 rounded mt-1">
+							<a href="/admin/myplace/assets">Assets</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/myplace/resources">Firefighting Resources</a>
+							<a href="/admin/myplace/resources">Firefighting Resources</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/myplace/hazards">Firefighting Hazards</a>
+							<a href="/admin/myplace/hazards">Firefighting Hazards</a>
 						</li>
 					</ul>
 				</li>
 
 				<li class="sm:mt-2 hover:bg-orange-300 rounded items-center">
 					<div class="flex flex-row items-center justify-start">
-						<a class="flex items-center" href="/profile/mycommunity">
+						<a class="flex items-center" href="/admin/mycommunity">
 							<Icon icon="carbon:group" style="font-size: 24px" />
 							<span class="hidden px-2 mt-1 font-semibold sm:inline">My Community</span>
 						</a>
 					</div>
 					<ul class="list-none bg-orange-600">
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/mycommunity/information">Information</a>
+							<a href="/admin/mycommunity/information">Information</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/mycommunity/workshops">Workshops</a>
+							<a href="/admin/mycommunity/workshops">Workshops</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/mycommunity/events">Events</a>
+							<a href="/admin/mycommunity/events">Events</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
 							<a href="/profile/mycommunity/map">Community Map</a>
@@ -97,13 +97,13 @@
 					</div>
 					<ul class="list-none bg-orange-600">
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/settings/password">Change Password</a>
+							<a href="/admin/settings/password">Change Password</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/settings/email">Change Email</a>
+							<a href="/admin/settings/email">Change Email</a>
 						</li>
 					</ul>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 		<p class="ml-2 ">

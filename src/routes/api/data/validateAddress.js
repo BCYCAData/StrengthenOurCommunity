@@ -11,6 +11,7 @@ export async function POST({ request }) {
 			out_srid_value: 4326
 		}
 	);
+	console.log('addressData', addressData);
 	if (addressError) {
 		console.log('addressError', addressError);
 		return {

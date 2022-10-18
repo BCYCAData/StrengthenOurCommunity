@@ -24,10 +24,10 @@
 		bind:gid
 	/>
 {/if}
-{#if status === 403}
+{#if status === 401}
 	<AddressIneligible {searchAddress} />
 {/if}
-{#if status === 401}
+{#if status === 403}
 	<AddressEligible {searchAddress} {validAddress} {community} />
 {/if}
 {#if status >= 500}
