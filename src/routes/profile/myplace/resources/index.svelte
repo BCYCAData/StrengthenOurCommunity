@@ -136,7 +136,6 @@
 					<input
 						on:change={() => {
 							profileResources.have_stortz = value;
-							console.log(value);
 						}}
 						name="have_stortz"
 						type="radio"

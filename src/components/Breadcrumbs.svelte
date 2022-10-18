@@ -6,12 +6,9 @@
 
 	let crumbs;
 
-	console.log(pathLables);
-
 	$: {
 		// Remove zero-length tokens.
 		const tokens = path.split('/').filter((t) => t !== '');
-		console.log(tokens);
 		// Create { label, href } pairs for each token.
 		let tokenPath = '';
 		crumbs = tokens.map((t) => {
