@@ -26,15 +26,6 @@
 		<p class="font-semibold text-center">
 			We are not currently engaging with the {community} community. But we will be soon.
 		</p>
-		<p>If you would like to be included in future rollouts please complete this short survey:</p>
-		<p>
-			<a
-				class="underline decoration-orange-600 text-orange-600"
-				href="https://forms.gle/nKffq7t17rg87Ry26"
-			>
-				Strengthen Our Community Participation Survey
-			</a>
-		</p>
-		<p>Alternatively, please call Sue on 0492 802 129</p>
+		<p>If you would like information on future rollouts please call Sue on 0492 802 129</p>
 	</div>
 </div>
