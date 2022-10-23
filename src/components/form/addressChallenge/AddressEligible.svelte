@@ -1,6 +1,4 @@
 <script>
-	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
-
 	export let searchAddress;
 	export let validAddress;
 	export let community;
