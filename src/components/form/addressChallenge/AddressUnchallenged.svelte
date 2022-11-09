@@ -26,11 +26,12 @@
 	async function submitForm() {
 		loading = !loading;
 		let data = {};
+		searchAddress = `${replaceAbbreviations(streetaddress.toUpperCase())} ${suburb.toUpperCase()}`;
 		try {
 			const response = await fetch('/api/data/validateAddress', {
 				method: 'POST',
 				body: JSON.stringify({
-					streetAddress: streetaddress.toUpperCase(),
+					streetAddress: replaceAbbreviations(streetaddress.toUpperCase()),
 					suburb: suburb.toUpperCase()
 				})
 			});
@@ -73,6 +74,32 @@
 			status = 418;
 		}
 		loading = !loading;
+	}
+
+	const abbreviations = {
+		RD: 'ROAD',
+		AVE: 'AVENUE',
+		PL: 'PLACE',
+		CL: 'CLOSE',
+		ST: 'STREET',
+		WY: 'WAY'
+	};
+
+	function replaceAbbreviations(streetAddress) {
+		streetAddress = streetAddress.trim().replace('  ', ' ').replace(/\.$/, '');
+		const address = streetAddress.split(' ');
+		if (address[address.length - 1] === 'L') {
+			address[address.length - 1] = 'LANE';
+		} else if (address[address.length - 1] === 'LN') {
+			address[address.length - 1] = 'LANE';
+		} else if (address[address.length - 1] === 'LNE') {
+			address[address.length - 1] = 'LANE';
+		} else {
+			for (let i = address.length - 1; i < address.length; i++) {
+				for (let val in abbreviations) address[i] = address[i].split(val).join(abbreviations[val]);
+			}
+		}
+		return address.join(' ');
 	}
 </script>
 

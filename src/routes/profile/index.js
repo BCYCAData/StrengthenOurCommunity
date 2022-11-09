@@ -35,7 +35,6 @@ export const GET = async ({ locals, request }) =>
 					body: { errorComments }
 				};
 			}
-			console.log(locals.user.user_metadata.gurasid);
 			return {
 				body: { profileComments }
 			};

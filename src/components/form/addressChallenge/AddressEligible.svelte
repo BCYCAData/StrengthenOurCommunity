@@ -17,7 +17,6 @@
 		community.
 	</p>
 </div>
-
 <div class="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 	<div class="px-6 py-2 rounded shadow-md text-gray-900 w-full">
 		<p class="font-semibold text-center m-1">Thanks for your interest in our project</p>

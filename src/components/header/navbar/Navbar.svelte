@@ -7,6 +7,7 @@
 	const handleNav = () => {
 		menuOpen = !menuOpen;
 	};
+	// console.log($session.user.app_metadata);
 </script>
 
 <nav class="h-15 flex justify-around items-center bg-orange-500">
