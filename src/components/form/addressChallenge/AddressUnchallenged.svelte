@@ -88,16 +88,15 @@
 	function replaceAbbreviations(streetAddress) {
 		streetAddress = streetAddress.trim().replace('  ', ' ').replace(/\.$/, '');
 		const address = streetAddress.split(' ');
-		if (address[address.length - 1] === 'L') {
+		const streetType = address[address.length - 1];
+		if (streetType === 'L') {
 			address[address.length - 1] = 'LANE';
-		} else if (address[address.length - 1] === 'LN') {
+		} else if (streetType === 'LN') {
 			address[address.length - 1] = 'LANE';
-		} else if (address[address.length - 1] === 'LNE') {
+		} else if (streetType === 'LNE') {
 			address[address.length - 1] = 'LANE';
-		} else {
-			for (let i = address.length - 1; i < address.length; i++) {
-				for (let val in abbreviations) address[i] = address[i].split(val).join(abbreviations[val]);
-			}
+		} else if (abbreviations.hasOwnProperty(streetType)) {
+			address[address.length - 1] = abbreviations[streetType];
 		}
 		return address.join(' ');
 	}
