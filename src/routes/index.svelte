@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import Modal from '$components/Modal.svelte';
+	import Youtube from 'svelte-youtube-embed';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 
 	let modalVisible = false;
@@ -42,14 +43,16 @@
 	>
 		Tap here to find out if you qualify
 	</p>
-	<!-- <p class="text-base md:text-lg mt-3 ">
-		Please complete our initial online survey at <br />
-		<span>
-			<a class="text-blue-600" href="https://forms.gle/z6dHgPxJbS7AhGLa6">
-				https://forms.gle/z6dHgPxJbS7AhGLa6
-			</a>
-		</span>
-	</p> -->
+
 	<p class="text-sm md:text-lg mt-1 font-semibold">Want more information?</p>
 	<p class="text-sm md:text-lg mt-0 font-semibold">Call Helen 0424 515 963</p>
+	<iframe
+		width="560"
+		height="315"
+		src="https://www.youtube.com/embed/Q6CCR6gBUkU"
+		title="YouTube video player"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+		allowfullscreen
+	/>
 </section>

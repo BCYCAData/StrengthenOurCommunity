@@ -34,6 +34,7 @@ export async function POST({ request }) {
 	}
 
 	if (session) {
+		console.log(session);
 		const response = await fetch(`${supabaseRedirectBase}/api/auth/callback`, {
 			method: 'POST',
 			headers: new Headers({ 'Content-Type': 'application/json' }),
