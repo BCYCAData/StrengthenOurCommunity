@@ -58,6 +58,11 @@
 			on:click={(e) => {
 				skipTo(e);
 			}}
+			on:keydown={(e) => {
+				skipTo(e);
+			}}
+			tabindex="0"
+			role="button"
 		>
 			.
 		</div>

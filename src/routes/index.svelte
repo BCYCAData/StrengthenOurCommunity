@@ -40,6 +40,9 @@
 	<p
 		class="cursor-pointer max-w-80 no-underline hover:underline mt-1 p-2 font-semibold text-stone-100 bg-orange-500 rounded-xl"
 		on:click={() => (modalVisible = !modalVisible)}
+		on:keydown={() => (modalVisible = !modalVisible)}
+		tabindex="0"
+		role="button"
 	>
 		Tap here to find out if you qualify
 	</p>

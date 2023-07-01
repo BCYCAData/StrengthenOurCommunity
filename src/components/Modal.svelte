@@ -26,6 +26,9 @@
 		<span
 			class="fixed cursor-pointer hover:font-bold right-0 pr-1"
 			on:click={() => dispatch('exit')}
+			on:keydown={() => dispatch('exit')}
+			tabindex="0"
+			role="button"
 		>
 			&times
 		</span>
