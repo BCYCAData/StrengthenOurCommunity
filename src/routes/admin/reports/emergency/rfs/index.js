@@ -11,6 +11,7 @@ export const GET = async ({ locals, request }) =>
 			const { data: dataStreets, error: errorStreets } = await supabaseClient.rpc(
 				'get_street_list'
 			);
+			console.log('get_street_list');
 			if (errorStreets) {
 				const message = errorStreets.message;
 				console.log('error dataStreets:', errorStreets);

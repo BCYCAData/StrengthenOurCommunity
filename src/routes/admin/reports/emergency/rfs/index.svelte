@@ -2,13 +2,12 @@
 	import StreetSelectInput from '$components/form/inputs/StreetSelectInput.svelte';
 	import { jsPDF } from 'jspdf';
 
-	/** @type {import('./$types').PageData} */
-	export let data;
-	$: ({ streetList } = data);
+	export let streetList;
+
+	console.log(streetList);
 
 	export let selectedStreet = '';
 
-	/** @type {import('./$types').ActionData} */
 	export let form;
 	let reportStreet = form?.reportStreet ?? '';
 	let streetData = form?.streetData ?? undefined;
@@ -338,6 +337,7 @@
 	}
 </script>
 
+<div>HERE</div>
 <form
 	id="reportRFSByStreetForm"
 	class="flex flex-col py-3 mx-auto w-full text-orange-900 bg-orange-300"

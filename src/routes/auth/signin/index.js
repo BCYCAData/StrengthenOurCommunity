@@ -34,14 +34,12 @@ export async function POST({ request }) {
 	}
 
 	if (session) {
-		console.log(session);
 		const response = await fetch(`${supabaseRedirectBase}/api/auth/callback`, {
 			method: 'POST',
 			headers: new Headers({ 'Content-Type': 'application/json' }),
 			credentials: 'same-origin',
 			body: JSON.stringify({ event: 'SIGNED_IN', session })
 		});
-
 		// TODO: Add helper inside of auth-helpers-sveltekit library to manage this better
 		const cookies = response.headers
 			.get('set-cookie')
