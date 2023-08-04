@@ -13,11 +13,12 @@
 		// { label: 'Workshops', value: 4, component: WorkshopsTab }
 	];
 
-	export let mapData;
+	// export let mapData;
 </script>
 
 <svelte:head>
 	<title>About</title>
 </svelte:head>
 
-<Tabs {items} {mapData} />
+<Tabs {items} />
+<!-- <Tabs {items} {mapData} /> -->
