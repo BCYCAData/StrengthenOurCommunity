@@ -21,7 +21,7 @@
 			type="text"
 			id="first_name"
 			name="first_name"
-			class="w-5/12  border border-orange-700 rounded sm:text-lg"
+			class="w-5/12 border border-orange-700 rounded sm:text-lg"
 			placeholder="First Name"
 			autocomplete="given-name"
 			style="text-transform:uppercase"
@@ -36,7 +36,7 @@
 			name="family_name"
 			class="w-6/12 ml-2 border border-orange-700 rounded sm:text-lg"
 			placeholder="Family Name"
-			autocomplete="family_name"
+			autocomplete="family-name"
 			style="text-transform:uppercase"
 			on:change={(e) => {
 				validateAddress(e);
@@ -175,7 +175,7 @@
 		{#each accessOptions as { value, lable }}
 			{#if lable === 'Other'}
 				<li class="sm:text-lg pr-3">
-					<div class="flex flex-row ">
+					<div class="flex flex-row">
 						<input
 							on:change={() => {
 								otherAccessChecked = !otherAccessChecked;

@@ -11,7 +11,6 @@
 	let community = '';
 	let oid = ''; //: resultData.principaladdresssiteoid,
 	let gid = ''; //: resultData.gurasid	// let principaladdresssiteoid; //: resultData.principaladdresssiteoid,
-	// let gurasid; //: resultData.gurasid
 </script>
 
 {#if status === 100 || status === 400 || status === 404}

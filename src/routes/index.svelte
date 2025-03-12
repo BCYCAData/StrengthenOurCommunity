@@ -1,7 +1,6 @@
 <script>
 	import { page } from '$app/stores';
 	import Modal from '$components/Modal.svelte';
-	import Youtube from 'svelte-youtube-embed';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 
 	let modalVisible = false;

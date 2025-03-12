@@ -7,8 +7,6 @@
 	export let community;
 	export let gid;
 	export let oid;
-	// export let gurasid;
-	// export let principaladdresssiteoid;
 
 	let loading = false;
 	let streetaddress = '';
@@ -27,6 +25,7 @@
 		loading = !loading;
 		let data = {};
 		searchAddress = `${replaceAbbreviations(streetaddress.toUpperCase())} ${suburb.toUpperCase()}`;
+		console.log(searchAddress);
 		try {
 			const response = await fetch('/api/data/validateAddress', {
 				method: 'POST',
@@ -102,60 +101,78 @@
 	}
 </script>
 
-{#if loading}
-	<Spinner />
-{/if}
+<div class="container">
+	{#if loading}
+		<Spinner />
+	{/if}
 
-{#if status === 400 || status === 404}
-	<div class="bg-red-100 rounded-lg">
-		<h2 class=" text-center mt-5 ">This address could not be found.</h2>
-		<p class="m-1 mt-2">
-			Please check that your Street Address and Suburb are correctly structured and try again.
-		</p>
-		<p class="m-1">Each address must have a number</p>
-		<p class="m-1">Abbreviations are not allowed.</p>
-	</div>
-{/if}
-<h2 class=" text-center mt-5">Membership is restricted to specific Communities</h2>
-<p class="text-center mb-2">
-	Please enter your Street Address and Suburb to check your qualification
-</p>
+	{#if status === 400 || status === 404}
+		<div class="bg-red-100 rounded-lg">
+			<h2 class=" text-center mt-5 ">This address could not be found.</h2>
+			<p class="m-1 mt-2">
+				Please check that your Street Address and Suburb are correctly structured and try again.
+			</p>
+			<p class="m-1">Each address must have a number</p>
+			<p class="m-1">Abbreviations are not allowed.</p>
+		</div>
+	{/if}
+	<h2 class=" text-center mt-5">Membership is restricted to specific Communities</h2>
+	<p class="text-center mb-2">
+		Please enter your Street Address and Suburb to check your qualification
+	</p>
 
-<form on:submit|preventDefault={submitForm}>
-	<input
-		id="streetaddress"
-		type="text"
-		class="block border border-orange-700 w-full py-3 rounded mb-1"
-		name="streetaddress"
-		required={true}
-		placeholder="Street Address"
-		autocomplete="street-address"
-		style="text-transform:uppercase"
-		bind:value={streetaddress}
-	/>
-	<div class="flex justify-between">
+	<form on:submit|preventDefault={submitForm}>
 		<input
-			id="suburb"
+			id="streetaddress"
 			type="text"
-			class=" border max-w-1/2 border-orange-700 w-30% object-left py-3 rounded mb-1"
-			name="suburb"
-			required
-			placeholder="Suburb"
-			autocomplete="address-level2"
+			class="block border border-orange-700 w-full py-3 rounded mb-1"
+			name="streetaddress"
+			required={true}
+			placeholder="Street Address"
+			autocomplete="street-address"
 			style="text-transform:uppercase"
-			bind:value={suburb}
+			bind:value={streetaddress}
 		/>
-		{#if !canGo && streetaddress.length > 0}
-			<div class="bg-red-100 rounded-lg my-3 text-base text-red-700" role="alert">
-				The address must have a number.
-			</div>
-		{/if}
-		<button
-			type="submit"
-			class="w-24 m-4 text-center py-1 rounded-full  cursor-pointer bg-orange-500 text-stone-100 hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
-			disabled={!canGo}
-		>
-			Check
-		</button>
-	</div>
-</form>
+		<div class="flex justify-between">
+			<input
+				id="suburb"
+				list="suburbs"
+				type="text"
+				class=" border max-w-1/2 border-orange-700 w-30% object-left py-3 rounded mb-1"
+				name="suburb"
+				required
+				placeholder="Suburb"
+				autocomplete="address-level2"
+				style="text-transform:uppercase"
+				bind:value={suburb}
+			/>
+			<datalist id="suburbs">
+				<option value="KUNDIBAKH" />
+				<option value="THE BIGHT" />
+				<option value="BOOTAWA" />
+				<option value="BURRELL CREEK" />
+				<option value="HILLVILLE" />
+				<option value="POSSUM BRUSH" />
+				<option value="MONDROOK" />
+				<option value="BELBORA" />
+				<option value="KIMBRIKI" />
+				<option value="KRAMBACH" />
+				<option value="TAREE SOUTH" />
+				<option value="TINONEE" />
+				<option value="KIWARRAK" />
+			</datalist>
+			{#if !canGo && streetaddress.length > 0}
+				<div class="bg-red-100 rounded-lg my-3 text-base text-red-700" role="alert">
+					The address must have a number.
+				</div>
+			{/if}
+			<button
+				type="submit"
+				class="w-24 m-4 text-center py-1 rounded-full  cursor-pointer bg-orange-500 text-stone-100 hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
+				disabled={!canGo}
+			>
+				Check
+			</button>
+		</div>
+	</form>
+</div>

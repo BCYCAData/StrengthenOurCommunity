@@ -67,7 +67,7 @@
 					name="family_name"
 					class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 					placeholder="Family Name"
-					autocomplete="family_name"
+					autocomplete="family-name"
 					style="text-transform:capitalize"
 					bind:value={profileAboutMe.family_name}
 				/>
@@ -80,7 +80,7 @@
 			<input
 				type="tel"
 				name="phone"
-				class="border w-full border-orange-700 rounded py-1  mx-2 sm:text-lg"
+				class="border w-full border-orange-700 rounded py-1 mx-2 sm:text-lg"
 				placeholder="Landline XXXX XXXX"
 				on:keydown={(e) => {
 					if (['Backspace', 'Delete'].includes(e.key)) {
