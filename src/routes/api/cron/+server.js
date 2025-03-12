@@ -4,7 +4,7 @@ import { createSupabaseClient } from '@supabase/auth-helpers-sveltekit';
 
 const { supabaseClient } = createSupabaseClient(
     import.meta.env.VITE_SUPABASE_URL.toString(),
-    import.meta.env.PRIVATE_SUPABASE_SERVICE_ROLE_KEY.toString()
+    import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY.toString()
 );
 
 /** @type {import('./$types').RequestHandler} */
