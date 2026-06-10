@@ -54,3 +54,15 @@ jobs:
           aws s3 cp "supabase-backup-$STAMP.tar.gz"        "s3://$BUCKET/strengthen/$STAMP/" --endpoint-url "$ENDPOINT"
           aws s3 cp "supabase-backup-$STAMP.tar.gz.sha256" "s3://$BUCKET/strengthen/$STAMP/" --endpoint-url "$ENDPOINT"
           echo "Uploaded s3://$BUCKET/strengthen/$STAMP/supabase-backup-$STAMP.tar.gz"
+
+      - name: Notify healthchecks.io (success)
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_URL }}
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "$HC_URL"
+
+      - name: Notify healthchecks.io (failure)
+        if: failure()
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_URL }}
+        run: curl -fsS -m 10 --retry 5 -o /dev/null "$HC_URL/fail"
+
