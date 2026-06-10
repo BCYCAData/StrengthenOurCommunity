@@ -1,0 +1,56 @@
+name: Supabase Weekly Backup
+
+# Weekly logical backup of this app's free-plan Supabase database, pushed off-site
+# to an S3-compatible bucket. Free-plan Supabase has no automated backups, so this
+# is the recovery path. See docs/backup-restore.md for the restore runbook.
+
+on:
+  schedule:
+    - cron: '0 3 * * 0' # Sundays 03:00 UTC, weekly
+  workflow_dispatch: {} # manual run for immediate testing
+
+# Avoid overlapping runs (e.g. a manual run during the scheduled one).
+concurrency:
+  group: supabase-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Dump database (Session pooler, port 5432)
+        env:
+          # Full Session-pooler connection string incl. password, e.g.
+          # postgresql://postgres.<REF>:<PWD>@aws-0-ap-southeast-2.pooler.supabase.com:5432/postgres
+          # NOTE: must be the Session pooler (5432) — the Transaction pooler (6543) cannot be dumped.
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          STAMP=$(date -u +%Y-%m-%d)
+          mkdir -p out
+          supabase db dump --db-url "$DB_URL" -f out/roles.sql  --role-only
+          supabase db dump --db-url "$DB_URL" -f out/schema.sql
+          supabase db dump --db-url "$DB_URL" -f out/data.sql   --data-only --use-copy
+          supabase db dump --db-url "$DB_URL" -f out/auth.sql   --data-only --schema auth
+          printf 'taken=%s UTC\nregion=ap-southeast-2\napp=StrengthenOurCommunity\n' "$(date -u)" > out/manifest.txt
+          tar czf "supabase-backup-$STAMP.tar.gz" -C out .
+          sha256sum "supabase-backup-$STAMP.tar.gz" > "supabase-backup-$STAMP.tar.gz.sha256"
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+
+      - name: Upload to off-site bucket (S3-compatible)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BACKUP_S3_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_S3_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.BACKUP_S3_REGION }} # Cloudflare R2: "auto"
+          ENDPOINT: ${{ secrets.BACKUP_S3_ENDPOINT }}
+          BUCKET: ${{ secrets.BACKUP_S3_BUCKET }}
+        run: |
+          set -euo pipefail
+          aws s3 cp "supabase-backup-$STAMP.tar.gz"        "s3://$BUCKET/strengthen/$STAMP/" --endpoint-url "$ENDPOINT"
+          aws s3 cp "supabase-backup-$STAMP.tar.gz.sha256" "s3://$BUCKET/strengthen/$STAMP/" --endpoint-url "$ENDPOINT"
+          echo "Uploaded s3://$BUCKET/strengthen/$STAMP/supabase-backup-$STAMP.tar.gz"
