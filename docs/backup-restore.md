@@ -98,15 +98,52 @@ psql "$TARGET_DB_URL" -f auth.sql
 - Restoring `auth.users` (and its password hashes) into a different project is **best-effort**: GoTrue
   config, encryption keys, and the project's `auth` schema version can differ between projects. Verify
   logins work after restore; expect to re-trigger password resets if hashes don't carry over cleanly.
+- **Restore `auth.sql` into a _fresh_ project, before anyone signs in.** The Auth (GoTrue) service
+  seeds a few rows of its own on first run (a session, `schema_migrations`, one-time tokens, etc.). If
+  you load `auth.sql` into a project whose Auth service has already been used, those rows collide and
+  you'll see harmless `duplicate key value violates unique constraint` errors on `auth.*` tables
+  (`users_pkey`, `sessions_pkey`, `refresh_tokens_pkey`, …). They're collisions with pre-existing
+  transient rows, **not** data loss — but to avoid the noise, restore auth first, into a brand-new
+  target, before the app or dashboard triggers any login.
 - Always restore into a throwaway/staging project first and confirm the app works before pointing
   production at it.
 
 ## Verifying a backup is actually restorable
 
-A backup you've never restored is a guess. Periodically (at least after any schema change), prove it:
+A backup you've never restored is a guess. Periodically (at least after any schema change), prove it by
+loading a real downloaded tarball into a throwaway **local** Supabase stack. This was last validated
+**2026-06-10** with the steps below.
 
 ```bash
-supabase start                                   # local stack
-DB_URL=$(supabase status -o env | sed -n 's/^DB_URL=//p')
-psql "$DB_URL" -f schema.sql -f data.sql         # should complete without errors
+# Unpack a downloaded backup.
+mkdir restore && tar xzf supabase-backup-<date>.tar.gz -C restore
+
+# Start an isolated local stack. If you already run another local Supabase project, avoid port
+# clashes by giving this one its own ports (edit supabase/config.toml, e.g. shift 543xx -> 548xx).
+supabase init && supabase start            # first run pulls images (a few minutes)
+
+# Load via the db container's own psql (works even if psql isn't installed on the host).
+DB=$(docker ps --format '{{.Names}}' | grep supabase_db_ | head -1)
+docker exec -i "$DB" psql -U postgres -d postgres -v ON_ERROR_STOP=0 < restore/schema.sql
+docker exec -i "$DB" psql -U postgres -d postgres -v ON_ERROR_STOP=0 < restore/data.sql
+docker exec -i "$DB" psql -U postgres -d postgres -v ON_ERROR_STOP=0 < restore/auth.sql
+
+# Sanity-check the row counts.
+docker exec "$DB" psql -U postgres -d postgres -c "ANALYZE;"
+docker exec "$DB" psql -U postgres -d postgres -c \
+  "SELECT schemaname, relname, n_live_tup FROM pg_stat_user_tables
+   WHERE schemaname IN ('public','auth','storage') AND n_live_tup > 0 ORDER BY 1,3 DESC;"
+
+supabase stop --no-backup                  # tear down; then delete the unpacked dump (it holds PII)
 ```
+
+**Expected, harmless output** (not failures):
+
+- `schema.sql` → 0 errors.
+- `data.sql` → 2× `permission denied for table buckets_vectors` / `vector_indexes` — empty internal
+  `storage` tables the local `postgres` role doesn't own. No app data is affected.
+- `auth.sql` → a few `duplicate key` errors on `auth.*` if the local Auth service already initialized
+  (see the auth caveat above). Real users still load.
+
+A green result is: `schema` clean, all `data` `COPY`s applied, and your `public`/`auth` row counts look
+right.
