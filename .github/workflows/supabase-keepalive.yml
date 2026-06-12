@@ -1,0 +1,66 @@
+name: Supabase Keepalive
+
+# Daily keep-alive for this app's free-plan Supabase project. Free projects are
+# paused after ~7 days without API activity, and a paused project can only be
+# one-click restored for 90 days — after that it must be rebuilt from backups.
+# The Vercel cron that was meant to do this never worked (the deployed app
+# predates the /api/cron route), so this workflow pings the database's REST API
+# directly. No app deployment involved.
+#
+# Every successful run also pings healthchecks.io (dead-man's switch). If this
+# workflow stops running for any reason — GitHub disabling schedules after 60
+# days without repo activity, a revoked key, an outage — the missed ping raises
+# an alert days before the 7-day pause window closes.
+
+on:
+  schedule:
+    - cron: '17 2 * * *' # daily 02:17 UTC; offset from the hour, which GitHub delays/drops under load
+  workflow_dispatch: {} # manual run for immediate testing
+
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+permissions: {} # needs no access to the repository
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Supabase REST API (counts as project activity)
+        env:
+          # The anon key is public by design — the deployed site already ships it
+          # in its JS bundle — so hardcoding it keeps this workflow zero-config.
+          # health_check only upserts a timestamp into public.health_status.
+          SUPABASE_URL: https://oiwbamoupmoudqwautha.supabase.co
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pd2JhbW91cG1vdWRxd2F1dGhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg5NTg2NDAsImV4cCI6MTk2NDUzNDY0MH0.2awNuDa8ez1mjEz9wwX6lGyz-5Z5SR6n_ejrMWHTees
+        run: |
+          set -euo pipefail
+          curl -fsS -m 15 --retry 5 --retry-all-errors \
+            -X POST "$SUPABASE_URL/rest/v1/rpc/health_check" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' | tee response.json
+          echo
+          grep -q '"healthy"' response.json
+
+      - name: Notify healthchecks.io (success)
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_KEEPALIVE_URL }}
+        run: |
+          if [ -z "$HC_URL" ]; then
+            echo "::warning::HEALTHCHECK_KEEPALIVE_URL secret not set — keep-alive ran but is unmonitored"
+            exit 0
+          fi
+          curl -fsS -m 10 --retry 5 -o /dev/null "$HC_URL"
+
+      - name: Notify healthchecks.io (failure)
+        if: failure()
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_KEEPALIVE_URL }}
+        run: |
+          if [ -n "$HC_URL" ]; then
+            curl -fsS -m 10 --retry 5 -o /dev/null "$HC_URL/fail"
+          fi
