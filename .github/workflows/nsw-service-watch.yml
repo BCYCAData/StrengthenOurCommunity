@@ -1,0 +1,120 @@
+name: NSW Addressing Service Watch
+
+# Daily check on the NSW Spatial Services address service the app depends on.
+# The database (private.nsw_addressing_query) queries
+# NSW_Geocoded_Addressing_Theme, which the NSW data catalogue tags as
+# Deprecated/Retiring (GDA94) with no date announced. If that service
+# disappears, the database falls back to the GDA2020
+# NSW_Geocoded_Addressing_Theme_multiCRS service on its own. This workflow
+# makes sure someone hears about it the day it happens, so multiCRS can be made
+# the primary deliberately.
+#
+# Fails (and alerts) when the primary service:
+#   - no longer exists (ArcGIS answers a missing service with error 499 "Token Required"),
+#   - no longer has AddressPoint as layer 1, or
+#   - has switched to GDA2020 (native wkid 7844 instead of 3857),
+# or when the multiCRS fallback service itself is missing.
+# A service that just doesn't answer is NOT treated as retirement: the NSW
+# services stall for minutes at a time, so that only raises a warning.
+#
+# Alerts: GitHub emails the workflow's owner when a scheduled run fails. If the
+# HEALTHCHECK_NSW_SERVICE_URL secret is set, each run also pings that
+# healthchecks.io check (success or /fail).
+
+on:
+  schedule:
+    - cron: '43 21 * * *' # daily 21:43 UTC (07:43/08:43 Sydney); offset from the hour, which GitHub delays/drops under load
+  workflow_dispatch: {} # manual run for immediate testing
+
+concurrency:
+  group: nsw-service-watch
+  cancel-in-progress: false
+
+permissions: {} # needs no access to the repository
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BASE: https://portal.spatial.nsw.gov.au/server/rest/services
+      PRIMARY: NSW_Geocoded_Addressing_Theme/FeatureServer/1
+      FALLBACK: NSW_Geocoded_Addressing_Theme_multiCRS/FeatureServer/1
+    steps:
+      - name: Check NSW address services
+        run: |
+          set -uo pipefail
+
+          # Prints the layer's metadata JSON, or nothing if it never answered.
+          fetch() {
+            curl -sS -m 30 --retry 4 --retry-delay 20 --retry-all-errors "$BASE/$1?f=json" || true
+          }
+
+          # Reads layer metadata on stdin; prints "ok", "unreachable", or what's wrong.
+          cat > "$RUNNER_TEMP/check_layer.py" <<'PY'
+          import json, sys
+          want_wkid = int(sys.argv[1])
+          raw = sys.stdin.read()
+          try:
+              d = json.loads(raw) if raw.strip() else None
+          except ValueError:
+              d = None
+          if d is None:
+              print("unreachable")
+          elif "error" in d:
+              err = d["error"]
+              print(f"service error {err.get('code')}: {err.get('message')}")
+          else:
+              name = d.get("name")
+              wkid = ((d.get("extent") or {}).get("spatialReference") or {}).get("latestWkid")
+              if name != "AddressPoint":
+                  print(f"layer 1 is now {name!r}, expected AddressPoint")
+              elif want_wkid and wkid != want_wkid:
+                  print(f"native spatial reference is now {wkid}, expected {want_wkid}")
+              else:
+                  print("ok")
+          PY
+
+          check() {
+            fetch "$1" | python3 "$RUNNER_TEMP/check_layer.py" "$2"
+          }
+
+          primary=$(check "$PRIMARY" 3857)
+          fallback=$(check "$FALLBACK" 0)
+          echo "primary  ($PRIMARY): $primary"
+          echo "fallback ($FALLBACK): $fallback"
+
+          status=0
+          if [ "$primary" = "unreachable" ]; then
+            echo "::warning::Primary NSW service did not respond (likely a temporary stall, not a retirement)"
+          elif [[ "$primary" == "native spatial reference"* ]]; then
+            echo "::error::Primary NSW service now serves GDA2020 data ($primary). Points shift ~1.5 m; no community changed when this was tested on 2026-11-02. Make multiCRS the primary in private.nsw_addressing_query."
+            status=1
+          elif [ "$primary" != "ok" ]; then
+            echo "::error::Primary NSW service changed: $primary. The database is falling back to multiCRS — check private.nsw_service_fallback_log and make multiCRS the primary in private.nsw_addressing_query."
+            status=1
+          fi
+          if [ "$fallback" = "unreachable" ]; then
+            echo "::warning::multiCRS fallback service did not respond"
+          elif [ "$fallback" != "ok" ]; then
+            echo "::error::multiCRS fallback service problem: $fallback. If the primary also goes, address checks will fail."
+            status=1
+          fi
+          exit $status
+
+      - name: Notify healthchecks.io (success)
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_NSW_SERVICE_URL }}
+        run: |
+          if [ -n "$HC_URL" ]; then
+            curl -fsS -m 10 --retry 5 -o /dev/null "$HC_URL"
+          fi
+
+      - name: Notify healthchecks.io (failure)
+        if: failure()
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_NSW_SERVICE_URL }}
+        run: |
+          if [ -n "$HC_URL" ]; then
+            curl -fsS -m 10 --retry 5 -o /dev/null "$HC_URL/fail"
+          fi
