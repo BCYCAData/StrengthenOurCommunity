@@ -30,7 +30,15 @@
 	<AddressEligible {searchAddress} {validAddress} {community} />
 {/if}
 {#if status >= 500}
-	<AddressSystemError />
+	<AddressSystemError>
+		<button
+			type="button"
+			class="w-24 m-4 text-center py-1 rounded-full cursor-pointer bg-orange-500 text-stone-100 hover:bg-orange-700 focus:outline-none"
+			on:click={() => (status = 100)}
+		>
+			Try again
+		</button>
+	</AddressSystemError>
 {/if}
 {#if status === 200}
 	<AddressValid {searchAddress} {validAddress} {community} {oid} {gid} />
