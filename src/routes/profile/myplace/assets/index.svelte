@@ -120,7 +120,10 @@
 	</div>
 
 	<!-- share_livestock_safe_area -->
-	<div class:hidden={profileAssets.live_stock_safe_area !== 'Y'}>
+	<div
+		class:hidden={profileAssets.live_stock_present !== true ||
+			profileAssets.live_stock_safe_area !== 'Y'}
+	>
 		<div class="flex flex-row justify-between items-center px-4 mt-2">
 			<label class="mt-1 text-lg font-bold mb-1" for="share_livestock_safe_area_list">
 				Would you let others leave their stock in your safe area, for a short time, in an emergency?

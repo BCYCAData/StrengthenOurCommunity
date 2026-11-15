@@ -1,3 +1,4 @@
+import { recordBackpackSubmission } from '$lib/server/backpack/submission';
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const GET = async ({ locals, request }) =>
@@ -59,6 +60,7 @@ export const POST = async ({ locals, request }) =>
 				};
 			}
 			if (profileData.length === 1) {
+				await recordBackpackSubmission(supabaseServerClient(request));
 				let profileHazards = profileData[0];
 				return {
 					status: 200,

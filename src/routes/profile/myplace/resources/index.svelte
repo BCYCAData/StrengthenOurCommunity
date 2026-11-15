@@ -1,4 +1,5 @@
 <script>
+	import { choiceGroup } from '$lib/surveyAnswerValues';
 	import { beforeNavigate } from '$app/navigation';
 	import {
 		staticWaterOptions,
@@ -20,28 +21,6 @@
 		}
 	});
 	export let profileResources;
-	let noneChecked = false;
-
-	let selectedStaticSources = new Set();
-	const unCheckAllStaticWater = (e) => {
-		if (e.currentTarget.checked) {
-			for (const source of selectedStaticSources) {
-				source.checked = false;
-			}
-			selectedStaticSources.clear();
-			noneChecked = true;
-		}
-	};
-	const setStaticWater = (e) => {
-		if (e.currentTarget.checked) {
-			selectedStaticSources.add(e.currentTarget);
-		} else {
-			selectedStaticSources.delete(e.currentTarget);
-		}
-		if (noneChecked) {
-			noneChecked = false;
-		}
-	};
 </script>
 
 {#if modalVisible}
@@ -96,28 +75,22 @@
 			>
 				{#each staticWaterOptions as { value, lable }}
 					<li class="justify-start place-items-center" name="static_water_available_list">
-						{#if value < 5}
-							<input
-								name="static_water_available"
-								type="checkbox"
-								bind:group={profileResources.static_water_available}
-								{value}
-								on:change={(e) => {
-									setStaticWater(e);
-								}}
-							/>
-						{:else}
-							<input
-								name="static_water_available"
-								type="checkbox"
-								bind:group={profileResources.static_water_available}
-								{value}
-								on:change={(e) => {
-									unCheckAllStaticWater(e);
-								}}
-								checked={noneChecked}
-							/>
-						{/if}
+						<input
+							name="static_water_available"
+							type="checkbox"
+							{value}
+							checked={(profileResources.static_water_available || [])
+								.map(Number)
+								.includes(Number(value))}
+							on:change={(event) => {
+								profileResources.static_water_available = choiceGroup(
+									profileResources.static_water_available,
+									value,
+									event.currentTarget.checked,
+									5
+								);
+							}}
+						/>
 						<label for="static_water_available">{lable}</label>
 					</li>
 				{/each}
@@ -184,8 +157,18 @@
 						<input
 							name="fire_fighting_resources"
 							type="checkbox"
-							bind:group={profileResources.fire_fighting_resources}
 							{value}
+							checked={(profileResources.fire_fighting_resources || [])
+								.map(Number)
+								.includes(Number(value))}
+							on:change={(event) => {
+								profileResources.fire_fighting_resources = choiceGroup(
+									profileResources.fire_fighting_resources,
+									value,
+									event.currentTarget.checked,
+									0
+								);
+							}}
 						/>
 						<label for="fire_fighting_resources">{lable}</label>
 					</li>
@@ -206,8 +189,18 @@
 						<input
 							name="fire_hazard_reduction"
 							type="checkbox"
-							bind:group={profileResources.fire_hazard_reduction}
 							{value}
+							checked={(profileResources.fire_hazard_reduction || [])
+								.map(Number)
+								.includes(Number(value))}
+							on:change={(event) => {
+								profileResources.fire_hazard_reduction = choiceGroup(
+									profileResources.fire_hazard_reduction,
+									value,
+									event.currentTarget.checked,
+									0
+								);
+							}}
 						/>
 						<label for="fire_hazard_reduction">{lable}</label>
 					</li>

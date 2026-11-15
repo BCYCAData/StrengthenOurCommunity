@@ -1,4 +1,5 @@
 <script>
+	import { choiceGroup } from '$lib/surveyAnswerValues';
 	import { siteHazardsOptions, yesNoMaybeOptions } from '$lib/profileOptions';
 	import { beforeNavigate } from '$app/navigation';
 
@@ -49,8 +50,16 @@
 						<input
 							name="site_hazards"
 							type="checkbox"
-							bind:group={profileHazards.site_hazards}
 							{value}
+							checked={(profileHazards.site_hazards || []).map(Number).includes(Number(value))}
+							on:change={(event) => {
+								profileHazards.site_hazards = choiceGroup(
+									profileHazards.site_hazards,
+									value,
+									event.currentTarget.checked,
+									0
+								);
+							}}
 						/>
 						<label for="site_hazards">{lable}</label>
 					</li>

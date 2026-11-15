@@ -9,3 +9,5 @@ node_modules
 !.env.example
 .todo.txt
 .mcp.json
+/.codex/config.toml
+/docs/backpack-email-implementation-plan.md

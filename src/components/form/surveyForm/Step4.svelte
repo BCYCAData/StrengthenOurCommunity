@@ -80,7 +80,7 @@
 			</li>
 		{/each}
 	</div>
-	{#if live_stock_present && live_stock_safe_area != 'N'}
+	{#if live_stock_present && live_stock_safe_area === 'Y'}
 		<h3 class="text-base sm:text-lg">
 			Would you be happy for other people to leave their stock on your property, in your safe area,
 			for a short period in an emergency?

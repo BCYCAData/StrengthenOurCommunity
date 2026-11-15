@@ -1,3 +1,5 @@
+import { recordBackpackSubmission } from '$lib/server/backpack/submission';
+import { optionalCount } from '$lib/surveyAnswerValues';
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const GET = async ({ locals, request }) =>
@@ -43,10 +45,10 @@ export const POST = async ({ locals, request }) =>
 			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
-					number_dogs: parseInt(body.get('number_dogs')) || 0,
-					number_cats: parseInt(body.get('number_cats')) || 0,
-					number_birds: parseInt(body.get('number_birds')) || 0,
-					number_other_pets: parseInt(body.get('number_other_pets')) || 0,
+					number_dogs: optionalCount(body.get('number_dogs')),
+					number_cats: optionalCount(body.get('number_cats')),
+					number_birds: optionalCount(body.get('number_birds')),
+					number_other_pets: optionalCount(body.get('number_other_pets')),
 					live_stock_present: body.get('live_stock_present'),
 					live_stock_safe_area: body.get('live_stock_safe_area'),
 					share_livestock_safe_area: body.get('share_livestock_safe_area'),
@@ -61,6 +63,7 @@ export const POST = async ({ locals, request }) =>
 				};
 			}
 			if (profileData.length === 1) {
+				await recordBackpackSubmission(supabaseServerClient(request));
 				let profileAssets = profileData[0];
 				return {
 					status: 200,

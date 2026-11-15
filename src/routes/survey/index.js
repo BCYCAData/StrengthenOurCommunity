@@ -1,3 +1,5 @@
+import { recordBackpackSubmission } from '$lib/server/backpack/submission';
+import { optionalCount } from '$lib/surveyAnswerValues';
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 import { getFormBody, resetProfile } from '$lib/utils';
 import { supabaseClient } from '$lib/dbClient';
@@ -110,15 +112,15 @@ export const POST = async ({ locals, request }) =>
 					phone: bodyObject.phone,
 					mobile_reception: parseInt(bodyObject.mobile_reception),
 					residency_profile: parseInt(bodyObject.residency_profile),
-					residents0_18: parseInt(bodyObject.residents0_18),
-					residents19_50: parseInt(bodyObject.residents19_50),
-					residents51_70: parseInt(bodyObject.residents51_70),
-					residents71_: parseInt(bodyObject.residents71_),
+					residents0_18: optionalCount(bodyObject.residents0_18),
+					residents19_50: optionalCount(bodyObject.residents19_50),
+					residents51_70: optionalCount(bodyObject.residents51_70),
+					residents71_: optionalCount(bodyObject.residents71_),
 					vulnerable_residents: bodyObject.vulnerable_residents,
-					number_dogs: parseInt(bodyObject.number_dogs),
-					number_cats: parseInt(bodyObject.number_cats),
-					number_birds: parseInt(bodyObject.number_birds),
-					number_other_pets: parseInt(bodyObject.number_other_pets),
+					number_dogs: optionalCount(bodyObject.number_dogs),
+					number_cats: optionalCount(bodyObject.number_cats),
+					number_birds: optionalCount(bodyObject.number_birds),
+					number_other_pets: optionalCount(bodyObject.number_other_pets),
 					live_stock_present: bodyObject.live_stock_present,
 					live_stock_safe_area: bodyObject.live_stock_safe_area,
 					share_livestock_safe_area: bodyObject.share_livestock_safe_area,
@@ -156,6 +158,7 @@ export const POST = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (surveyAnswers?.length) await recordBackpackSubmission(supabaseServerClient(request));
 			return {
 				headers: { Location: '/profile' },
 				status: 302,

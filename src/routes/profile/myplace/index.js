@@ -1,3 +1,5 @@
+import { recordBackpackSubmission } from '$lib/server/backpack/submission';
+import { optionalCount } from '$lib/surveyAnswerValues';
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const GET = async ({ locals, request }) =>
@@ -56,10 +58,10 @@ export const POST = async ({ locals, request }) =>
 					sign_posted: body.get('sign_posted'),
 					truck_access: parseInt(body.get('truck_access')),
 					truck_access_other_information: body.get('truck_access_other_information'),
-					residents0_18: parseInt(body.get('residents0_18') || 0),
-					residents19_50: parseInt(body.get('residents19_50') || 0),
-					residents51_70: parseInt(body.get('residents51_70') || 0),
-					residents71_: parseInt(body.get('residents71_') || 0),
+					residents0_18: optionalCount(body.get('residents0_18')),
+					residents19_50: optionalCount(body.get('residents19_50')),
+					residents51_70: optionalCount(body.get('residents51_70')),
+					residents71_: optionalCount(body.get('residents71_')),
 					vulnerable_residents: body.get('vulnerable_residents')
 				})
 				.eq('id', locals.user.id);
@@ -71,6 +73,7 @@ export const POST = async ({ locals, request }) =>
 				};
 			}
 			if (profileData.length === 1) {
+				await recordBackpackSubmission(supabaseServerClient(request));
 				let profileMyPlace = profileData[0];
 				return {
 					status: 200,

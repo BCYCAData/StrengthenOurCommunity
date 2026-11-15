@@ -125,31 +125,31 @@
 		{/each}
 	</div>
 	<div class="flex justify-start flex-row sm:text-lg">
-		<label class="pl-1" for="agent_name" hidden={rentingChecked === false}>Agent</label>
+		<label class="pl-1" for="agent_name" hidden={rentingChecked !== true}>Agent</label>
 		<input
 			type="text"
 			class="ml-1 py-0 border border-orange-700 sm:text-lg sm:w-6/12 rounded"
 			id="agent_name"
 			name="agent_name"
-			hidden={rentingChecked === false}
+			hidden={rentingChecked !== true}
 			bind:value={surveyData.agent_name}
 		/>
-		<label class="pl-4" for="agent_mobile" hidden={rentingChecked === false}>Mobile</label>
+		<label class="pl-4" for="agent_mobile" hidden={rentingChecked !== true}>Mobile</label>
 		<input
 			type="text"
 			class="ml-1 border border-orange-700 sm:text-lg sm:w-3/24 rounded"
 			id="agent_mobile"
 			name="agent_mobile"
-			hidden={rentingChecked === false}
+			hidden={rentingChecked !== true}
 			bind:value={surveyData.agent_mobile}
 		/>
-		<label class="pl-4" for="agent_phone" hidden={rentingChecked === false}>Landline</label>
+		<label class="pl-4" for="agent_phone" hidden={rentingChecked !== true}>Landline</label>
 		<input
 			type="text"
 			class="ml-1 border border-orange-700 sm:text-lg sm:w-3/24 rounded"
 			id="agent_phone"
 			name="agent_phone"
-			hidden={rentingChecked === false}
+			hidden={rentingChecked !== true}
 			bind:value={surveyData.agent_phone}
 		/>
 	</div>
@@ -178,7 +178,7 @@
 					<div class="flex flex-row">
 						<input
 							on:change={() => {
-								otherAccessChecked = !otherAccessChecked;
+								otherAccessChecked = true;
 							}}
 							name="truck_access"
 							type="radio"

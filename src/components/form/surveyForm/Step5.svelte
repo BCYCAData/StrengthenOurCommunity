@@ -1,69 +1,37 @@
 <script>
+	import { choiceGroup } from '$lib/surveyAnswerValues';
 	import {
 		staticWaterOptions,
 		yesNoMaybeOptions,
 		fireFightingResources
 	} from '$lib/profileOptions';
 
-	let selectedStaticSources = new Set();
-	const unCheckAllStaticWater = (e) => {
-		if (e.currentTarget.checked) {
-			for (const source of selectedStaticSources) {
-				source.checked = false;
-			}
-			selectedStaticSources.clear();
-			noneChecked = true;
-		}
-	};
-	const setStaticWater = (e) => {
-		if (e.currentTarget.checked) {
-			selectedStaticSources.add(e.currentTarget);
-		} else {
-			selectedStaticSources.delete(e.currentTarget);
-		}
-		if (noneChecked) {
-			noneChecked = false;
-		}
-	};
-
 	export let surveyData;
 
-	let noneChecked = false;
-	let have_stortzChecked = surveyData.have_stortz;
+	let have_stortzChecked = surveyData.have_stortz === 'Y';
 </script>
 
 <h3 class="text-base sm:text-lg">Are there any static water supplies on the property?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0 my-0">
 		{#each staticWaterOptions as { value, lable }}
-			{#if value < 5}
-				<li class="sm:text-lg pr-3">
-					<input
-						name="static_water_available"
-						type="checkbox"
-						bind:group={surveyData.static_water_available}
-						{value}
-						on:change={(e) => {
-							setStaticWater(e);
-						}}
-					/>
-					<label for="static_water_available">{lable}</label>
-				</li>
-			{:else}
-				<li class="sm:text-lg pr-3">
-					<input
-						name="static_water_available"
-						type="checkbox"
-						bind:group={surveyData.static_water_available}
-						{value}
-						on:change={(e) => {
-							unCheckAllStaticWater(e);
-						}}
-						checked={noneChecked}
-					/>
-					<label for="static_water_available">{lable}</label>
-				</li>
-			{/if}
+			<li class="sm:text-lg pr-3">
+				<input
+					name="static_water_available"
+					type="checkbox"
+					{value}
+					checked={(surveyData.static_water_available || []).map(Number).includes(Number(value))}
+					on:change={(event) => {
+						surveyData.static_water_available = choiceGroup(
+							surveyData.static_water_available,
+							value,
+							event.currentTarget.checked,
+							5
+						);
+					}}
+				/>
+				<label for="static_water_available">{lable}</label>
+			</li>
 		{/each}
 	</ul>
 </div>
@@ -106,8 +74,16 @@
 				<input
 					name="fire_fighting_resources"
 					type="checkbox"
-					bind:group={surveyData.fire_fighting_resources}
 					{value}
+					checked={(surveyData.fire_fighting_resources || []).map(Number).includes(Number(value))}
+					on:change={(event) => {
+						surveyData.fire_fighting_resources = choiceGroup(
+							surveyData.fire_fighting_resources,
+							value,
+							event.currentTarget.checked,
+							0
+						);
+					}}
 				/>
 				<label for="fire_fighting_resources">{lable}</label>
 			</li>

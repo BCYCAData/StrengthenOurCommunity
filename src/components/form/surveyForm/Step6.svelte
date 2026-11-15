@@ -1,4 +1,5 @@
 <script>
+	import { choiceGroup } from '$lib/surveyAnswerValues';
 	import {
 		siteHazardsOptions,
 		fireHazardReductionOptions,
@@ -14,7 +15,20 @@
 	<ul class="list-none w-full pl-0  my-0">
 		{#each siteHazardsOptions as { value, lable }}
 			<li class="sm:text-lg pr-3">
-				<input name="site_hazards" type="checkbox" {value} />
+				<input
+					name="site_hazards"
+					type="checkbox"
+					{value}
+					checked={(surveyData.site_hazards || []).map(Number).includes(Number(value))}
+					on:change={(event) => {
+						surveyData.site_hazards = choiceGroup(
+							surveyData.site_hazards,
+							value,
+							event.currentTarget.checked,
+							0
+						);
+					}}
+				/>
 				<label for="site_hazards">{lable}</label>
 			</li>
 		{/each}
@@ -36,8 +50,16 @@
 				<input
 					name="fire_hazard_reduction"
 					type="checkbox"
-					bind:group={surveyData.fire_hazard_reduction}
 					{value}
+					checked={(surveyData.fire_hazard_reduction || []).map(Number).includes(Number(value))}
+					on:change={(event) => {
+						surveyData.fire_hazard_reduction = choiceGroup(
+							surveyData.fire_hazard_reduction,
+							value,
+							event.currentTarget.checked,
+							0
+						);
+					}}
 				/>
 				<label for="fire_hazard_reduction">{lable}</label>
 			</li>

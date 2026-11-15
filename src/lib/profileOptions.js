@@ -22,7 +22,8 @@ export const fireFightingResources = [
 	{ value: 2, lable: 'Fire fighting pump(s)' },
 	{ value: 3, lable: 'Fire hose(s)' },
 	{ value: 4, lable: 'Trailer(s) with spray equipment' },
-	{ value: 5, lable: 'Generator' }
+	{ value: 5, lable: 'Generator' },
+	{ value: 0, lable: 'None' }
 ];
 export const staticWaterOptions = [
 	{ value: 1, lable: 'Tank(s)' },
@@ -36,14 +37,16 @@ export const siteHazardsOptions = [
 	{ value: 1, lable: 'Solar batteries' },
 	{ value: 2, lable: 'Fuel stores' },
 	{ value: 3, lable: 'Chemical stores' },
-	{ value: 4, lable: 'Bottled gas' }
+	{ value: 4, lable: 'Bottled gas' },
+	{ value: 0, lable: 'None' }
 ];
 export const fireHazardReductionOptions = [
 	{ value: 1, lable: 'Fire breaks' },
 	{ value: 2, lable: 'Slashed areas around house/sheds' },
 	{ value: 3, lable: 'A backup pump (petrol or diesel)' },
 	{ value: 4, lable: 'Driveway 3.5m overhead clearance ' },
-	{ value: 5, lable: 'Truck access around your property ' }
+	{ value: 5, lable: 'Truck access around your property ' },
+	{ value: 0, lable: 'None' }
 ];
 export const fireFightingExperienceOptions = [
 	{ value: 1, lable: 'No experience' },

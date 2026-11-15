@@ -108,7 +108,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class:hidden={profileMyPlace.property_rented === false} class="mt-2">
+	<div class:hidden={profileMyPlace.property_rented !== true} class="mt-2">
 		<div class="flex flex-row mx-2">
 			<div class="flex flex-col basis-7/12 mx-2">
 				<label class="text-lg font-bold mb-1" for="agent_name">Managing Agent</label>
