@@ -1,0 +1,322 @@
+.backpack-console {
+	--ink: #292b28;
+	--muted: #666b64;
+	--orange: #b44513;
+	--border: #dddcd4;
+	color: var(--ink);
+	background: #faf9f5;
+	padding: clamp(1rem, 3vw, 2rem);
+	font-family: inherit;
+	min-width: 0;
+}
+.backpack-console * {
+	box-sizing: border-box;
+}
+.backpack-console h1 {
+	font-size: clamp(1.6rem, 3vw, 2.2rem);
+	line-height: 1.2;
+	margin: 0.2rem 0 0.6rem;
+	font-weight: 750;
+}
+.backpack-console h2 {
+	font-size: 1.25rem;
+	margin: 0 0 0.7rem;
+	font-weight: 700;
+}
+.backpack-console h3 {
+	font-size: 1rem;
+	font-weight: 700;
+	margin: 1rem 0 0.5rem;
+}
+.backpack-console p {
+	margin: 0.4rem 0 0.8rem;
+	line-height: 1.55;
+}
+.backpack-console .eyebrow {
+	color: var(--orange);
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: 0.7rem;
+	font-weight: 750;
+}
+.backpack-console .muted,
+.backpack-console small {
+	color: var(--muted);
+}
+.backpack-console .intro {
+	max-width: 65ch;
+}
+.backpack-console .toolbar,
+.backpack-console .actions,
+.backpack-console .tabs,
+.backpack-console .pager {
+	display: flex;
+	gap: 0.6rem;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.backpack-console .toolbar {
+	justify-content: space-between;
+	margin-bottom: 1.3rem;
+}
+.backpack-console .panel {
+	background: #fff;
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	padding: 1.1rem;
+	margin: 1rem 0;
+	min-width: 0;
+}
+.backpack-console .notice {
+	padding: 0.85rem 1rem;
+	border-radius: 8px;
+	background: #f2eee3;
+	border-left: 4px solid #c08b35;
+	margin: 0.8rem 0;
+	line-height: 1.5;
+}
+.backpack-console .error {
+	background: #fff0ed;
+	border-color: #b8362b;
+	color: #882b23;
+}
+.backpack-console .success {
+	background: #eef5ec;
+	border-color: #568252;
+}
+.backpack-console .tabs {
+	border-bottom: 1px solid var(--border);
+	padding-bottom: 0.7rem;
+	margin: 1.3rem 0;
+}
+.backpack-console button,
+.backpack-console .button {
+	display: inline-block;
+	border: 1px solid #cccac1;
+	border-radius: 7px;
+	padding: 0.55rem 0.85rem;
+	background: #fff;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.9rem;
+	font-weight: 650;
+	cursor: pointer;
+	text-decoration: none;
+}
+.backpack-console button.primary {
+	background: var(--orange);
+	border-color: var(--orange);
+	color: #fff;
+}
+.backpack-console button[aria-selected='true'] {
+	background: #303e35;
+	border-color: #303e35;
+	color: #fff;
+}
+.backpack-console button:hover:not(:disabled) {
+	filter: brightness(0.95);
+}
+.backpack-console button:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+.backpack-console :focus-visible {
+	outline: 3px solid #3384a8;
+	outline-offset: 3px;
+}
+.backpack-console label {
+	display: block;
+	font-size: 0.85rem;
+	font-weight: 650;
+	margin: 0.7rem 0 0.35rem;
+}
+.backpack-console input:not([type='checkbox']):not([type='radio']),
+.backpack-console select,
+.backpack-console textarea {
+	width: 100%;
+	max-width: 100%;
+	border: 1px solid #bbbdb4;
+	background: #fff;
+	color: var(--ink);
+	padding: 0.6rem;
+	border-radius: 6px;
+	font: inherit;
+	font-size: 0.9rem;
+}
+.backpack-console input[type='checkbox'],
+.backpack-console input[type='radio'] {
+	accent-color: var(--orange);
+	width: 1.05rem;
+	height: 1.05rem;
+	flex-shrink: 0;
+}
+.backpack-console textarea {
+	min-height: 90px;
+	resize: vertical;
+}
+.backpack-console .inline-choice {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.4rem 0;
+	font-weight: 400;
+}
+.backpack-console .fields {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.3rem 1rem;
+}
+.backpack-console .field-wide {
+	grid-column: 1/-1;
+}
+.backpack-console .table-scroll {
+	max-width: 100%;
+	overflow-x: auto;
+	margin: 0.8rem 0;
+}
+.backpack-console table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.86rem;
+	text-align: left;
+}
+.backpack-console th {
+	background: #f4f3ee;
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--muted);
+}
+.backpack-console td,
+.backpack-console th {
+	padding: 0.7rem 0.6rem;
+	border-bottom: 1px solid #e8e6de;
+	vertical-align: top;
+}
+.backpack-console td {
+	overflow-wrap: anywhere;
+	min-width: 100px;
+}
+.backpack-console td:first-child {
+	min-width: 35px;
+}
+.backpack-console .person {
+	display: block;
+	font-weight: 700;
+}
+.backpack-console .badge {
+	display: inline-block;
+	font-size: 0.72rem;
+	padding: 0.2rem 0.45rem;
+	border-radius: 5px;
+	background: #eceee8;
+	white-space: normal;
+}
+.backpack-console .badge.positive {
+	background: #e3eddf;
+	color: #31552e;
+}
+.backpack-console .badge.waiting {
+	background: #f8ecd2;
+	color: #7a581c;
+}
+.backpack-console .metric-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 0.65rem;
+	margin: 1rem 0;
+}
+.backpack-console .metric {
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 0.9rem;
+	background: #fff;
+}
+.backpack-console .metric strong {
+	font-size: 1.75rem;
+	display: block;
+}
+.backpack-console .metric span {
+	font-size: 0.78rem;
+	color: var(--muted);
+}
+.backpack-console .mode {
+	max-width: 320px;
+}
+.backpack-console .search {
+	display: flex;
+	align-items: end;
+	gap: 0.6rem;
+	flex-wrap: wrap;
+}
+.backpack-console .search .query {
+	flex: 1;
+	min-width: 180px;
+}
+.backpack-console .search .filter {
+	width: 190px;
+}
+.backpack-console .pager {
+	justify-content: space-between;
+	margin: 0.8rem 0;
+}
+.backpack-console .selected-list {
+	list-style: none;
+	padding: 0;
+}
+.backpack-console .selected-list li {
+	padding: 0.7rem 0;
+	border-bottom: 1px solid #eceae3;
+}
+.backpack-console .empty {
+	padding: 1.5rem 0.5rem;
+	color: var(--muted);
+}
+.backpack-console .divider {
+	border: 0;
+	border-top: 1px solid var(--border);
+	margin: 1.2rem 0;
+}
+.backpack-console ul {
+	line-height: 1.6;
+}
+.backpack-console summary {
+	cursor: pointer;
+	font-weight: 650;
+	margin: 0.6rem 0;
+}
+@media (max-width: 700px) {
+	.backpack-console .fields {
+		grid-template-columns: 1fr;
+	}
+	.backpack-console .metric-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.backpack-console .toolbar {
+		align-items: start;
+	}
+	.backpack-console .tabs button {
+		flex: 1 1 40%;
+	}
+}
+
+.backpack-console .sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+.backpack-console dt {
+	font-size: 0.8rem;
+	color: var(--muted);
+	margin-top: 0.7rem;
+}
+.backpack-console dd {
+	margin: 0.2rem 0;
+	overflow-wrap: anywhere;
+}

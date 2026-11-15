@@ -140,9 +140,25 @@ insert into backpack.notifications(household_id,programme,kind,assessment_id,pol
 select pg_temp.expect_error('55000','record_delivery',(select value from state where key='delivery_args'));
 update backpack.notifications set status='needs_review',claim_token=null;
 select pg_temp.assert((select count(*)=0 from backpack.notifications where accepted_at is not null),'no fabricated accepted emails');
+-- UI read models remain coordinator-only, literal-searchable and side-effect free.
+insert into state values('audit_before_reads',to_jsonb((select count(*) from backpack.coordinator_audit)));
+select pg_temp.assert((public.backpack_admin('snapshot','{"search":"one@example.test","limit":1,"offset":0}')->>'total_members')::integer=1,'participant search is server filtered');
+select pg_temp.assert(public.backpack_admin('snapshot')->'policy'->>'programme'='backpack','snapshot includes non-secret programme state');
+select pg_temp.assert((public.backpack_admin('snapshot','{"search":"%"}')->>'total_members')::integer=0,'search does not treat percent as a wildcard');
+select pg_temp.assert(jsonb_array_length(public.backpack_admin('household_details',jsonb_build_object('household_id',(select value from state where key='target')))->'members')=2,'household details include all members independently of pagination');
+select pg_temp.assert(not exists(select 1 from jsonb_array_elements(public.backpack_admin('snapshot')->'members') j where j ? 'fire_trauma' or j ? 'raw_app_meta_data'),'matching read model omits personal answer values and raw Auth metadata');
+select pg_temp.assert((public.backpack_admin('list_awards','{"search":"legacy-backpack-001"}')->>'total_awards')::integer=1,'award reference search');
+select pg_temp.assert(public.backpack_admin('list_awards','{"search":"legacy-backpack-001"}')->'awards'->0->>'id'=(select value->'award'->>'id' from state where key='award'),'award lookup supplies the delivery record ID');
+select pg_temp.assert(not has_function_privilege('authenticated','backpack.admin_v2(text,jsonb)','execute'),'legacy dispatcher is private');
+select pg_temp.expect_error('22023','snapshot','{"filter":"arbitrary"}');
+select pg_temp.expect_error('22023','household_details','{"household_id":"00000000-0000-0000-0000-000000999999"}');
+select pg_temp.expect_error('22023','list_awards','{"limit":101}');
+select pg_temp.assert((select count(*) from backpack.coordinator_audit)=(select (value#>>'{}')::integer from state where key='audit_before_reads'),'UI reads create no audit or mutation side effects');
 -- Revocation applies immediately, even with an existing signed-in session.
 update backpack.coordinators set active=false;
 select pg_temp.expect_error('42501','snapshot');
+select pg_temp.expect_error('42501','list_awards');
+select pg_temp.expect_error('42501','household_details',jsonb_build_object('household_id',(select value from state where key='target')));
 select pg_temp.assert((select count(*)=0 from backpack.processing_errors),'no hidden trigger errors');
 \o
 select 'Coordinator authorization, matching, import and baseline tests passed' as result;

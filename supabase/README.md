@@ -87,7 +87,10 @@ but accepts no user ID and assesses only `auth.uid()`. No participant can nomina
 another member's answers through these functions. Table Editor/database-owner
 access remains available for privileged setup. The second phase adds
 [authenticated coordinator operations](coordinator-operations.md) for reviewed
-households, awards, special cases and baseline approval; there is no coordinator UI yet.
+households, awards, special cases and baseline approval. The coordinator interface
+at `/admin/backpacks` uses these operations after applying
+`20261116010000_backpack_coordinator_ui.sql` and enabling `BACKPACK_ADMIN_ENABLED`
+for explicitly authorized coordinators.
 
 Existing `get_new_users_confirmed*` and KYNG reports are deliberately preserved.
 Use the new structured `backpack_report()` alongside them to compare outcomes;
@@ -193,9 +196,9 @@ choose scheduling/headroom that preserves authentication email availability.
 - Obtain the cutoff, adopted question scope/exclusions and final template approval.
 - Review household candidates/contacts, special cases and historical backpack awards.
 - Confirm Resend settings and test real Auth sign-in versus token refresh on staging.
-- Add coordinator operations UI and participant household/missing-question status
-  display if desired. Currently emails link to the existing profile editor; they
-  do not claim a new household-status screen exists.
+- Add participant household/missing-question status display if desired. Emails
+  currently link to the existing profile editor. Coordinator review is available
+  at `/admin/backpacks`; it does not replace the participant profile editor.
 - Compare/refactor legacy reports only after adopting and validating the new rules.
 - Deploy reviewed migrations and code, run the controlled baseline and enable an
   authenticated schedule only when authorised. No deployment is part of this change.

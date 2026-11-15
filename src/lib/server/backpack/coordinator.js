@@ -1,6 +1,8 @@
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const schemas = {
-	snapshot: { limit: 'page?', offset: 'offset?' },
+	snapshot: { limit: 'page?', offset: 'offset?', search: 'search?', filter: 'filter?' },
+	household_details: { household_id: 'uuid' },
+	list_awards: { limit: 'page?', offset: 'offset?', search: 'search?' },
 	preview_household: { household_id: 'uuid', member_ids: 'members' },
 	confirm_household: {
 		household_id: 'uuid',
@@ -39,6 +41,9 @@ function valid(value, rule) {
 	if (rule.endsWith('?') && value === undefined) return true;
 	if (rule.endsWith('?') && value === null) return rule !== 'mode?';
 	const type = rule.replace('?', '');
+	if (type === 'search') return typeof value === 'string' && value.length <= 120;
+	if (type === 'filter')
+		return ['all', 'pending', 'special_case', 'incomplete', 'qualified', 'awarded'].includes(value);
 	if (type === 'uuid') return typeof value === 'string' && uuid.test(value);
 	if (type === 'members')
 		return (

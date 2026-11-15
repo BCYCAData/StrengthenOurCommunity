@@ -3,7 +3,9 @@
 	import Icon from '@iconify/svelte';
 	import Breadcrumbs from '$components/Breadcrumbs.svelte';
 
+	$: backpackPage = $page.url.pathname.startsWith('/admin/backpacks');
 	let pathLables = {
+		backpacks: ['Backpack programme', 'carbon:delivery'],
 		admin: ['Administration', 'carbon:user-admin'],
 		reports: ['Reports', 'carbon:report-data'],
 		emergency: ['Emergency', 'carbon:report-data'],
@@ -11,7 +13,7 @@
 	};
 </script>
 
-<div class="wrapper h-full grid bg-orange-100">
+<div class="wrapper h-full grid bg-orange-100" class:backpackPage>
 	<header class="main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center ">
 		<h3 class="font-bold text-orange-900">Burrell Creek Youth & Community Association Inc.</h3>
 	</header>
@@ -28,6 +30,12 @@
 				class="flex flex-row justify-around mx-0 px-2 sm:flex-1 sm:flex-nowrap sm:flex-col list-none"
 				id="mainMenu"
 			>
+				<li class="sm:mt-2 hover:bg-orange-300 rounded items-center">
+					<a class="flex items-center p-2" href="/admin/backpacks">
+						<Icon icon="carbon:delivery" />
+						<span class="ml-2">Backpack programme</span>
+					</a>
+				</li>
 				<li class="sm:mt-2 hover:bg-orange-300 rounded items-center">
 					<div class="flex flex-row items-center justify-start">
 						<a class="flex items-center" href="/admin/reports">
@@ -106,28 +114,36 @@
 				</li> -->
 			</ul>
 		</div>
-		<p class="ml-2 ">
-			Please make sure you click every heading in the menu on the left <br />
-			<b>and</b>
-			check your answers to all the questions.
-		</p>
-		<p class="ml-2 ">
-			Remember this is <b>your</b>
-			data. To help keep
-			<b>you</b>
-			prepared.
-		</p>
+		{#if !backpackPage}
+			<p class="ml-2 ">
+				Please make sure you click every heading in the menu on the left <br />
+				<b>and</b>
+				check your answers to all the questions.
+			</p>
+			<p class="ml-2 ">
+				Remember this is <b>your</b>
+				data. To help keep
+				<b>you</b>
+				prepared.
+			</p>
+		{/if}
 	</aside>
-	<div class="messaging bg-stone-200">
-		<div class="flex flex-row justify-around pt-2 text-xl">Messages</div>
-		<div class="flex flex-col h-full my-4 mx-4">
-			<p class="m-2">Congratulations you are now eligible for your FREE Emergency Starter Kit.</p>
-			<p class="m-2">We will be in touch soon.</p>
+	{#if !backpackPage}
+		<div class="messaging bg-stone-200">
+			<div class="flex flex-row justify-around pt-2 text-xl">Messages</div>
+			<div class="flex flex-col h-full my-4 mx-4">
+				<p class="m-2">Congratulations you are now eligible for your FREE Emergency Starter Kit.</p>
+				<p class="m-2">We will be in touch soon.</p>
+			</div>
 		</div>
-	</div>
+	{/if}
 </div>
 
 <style>
+	.content {
+		grid-area: content;
+		min-width: 0;
+	}
 	.main-head {
 		grid-area: header;
 	}
@@ -173,6 +189,13 @@
 				'header header header'
 				'sidebar crumbs messaging'
 				'sidebar content messaging';
+		}
+	}
+	@media (min-width: 640px) {
+		.wrapper.backpackPage {
+			grid-template-columns: 180px minmax(0, 1fr);
+			grid-template-rows: auto auto 1fr;
+			grid-template-areas: 'header header' 'sidebar crumbs' 'sidebar content';
 		}
 	}
 </style>
