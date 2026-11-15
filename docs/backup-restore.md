@@ -147,3 +147,82 @@ supabase stop --no-backup                  # tear down; then delete the unpacked
 
 A green result is: `schema` clean, all `data` `COPY`s applied, and your `public`/`auth` row counts look
 right.
+
+---
+
+## Keeping the project awake (avoiding free-tier pause)
+
+Free-plan Supabase **pauses a project after 7 days of database inactivity**
+([pricing](https://supabase.com/pricing)). The data survives a pause, but compute is shut
+down and — critically — **on the free plan a paused project does _not_ auto-resume when a
+request arrives**; it must be restored manually from the dashboard (or via the Management
+API). Understand that asymmetry: a keep-alive only helps _while the project is still active_.
+Once it lapses long enough to let the project pause, further pings hit a dead project and do
+nothing — it stays paused until a human restores it. That is the failure behind "it's often
+paused."
+
+### What keeps it awake
+
+A **Vercel cron job** — deliberately _not_ a GitHub Action (GitHub auto-disables scheduled
+workflows after 60 days of no commits). It's already wired up:
+
+- [`vercel.json`](../vercel.json) runs `/api/cron` daily (`0 0 * * *`). Daily gives a 7× margin
+  on the 7-day window and stays within the Hobby plan's once-per-day cron limit.
+- [`src/routes/api/cron/+server.js`](../src/routes/api/cron/+server.js) checks the
+  `Bearer ${CRON_SECRET}` header, then makes a DB call (`health_check` RPC). **That DB call is
+  the activity** that resets the pause timer — nothing else in this flow does.
+
+### Monitoring (added — so a silent failure doesn't cost you the database)
+
+The endpoint now pings **healthchecks.io** on every successful run, and `…/fail` on a DB
+error. Create a check (**period 1 day, grace 1–2 days**) and add its ping URL as the Vercel
+env var `HEALTHCHECK_KEEPALIVE_URL` (Production). If the cron stops firing for any reason the
+check turns red and you're alerted days before the 7-day pause — instead of discovering a dead
+database a week later.
+
+### If it's still pausing — checklist
+
+Run these against the **real** project (`ap-southeast-2`), via the dashboard or a Supabase
+MCP/CLI pointed at it — note the MCP must target this app's project, **not** the unrelated
+`ap-northeast-1` "Big Map Project". Most likely cause first:
+
+1. **`CRON_SECRET` set in Vercel (Production)?** If unset, the header check fails on every
+   invocation → `401` → the RPC never runs → **zero DB activity**. This is the most common
+   reason a keep-alive "exists but does nothing".
+2. **Is the cron actually firing?** Vercel → Project → Cron Jobs, plus function logs for
+   `/api/cron`. You want a daily `200`, not `401`/`500`/silence.
+3. **Does the `health_check` RPC exist?** If missing, the call `500`s. (A failed call still
+   touches the DB, but don't depend on that — see next.)
+4. **Prefer a guaranteed write over a read.** A read-only RPC _should_ count as activity, but
+   the unambiguous signal is a small write. One-time migration:
+
+   ```sql
+   create table if not exists public.keepalive (
+     id int primary key default 1,
+     last_run timestamptz not null default now(),
+     constraint keepalive_singleton check (id = 1)
+   );
+   insert into public.keepalive (id) values (1) on conflict (id) do nothing;
+   ```
+
+   then swap the RPC in the endpoint for:
+
+   ```js
+   const { error } = await supabaseClient
+       .from('keepalive')
+       .update({ last_run: new Date().toISOString() })
+       .eq('id', 1);
+   ```
+
+### Make it self-healing (the only way to truly "never paused")
+
+A keep-alive cannot recover a project that has _already_ paused. To close that gap, also
+**restore the project when it's found paused**, via the Supabase Management API:
+
+- `GET  https://api.supabase.com/v1/projects/{ref}` → read `status` (`ACTIVE_HEALTHY` vs paused).
+- `POST https://api.supabase.com/v1/projects/{ref}/restore` → resume it.
+
+These calls don't touch the database, so they work even while it's paused. Put this either in
+`/api/cron` (add `SUPABASE_ACCESS_TOKEN` + project `ref` as Vercel env vars) or — since it's
+independent of the app runtime — in a small dedicated GitHub Action. With auto-restore in
+place, a lapsed keep-alive becomes self-correcting instead of a manual rescue.

@@ -8,3 +8,4 @@ node_modules
 /src/routes/test
 !.env.example
 .todo.txt
+.mcp.json
