@@ -34,3 +34,11 @@ do $$ begin
 end $$;
 select 'Concurrent household qualification passed' as result;
 SQL
+
+# Fresh schema for coordinator workflows, independent of the original suite.
+docker exec "$backpack_container" createdb -U postgres backpack_coordinator_test
+node scripts/backpack-test-fixture.mjs --reuse-roles | docker exec -i "$backpack_container" psql -X -U postgres -d backpack_coordinator_test -v ON_ERROR_STOP=1 -q
+for migration in supabase/migrations/*backpack*.sql; do
+  docker exec -i "$backpack_container" psql -X -U postgres -d backpack_coordinator_test -v ON_ERROR_STOP=1 -q < "$migration"
+done
+docker exec -i "$backpack_container" psql -X -U postgres -d backpack_coordinator_test -v ON_ERROR_STOP=1 -q < supabase/tests/backpack_coordinator.sql

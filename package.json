@@ -8,7 +8,7 @@
 		"preview": "vite preview",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"test:backpack": "node tests/backpack.test.mjs && node scripts/generate-backpack-catalogue.mjs --check",
+		"test:backpack": "node tests/backpack.test.mjs && node tests/backpack-coordinator.test.mjs && node scripts/generate-backpack-catalogue.mjs --check",
 		"test:backpack:db": "bash scripts/test-backpack-db.sh"
 	},
 	"devDependencies": {

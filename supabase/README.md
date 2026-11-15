@@ -42,7 +42,8 @@ bash scripts/test-backpack-db.sh
 
 The database script creates and stops only its own disposable `soc-backpack-tests-*`
 Docker container, with no network, host ports, project volumes or real user data.
-It uses the locally available `postgis/postgis:17-3.5` image. Its Auth and profile
+It uses the locally available `postgis/postgis:17-3.5` image and a second fresh
+synthetic database for the coordinator workflows. Its Auth and profile
 fixtures are derived from the catalogue and are used only for tests.
 
 The tests cover blank/zero/No/None answers, conditional exclusions, baseline
@@ -63,7 +64,7 @@ These placeholders are not suitable for interactive authentication or data acces
 
 ## Migrations and privileges
 
-Apply migrations in filename order to a staging database with the existing app
+Apply migrations, including the coordinator migration, in filename order to a staging database with the existing app
 schema, using your normal Supabase migration workflow. Review and back up the
 hosted database before considering production application. Do not run the synthetic
 fixture or test SQL against a real project.
@@ -84,7 +85,9 @@ and `backpack_finish_email` are executable only by the service role or database
 owner. `backpack_record_submission()` is also available to authenticated users,
 but accepts no user ID and assesses only `auth.uid()`. No participant can nominate themselves into another household or inspect
 another member's answers through these functions. Table Editor/database-owner
-access is currently the administrative interface; there is no coordinator UI yet.
+access remains available for privileged setup. The second phase adds
+[authenticated coordinator operations](coordinator-operations.md) for reviewed
+households, awards, special cases and baseline approval; there is no coordinator UI yet.
 
 Existing `get_new_users_confirmed*` and KYNG reports are deliberately preserved.
 Use the new structured `backpack_report()` alongside them to compare outcomes;
@@ -110,12 +113,17 @@ approved. The new logic never depends on the external KYNG/addressing service.
    profile URL. Enable assessment only; keep email disabled.
 5. Rerun `backpack_baseline()` with these final rules and resolved households.
    Review `select * from public.backpack_report();` and reconcile historical awards.
-   Mark `baseline_completed_at` only after that review. Approved policies with
+   Use the coordinator `run_baseline`/`review_baseline` actions to record that review
+   and mark baseline readiness. Approved policies with
    assessments are immutable except for enable switches/baseline completion:
    create a new policy version to change rules or email configuration.
 6. Exercise delivery in a staging project and test inboxes, then deliberately enable
    the policy's `email_enabled` and the server worker switch. No scheduler is added
    by this implementation; configure one separately once rollout is approved.
+
+Prefer the [coordinator API](coordinator-operations.md) for audited changes and
+explicit baseline/live operation modes. The following database-owner workflow is
+for privileged setup/reconciliation.
 
 Coordinator decisions in `backpack.special_cases` must retain decision, reviewer,
 reason and time. After an approved membership/contact/special-case change, call

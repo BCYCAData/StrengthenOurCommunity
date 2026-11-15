@@ -15,7 +15,10 @@ for (const q of questions)
 				: 'text'
 		);
 	}
-console.log(`create role anon; create role authenticated; create role service_role bypassrls;
+const roles = process.argv.includes('--reuse-roles')
+	? ''
+	: 'create role anon; create role authenticated; create role service_role bypassrls;';
+console.log(`${roles}
 create schema auth;
 create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
 create table auth.users(id uuid primary key,email text,created_at timestamptz not null default now(),email_confirmed_at timestamptz,last_sign_in_at timestamptz,raw_app_meta_data jsonb default '{}',raw_user_meta_data jsonb default '{}');
