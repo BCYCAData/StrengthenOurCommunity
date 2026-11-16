@@ -5,10 +5,14 @@ production baselines, awards or emails have been performed by this change.
 
 This phase replaces direct private-table editing for household review, special
 cases, backpack records and baseline approval. The interface is at
-`/admin/backpacks`, linked from the admin navigation. See [backend setup](README.md) for prerequisites
-and the still-outstanding cutoff/question policy.
+`/admin/backpacks`, linked from the admin navigation. See [backend setup](README.md)
+for prerequisites and the still-outstanding cutoff/question policy.
 
 ## Authorization and activation
+
+For an isolated CLI-managed Docker test instance, see
+[local Supabase testing](../docs/local-supabase.md). It applies these migrations
+locally, creates synthetic accounts and configures the local coordinator page.
 
 The migration `20261116000000_backpack_coordinator.sql` adds a private coordinator
 allowlist, audit history, baseline-run records and a single public RPC,
@@ -113,28 +117,73 @@ const readiness = await backpack('baseline_preview');
 ```
 
 Browsers supply the Origin header automatically. The endpoint requires the exact
-same origin, bounds request bodies to 16 KiB, rejects unknown actions/arguments and
-sets `Cache-Control: private, no-store`. It never forwards an actor/reviewer ID.
+same origin, bounds request bodies to 16 KiB, rejects unknown actions/arguments
+and sets `Cache-Control: private, no-store`. It never forwards an
+actor/reviewer ID.
 Database authorization is also enforced on direct RPC calls. Raw SQL/provider
 error text is not returned to clients.
 
 ## Operations
 
-| Action                | Arguments                                                                                                                         | Behaviour                                                                                                                                                                                                                      |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `snapshot`            | Optional `limit` (1–100), `offset` (0–100000), `search` (up to 120 characters), `filter`                                          | Paginated coordinator member report, matching addresses/property evidence, safe policy settings, readiness, notification counts and recent baseline runs. Filters: all, pending, special_case, incomplete, qualified, awarded. |
-| `household_details`   | `household_id`                                                                                                                    | Complete household membership and review evidence, independent of directory pagination.                                                                                                                                        |
-| `list_awards`         | Optional `limit`, `offset`, `search`                                                                                              | Paginated award records with contact/member information and delivery history.                                                                                                                                                  |
-| `baseline_preview`    | None                                                                                                                              | Read-only readiness counts. Does not assess users or create candidates. `assessable_accounts` means confirmed non-test accounts, not households entitled to an award.                                                          |
-| `preview_household`   | `household_id`, `member_ids`                                                                                                      | Read-only preview of proposed members and related household/history evidence, with a revision token. A property ID never automatically merges accounts.                                                                        |
-| `confirm_household`   | `household_id`, `member_ids`, `contact_user_id`, `revision`, optional `property_id`, `note`, optional `mode`                      | Confirm a reviewed household and nominate its contact. Requires a current preview and every existing target member. Default mode reassesses without emails and invalidates baseline approval.                                  |
-| `decide_special_case` | `user_id`, `programme`, `decision`, `note`, optional `mode`                                                                       | Record pending/approved/declined with the authenticated reviewer and timestamp. Does not waive required answers. Default mode reassesses without emails and invalidates baseline approval.                                     |
-| `record_award`        | `household_id`, `programme`, `reference`, `historical`, `note`; optional `original_user_id`, `awarded_at`, `delivered_at`, `mode` | Record/import one award for the resolved household. Reference provides replay protection. Historical unknown dates stay NULL. A current award requires enabled policy and current qualification.                               |
-| `record_delivery`     | `award_id`, `delivered_at`, `note`, optional `mode`                                                                               | Record a known delivery once. Repeating the same fact is harmless; a conflicting date requires reconciliation rather than overwriting history.                                                                                 |
-| `run_baseline`        | `policy_id`, `note`                                                                                                               | Run the no-email baseline for the current policy and retain its evidence fingerprint, summary and reviewer. Unconfigured preparation runs are allowed but cannot be approved as ready.                                         |
-| `review_baseline`     | `run_id`, `note`                                                                                                                  | Approve a still-current, blocker-free baseline. Records reviewer/time and sets the policy's baseline-completed timestamp. Never enables email.                                                                                 |
+- `snapshot`
+  - Arguments: Optional `limit` (1–100), `offset` (0–100000), `search` (up to
+    120 characters), `filter`.
+  - Behaviour: Paginated coordinator member report, matching addresses/property
+    evidence, safe policy settings, readiness, notification counts and recent
+    baseline runs. Filters: all, pending, special_case, incomplete, qualified,
+    awarded.
+- `household_details`
+  - Arguments: `household_id`.
+  - Behaviour: Complete household membership and review evidence, independent of
+    directory pagination.
+- `list_awards`
+  - Arguments: Optional `limit`, `offset`, `search`.
+  - Behaviour: Paginated award records with contact/member information and
+    delivery history.
+- `baseline_preview`
+  - Arguments: None.
+  - Behaviour: Read-only readiness counts. Does not assess users or create
+    candidates. `assessable_accounts` means confirmed non-test accounts, not
+    households entitled to an award.
+- `preview_household`
+  - Arguments: `household_id`, `member_ids`.
+  - Behaviour: Read-only preview of proposed members and related
+    household/history evidence, with a revision token. A property ID never
+    automatically merges accounts.
+- `confirm_household`
+  - Arguments: `household_id`, `member_ids`, `contact_user_id`, `revision`,
+    optional `property_id`, `note`, optional `mode`.
+  - Behaviour: Confirm a reviewed household and nominate its contact. Requires a
+    current preview and every existing target member. Default mode reassesses
+    without emails and invalidates baseline approval.
+- `decide_special_case`
+  - Arguments: `user_id`, `programme`, `decision`, `note`, optional `mode`.
+  - Behaviour: Record pending/approved/declined with the authenticated reviewer
+    and timestamp. Does not waive required answers. Default mode reassesses
+    without emails and invalidates baseline approval.
+- `record_award`
+  - Arguments: `household_id`, `programme`, `reference`, `historical`, `note`;
+    optional `original_user_id`, `awarded_at`, `delivered_at`, `mode`.
+  - Behaviour: Record/import one award for the resolved household. Reference
+    provides replay protection. Historical unknown dates stay NULL. A current
+    award requires enabled policy and current qualification.
+- `record_delivery`
+  - Arguments: `award_id`, `delivered_at`, `note`, optional `mode`.
+  - Behaviour: Record a known delivery once. Repeating the same fact is harmless;
+    a conflicting date requires reconciliation rather than overwriting history.
+- `run_baseline`
+  - Arguments: `policy_id`, `note`.
+  - Behaviour: Run the no-email baseline for the current policy and retain its
+    evidence fingerprint, summary and reviewer. Unconfigured preparation runs
+    are allowed but cannot be approved as ready.
+- `review_baseline`
+  - Arguments: `run_id`, `note`.
+  - Behaviour: Approve a still-current, blocker-free baseline. Records
+    reviewer/time and sets the policy's baseline-completed timestamp. Never
+    enables email.
 
-Use UUIDs for identifiers and ISO 8601 timestamps with explicit `Z` or UTC offset.
+Use UUIDs for identifiers and ISO 8601 timestamps with explicit `Z` or UTC
+offset.
 Notes must contain 1–2000 characters. A reference must contain 1–200 characters.
 The historical flag is an explicit boolean, not a string. One household review
 accepts at most 50 distinct member IDs. Unknown/malformed values are rejected by
@@ -201,11 +250,11 @@ a different household or conflicting supplied facts produces a conflict. Another
 reference for an already-awarded household also produces a conflict. A reference
 is an identifier, not a deduplication mechanism based on names or email addresses.
 
-An original user, when supplied, must belong to the confirmed household. Keep the
-source reference and meaningful provenance note. Set missing historical award and
-delivery dates to NULL or omit them; the server does not guess dates. Recording a
-later known delivery does not fill in an unknown award date. A replay of the import
-after delivery preserves that delivery record.
+An original user, when supplied, must belong to the confirmed household. Keep
+the source reference and meaningful provenance note. Set missing historical
+award and delivery dates to NULL or omit them; the server does not guess dates.
+Recording a later known delivery does not fill in an unknown award date. A replay
+of the import after delivery preserves that delivery record.
 
 For `historical=false`, the household must independently satisfy current policy.
 An omitted award time records the actual allocation time. Replays reuse that time.
@@ -226,34 +275,36 @@ emails retain their original acknowledgement/history.
    baseline-completed timestamp.
 3. Run `baseline_preview` to inspect readiness; it reports configuration, missing
    assessments, unresolved memberships, missing contacts and pending special cases.
-4. Run `run_baseline` for the current policy. This records the real inputs used for
-   the baseline without producing email jobs or artificial dates.
+4. Run `run_baseline` for the current policy. This records the real inputs used
+   for the baseline without producing email jobs or artificial dates.
 5. Inspect the summary and report, then submit `review_baseline` with its run ID.
-   Approval rejects an unconfigured policy, outstanding blockers, an old policy or
-   evidence that changed after the run. Rerun and review after such changes.
+   Approval rejects an unconfigured policy, outstanding blockers, an old policy
+   or evidence that changed after the run. Rerun and review after such changes.
 6. An approved review records readiness only. The separate email policy/environment
    switches and authenticated schedule still require deliberate later activation.
 
-Baseline fingerprints cover relevant account/profile data, memberships, household
-records, review evidence, special cases, awards and rule configuration. They do not
-read password hashes, tokens, SMTP passwords or API keys. Baseline runs/reviews take
-brief database maintenance locks to keep that snapshot consistent, not locks held
-while an operator reads the report in their browser.
+Baseline fingerprints cover relevant account/profile data, memberships,
+household records, review evidence, special cases, awards and rule configuration.
+They do not read password hashes, tokens, SMTP passwords or API keys. Baseline runs
+and reviews take brief database maintenance locks to keep that snapshot consistent,
+not locks held while an operator reads the report in their browser.
 
-Read-only actions do not create audit entries. Successful mutations record actor,
-action, mode where applicable, note, target and relevant evidence in private `coordinator_audit`. Duplicate
-award imports, identical delivery updates and repeated approval of the same baseline
-do not create duplicate mutation entries. Existing assessment/email history remains
+Read-only actions do not create audit entries. Successful mutations record
+actor, action, mode where applicable, note, target and relevant evidence in
+private `coordinator_audit`. Duplicate award imports, identical delivery updates
+and repeated approval of the same baseline do not create duplicate mutation entries.
+Existing assessment/email history remains
 separate and no operation fabricates an accepted/sent email timestamp.
 
 ## Verification and remaining work
 
-`npm run test:backpack` includes API authorization, request bounds, strict action
-validation, CSRF checks, safe errors, JWT forwarding, page access guards, CSV parsing,
-Sydney/UTC conversion and component compilation/accessibility warnings. The database test script
-runs coordinator SQL in a second fresh synthetic database, independently of the
-first-phase qualification/concurrency suite. It covers actual authenticated RPC
-execution, revocation, stale previews/baselines, blockers, merges, idempotence,
+The `npm run test:backpack` suite includes API authorization, request bounds,
+strict action validation, CSRF checks, safe errors, JWT forwarding, page access
+guards, CSV parsing, Sydney/UTC conversion and component compilation/accessibility
+warnings. The database test script runs coordinator SQL in a second fresh synthetic
+database, independently of the first-phase qualification/concurrency suite. It
+covers actual authenticated RPC execution, revocation, stale previews/baselines,
+blockers, merges, idempotence,
 unknown dates, special cases, duplicate/current-award protection and authorized,
 bounded UI read models without sensitive questionnaire answers.
 

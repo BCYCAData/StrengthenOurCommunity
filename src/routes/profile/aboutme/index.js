@@ -1,3 +1,4 @@
+import { env } from '$env/dynamic/private';
 import { recordBackpackSubmission } from '$lib/server/backpack/submission';
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
@@ -66,7 +67,7 @@ export const POST = async ({ locals, request }) =>
 				};
 			}
 			if (profileData.length === 1) {
-				await recordBackpackSubmission(supabaseServerClient(request));
+				await recordBackpackSubmission(supabaseServerClient(request), env);
 				let profileAboutMe = profileData[0];
 				return {
 					status: 200,

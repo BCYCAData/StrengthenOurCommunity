@@ -11,3 +11,5 @@ node_modules
 .mcp.json
 /.codex/config.toml
 /docs/backpack-email-implementation-plan.md
+/.supabase-local/
+/supabase/.temp/

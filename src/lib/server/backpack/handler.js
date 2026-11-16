@@ -1,7 +1,7 @@
 import { timingSafeEqual } from 'node:crypto';
 import { dispatchBackpackEmail } from './dispatch.js';
 
-export function createDispatchHandler({ env, createClient }) {
+export function createDispatchHandler({ env, createClient, fetchEmail = fetch }) {
 	return async function POST({ request }) {
 		const secret = env.BACKPACK_WORKER_SECRET;
 		const received = request.headers.get('authorization') || '';
@@ -27,7 +27,7 @@ export function createDispatchHandler({ env, createClient }) {
 				autoRefreshToken: false,
 				detectSessionInUrl: false
 			});
-			const result = await dispatchBackpackEmail(client, resendKey);
+			const result = await dispatchBackpackEmail(client, resendKey, fetchEmail);
 			return { status: 200, body: result };
 		} catch {
 			// Avoid logging credentials, addresses, provider response bodies or survey answers.

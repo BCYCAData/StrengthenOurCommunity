@@ -193,8 +193,41 @@ test('explicit submission hook is gated and cannot choose another user', async (
 	};
 	await recordBackpackSubmission(client, {});
 	assert.equal(calls.length, 0);
+	await recordBackpackSubmission(client);
+	assert.equal(calls.length, 0);
 	await recordBackpackSubmission(client, { BACKPACK_ASSESSMENT_ENABLED: 'true' });
 	assert.deepEqual(calls, [['backpack_record_submission']]);
+});
+
+test('HTTP worker supports a test transport while recording the real acknowledgement flow', async () => {
+	const client = clientFor();
+	let providerCalls = 0;
+	const handler = createDispatchHandler({
+		env: {
+			BACKPACK_WORKER_SECRET: 'test-worker',
+			BACKPACK_EMAIL_WORKER_ENABLED: 'true',
+			SUPABASE_URL: 'http://127.0.0.1:54921',
+			SUPABASE_SERVICE_ROLE_KEY: 'local-test-key',
+			RESEND_API_KEY: 'simulated-provider'
+		},
+		createClient: () => client,
+		fetchEmail: async (url, init) => {
+			providerCalls++;
+			assert.equal(url, 'https://api.resend.com/emails');
+			assert.deepEqual(JSON.parse(init.body), job.payload);
+			return new Response(JSON.stringify({ id: 'LOCAL-SIMULATED-ACK' }));
+		}
+	});
+	const result = await handler({
+		request: new Request('http://127.0.0.1/api/backpack/dispatch', {
+			method: 'POST',
+			headers: { authorization: 'Bearer test-worker' }
+		})
+	});
+	assert.equal(result.status, 200);
+	assert.equal(result.body.status, 'accepted');
+	assert.equal(providerCalls, 1);
+	assert.equal(client.calls[1].args.p_provider_id, 'LOCAL-SIMULATED-ACK');
 });
 
 test('enabled HTTP worker uses the installed Supabase v1 server-only options', async () => {

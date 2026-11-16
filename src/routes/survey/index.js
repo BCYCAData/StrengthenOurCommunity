@@ -1,3 +1,4 @@
+import { env } from '$env/dynamic/private';
 import { recordBackpackSubmission } from '$lib/server/backpack/submission';
 import { optionalCount } from '$lib/surveyAnswerValues';
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
@@ -158,7 +159,7 @@ export const POST = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
-			if (surveyAnswers?.length) await recordBackpackSubmission(supabaseServerClient(request));
+			if (surveyAnswers?.length) await recordBackpackSubmission(supabaseServerClient(request), env);
 			return {
 				headers: { Location: '/profile' },
 				status: 302,

@@ -10,7 +10,12 @@
 		"format": "prettier --write --plugin-search-dir=. .",
 		"test:backpack": "node tests/backpack.test.mjs && node tests/backpack-coordinator.test.mjs && node tests/backpack-ui.test.mjs && node scripts/generate-backpack-catalogue.mjs --check",
 		"test:backpack:db": "bash scripts/test-backpack-db.sh",
-		"test:backpack:ui": "node scripts/test-backpack-ui.mjs"
+		"test:backpack:ui": "node scripts/test-backpack-ui.mjs",
+		"supabase:start": "node scripts/local-supabase.mjs start",
+		"supabase:stop": "node scripts/local-supabase.mjs stop",
+		"supabase:status": "node scripts/local-supabase.mjs status",
+		"supabase:seed": "node scripts/local-supabase.mjs seed",
+		"test:backpack:e2e": "node scripts/test-backpack-e2e.mjs"
 	},
 	"devDependencies": {
 		"@iconify-json/carbon": "^1.1.7",
@@ -25,6 +30,7 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
+		"supabase": "2.119.0",
 		"svelte": "^3.44.0",
 		"svelte-youtube-embed": "^0.1.11",
 		"unocss": "^0.45.1",

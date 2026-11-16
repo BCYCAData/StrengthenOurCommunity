@@ -16,7 +16,22 @@ npm init svelte my-app
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+For an isolated Supabase database with synthetic test accounts, see
+[local Supabase testing](docs/local-supabase.md). Run `npm run supabase:start`
+before starting the app to use that local instance.
+
+Install dependencies with `npm install`, then copy `.env.example` to `.env.local`.
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to the intended Supabase
+project's URL and public anon key. Set `VITE_SUPABASE_REDIRECT_URL_BASE` to the
+local app URL (normally `http://localhost:5173`); use the same URL in the Supabase
+Auth redirect allowlist when testing sign-in or password reset links.
+
+`.env.local` is Git-ignored. Keep service-role and Resend keys out of all `VITE_`
+variables, which are public browser configuration. Leave the backpack switches
+disabled until the programme is ready. A local frontend still uses the Supabase
+project specified in this file. Restart the dev server after changing settings.
+
+Start the development server:
 
 ```bash
 npm run dev

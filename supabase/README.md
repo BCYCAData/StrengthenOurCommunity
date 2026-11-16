@@ -33,6 +33,10 @@ notification history. Account/profile answers remain in their existing tables.
 
 ## Local verification
 
+For the real Auth/HTTP/database flow with simulated email delivery, run
+`npm run test:backpack:e2e`. It uses a separate disposable local stack and explicitly
+labelled test rules; see [the test guide](../docs/local-backpack-e2e.md).
+
 No extra npm packages are required. Run from the repository root:
 
 ```bash
