@@ -68,3 +68,11 @@ use the same loader. Server credentials stay out of browser configuration.
 The usual local setup continues to leave `BACKPACK_ASSESSMENT_ENABLED` and
 `BACKPACK_EMAIL_WORKER_ENABLED` false. Running this test does not enable them in
 your normal dev app or configure a production scheduler.
+
+The additional committee-v2 phase uses synthetic approved rules in this disposable
+stack only. It saves the real revised survey fields, verifies No/zero/None and
+Electric vehicles, rejects invalid access codes without a partial write, preserves
+legacy asset text/retired answers, checks own-only status and shared-household
+qualification, and dismisses congratulations without an email timestamp. The
+readiness probe reaches an API route before SSR to cover cold-start Auth setup.
+No actual committee CSV or real email provider is used.

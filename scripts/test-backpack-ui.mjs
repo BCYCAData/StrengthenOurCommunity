@@ -33,10 +33,13 @@ async function main() {
 		);
 		await writeFile(
 			join(fixture, 'main.js'),
-			`import App from '/@fs/${join(
+			`import FormFixture from '/@fs/${join(
+				root,
+				'tests/fixtures/CommitteeForm.svelte'
+			)}';import App from '/@fs/${join(
 				root,
 				'src/components/backpack/BackpackCoordinator.svelte'
-			)}';\nconst state=new URLSearchParams(location.search).get('access')||'ready';new App({target:document.querySelector('#app'),props:{initialSnapshot:state==='ready'?${JSON.stringify(
+			)}';\nconst state=new URLSearchParams(location.search).get('access')||'ready';if(new URLSearchParams(location.search).has('forms'))new FormFixture({target:document.querySelector('#app')});else new App({target:document.querySelector('#app'),props:{initialSnapshot:state==='ready'?${JSON.stringify(
 				initial
 			)}:null,accessState:state,workerEnabled:false}});`
 		);
@@ -202,6 +205,48 @@ async function main() {
 		await baseline.getByRole('button', { name: 'Approve baseline readiness' }).click();
 		await baseline.getByRole('status').filter({ hasText: 'Baseline readiness approved' }).waitFor();
 		assert.equal(backend.policy.email_enabled, false);
+		await page.getByRole('tab', { name: 'Committee returns', exact: true }).click();
+		const committeePanel = page.getByRole('tabpanel', { name: 'Committee returns', exact: true });
+		await committeePanel.getByLabel('Private reconciliation report').setInputFiles({
+			name: 'synthetic-review.json',
+			mimeType: 'application/json',
+			buffer: Buffer.from(
+				JSON.stringify({
+					source_sha256: 'a'.repeat(64),
+					summary: { total: 1, marked_awards: 1, deletion_requests: 0 },
+					rows: [
+						{
+							source_row: 2,
+							email: 'alice@example.test',
+							source_date: '1/2/2024',
+							awarded_on: '2024-02-01',
+							classification: 'starter_kit_candidate',
+							errors: [],
+							decision: 'pending'
+						}
+					]
+				})
+			)
+		});
+		await committeePanel.getByLabel('Source row', { exact: true }).selectOption('2');
+		await committeePanel.getByLabel('Reviewed decision').selectOption('starter_kit');
+		await committeePanel
+			.getByLabel('Review and provenance note')
+			.fill('Synthetic test: verified this source record is a starter kit.');
+		await committeePanel
+			.getByRole('button', { name: 'Resolve account and preview decision' })
+			.click();
+		await committeePanel.getByRole('heading', { name: 'Review before recording' }).waitFor();
+		await committeePanel
+			.getByLabel('I checked that this is the same participant, not a reused email address.')
+			.check();
+		await committeePanel.getByRole('button', { name: 'Record reviewed decision' }).click();
+		await committeePanel
+			.getByRole('status')
+			.filter({ hasText: 'Reviewed decision recorded' })
+			.waitFor();
+		await page.getByRole('tab', { name: 'Emails', exact: true }).click();
+		await page.getByRole('table', { name: 'Backpack email history' }).waitFor();
 		await page.setViewportSize({ width: 390, height: 844 });
 		await page.getByRole('tab', { name: 'Households', exact: true }).click();
 		assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
@@ -220,6 +265,40 @@ async function main() {
 		);
 		assert.equal(await page.getByRole('table').count(), 0);
 		assert.equal(backend.calls.length, before);
+		await page.goto(`${origin}/?forms=1`, { waitUntil: 'networkidle' });
+		assert.equal(await page.locator('input[name="has_other_critical_assets"]:checked').count(), 0);
+		const access = page.getByRole('group', {
+			name: 'Is access to your property restricted?',
+			exact: true
+		});
+		await access.getByLabel('Yes', { exact: true }).check();
+		await access.getByLabel('Coded gates', { exact: true }).check();
+		assert(
+			await access
+				.getByRole('group', { name: 'If yes, please select the restrictions that apply' })
+				.isVisible()
+		);
+		await access.getByLabel('No', { exact: true }).check();
+		assert(
+			!(await access
+				.getByRole('group', { name: 'If yes, please select the restrictions that apply' })
+				.isVisible())
+		);
+		await page
+			.getByRole('group', { name: 'Your house may not be the only critical asset.', exact: true })
+			.getByLabel('No', { exact: true })
+			.check();
+		await page.getByRole('button', { name: 'Save partial answers' }).click();
+		const values = await page.locator('pre[role="status"]').innerText();
+		assert(values.includes('["has_other_critical_assets","false"]'));
+		assert(values.includes('["property_access_restricted","false"]'));
+		assert(!values.includes('property_access_restrictions'));
+		await page.getByRole('button', { name: 'Go to survey step 10 of 11', exact: true }).click();
+		assert.equal(await page.getByLabel('Underlying form step').innerText(), '11');
+		await page.getByRole('button', { name: 'Go to survey step 11 of 11', exact: true }).click();
+		assert.equal(await page.getByLabel('Underlying form step').innerText(), '12');
+		assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+		await page.screenshot({ path: '/tmp/backpack-committee-forms-mobile.png', fullPage: true });
 		assert.deepEqual(errors, []);
 		assert(backend.calls.every((c) => !['enable_email', 'activate'].includes(c.action)));
 		console.log(

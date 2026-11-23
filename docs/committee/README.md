@@ -1,27 +1,25 @@
 # Committee question worksheet
 
-[Download the PDF](backpack-required-questions.pdf) or open the printable
-[HTML copy](backpack-required-questions.html).
+The revised [committee v2 PDF](backpack-required-questions-committee-v2.pdf) and
+[printable HTML](backpack-required-questions-committee-v2.html) contain the 36 active
+question IDs, including Q36/Q36a. The original [17 November PDF](backpack-required-questions.pdf)
+and [HTML](backpack-required-questions.html) remain historical references.
 
-The four-page A4 landscape worksheet contains all 41 question IDs from
-`config/survey-questions.json`, with the original prompts, profile sections,
-conditional applicability, blank decision boxes and space for notes. Brief answer
-context clarifies prompts such as “Are you:” without changing the original wording.
-The final page includes a scope/exclusion summary and approval fields.
+The current catalogue retains seven retired IDs (Q27–Q33) for historical answers.
+The revised four-page worksheet has blank decision boxes; it does not approve or
+activate the proposed committee policy. See [the catalogue](../survey-question-catalogue.md)
+for required/excluded IDs and outstanding confirmations. Keep completed worksheets
+and personal committee returns in ignored `data/committee/`.
 
-The catalogue's numbering and qualification rules remain pending committee
-approval. Generating or completing this worksheet does not change programme
-configuration. Both decision columns are deliberately left blank.
-
-Regenerate using an available Playwright installation with Chromium:
+Regenerate with an available Playwright installation and Chromium:
 
 ```bash
 node scripts/generate-backpack-committee-worksheet.mjs \
-  --date 2026-11-17 \
+  --date 2026-11-23 \
   --playwright-module /absolute/path/to/playwright/index.mjs
 ```
 
-If Playwright is installed in this project, omit `--playwright-module`.
-`PLAYWRIGHT_MODULE` is also supported. Omitting `--date` uses the current date in
-Australia/Sydney. The script checks complete question coverage and page overflow,
-then writes HTML/PDF here and page previews under `/tmp/backpack-committee-page-*.png`.
+Omit `--playwright-module` when Playwright is installed in this project;
+`PLAYWRIGHT_MODULE` is also supported. Without `--date`, the script uses today's
+Australia/Sydney date. Generation checks active-question coverage and page overflow,
+and writes page previews under `/tmp/backpack-committee-page-*.png`.

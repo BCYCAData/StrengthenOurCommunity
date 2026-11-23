@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
-const { questions } = JSON.parse(readFileSync('config/survey-questions.json', 'utf8'));
+const legacy = JSON.parse(readFileSync('config/catalogues/2026-11-proposed-v1.json', 'utf8'));
+const current = JSON.parse(readFileSync('config/survey-questions.json', 'utf8'));
+const questions = [...legacy.questions, ...current.questions];
 const fields = new Map();
 for (const q of questions)
 	for (const r of q.fields) {

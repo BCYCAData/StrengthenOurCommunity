@@ -1,3 +1,4 @@
+import { accessAnswers, assetAnswers } from '$lib/committeeAnswers';
 import { env } from '$env/dynamic/private';
 import { recordBackpackSubmission } from '$lib/server/backpack/submission';
 import { optionalCount } from '$lib/surveyAnswerValues';
@@ -12,12 +13,9 @@ export const GET = async ({ locals, request }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: survey, error: surveyError } = await supabaseClient.rpc(
-				'user_has_survey_results',
-				{
-					email_input: locals.user.email
-				}
-			);
+			const { data: survey } = await supabaseClient.rpc('user_has_survey_results', {
+				email_input: locals.user.email
+			});
 			if (survey) {
 				const { data: survey, error: errorSurvey } = await supabaseServerClient(request)
 					.from('survey_responses')
@@ -94,9 +92,16 @@ export const POST = async ({ locals, request }) =>
 		async () => {
 			const body = await request.formData();
 			const bodyObject = setMissing(getFormBody(body));
+			let committeeAnswers;
+			try {
+				committeeAnswers = { ...accessAnswers(body), ...assetAnswers(body) };
+			} catch (error) {
+				return { status: 400, body: { error: error.message } };
+			}
 			const { data: surveyAnswers, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
+					...committeeAnswers,
 					first_name: bodyObject.first_name,
 					family_name: bodyObject.family_name,
 					property_address_street: bodyObject.property_address_street,
@@ -125,7 +130,6 @@ export const POST = async ({ locals, request }) =>
 					live_stock_present: bodyObject.live_stock_present,
 					live_stock_safe_area: bodyObject.live_stock_safe_area,
 					share_livestock_safe_area: bodyObject.share_livestock_safe_area,
-					other_essential_assets: bodyObject.other_essential_assets,
 					static_water_available: setArray(bodyObject.static_water_available),
 					have_stortz: bodyObject.have_stortz,
 					stortz_size: parseInt(bodyObject.stortz_size),
@@ -141,13 +145,6 @@ export const POST = async ({ locals, request }) =>
 					fire_trauma: bodyObject.fire_trauma,
 					plan_to_leave_before_fire: parseInt(bodyObject.plan_to_leave_before_fire),
 					plan_to_leave_before_flood: parseInt(bodyObject.plan_to_leave_before_flood),
-					community_workshop_choices: setArray(bodyObject.community_workshop_choices),
-					other_community_workshop: bodyObject.other_community_workshop,
-					will_run_community_workshops: bodyObject.will_run_community_workshops,
-					information_sheet_choices: setArray(bodyObject.information_sheet_choices),
-					other_information_sheet: bodyObject.other_information_sheet,
-					community_meeting_choices: setArray(bodyObject.community_meeting_choices),
-					other_community_meeting: bodyObject.other_community_meeting,
 					stay_in_touch_choices: setArray(bodyObject.stay_in_touch_choices),
 					other_comments: bodyObject.other_comments
 				})
@@ -197,7 +194,6 @@ const check = [
 	'live_stock_present',
 	'live_stock_safe_area',
 	'share_livestock_safe_area',
-	'other_essential_assets',
 	'static_water_available',
 	'have_stortz',
 	'stortz_size',
@@ -212,20 +208,13 @@ const check = [
 	'fire_trauma',
 	'plan_to_leave_before_fire',
 	'plan_to_leave_before_flood',
-	'community_workshop_choices',
-	'other_community_workshop',
-	'will_run_community_workshops',
-	'information_sheet_choices',
-	'other_information_sheet',
-	'community_meeting_choices',
-	'other_community_meeting',
 	'stay_in_touch_choices',
 	'other_comments'
 ];
 
 function setMissing(data) {
 	for (let i = 0; i < check.length; i++) {
-		if (!data.hasOwnProperty(check[i])) {
+		if (!Object.hasOwn(data, check[i])) {
 			data[check[i]] = null;
 		}
 	}

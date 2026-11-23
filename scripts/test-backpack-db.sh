@@ -12,9 +12,10 @@ for attempt in {1..40}; do
   sleep 0.5
 done
 node scripts/backpack-test-fixture.mjs | docker exec -i "$backpack_container" psql -X -U postgres -v ON_ERROR_STOP=1 -q
-for migration in supabase/migrations/*backpack*.sql; do
+for migration in supabase/migrations/*.sql; do
   docker exec -i "$backpack_container" psql -X -U postgres -v ON_ERROR_STOP=1 -q < "$migration"
 done
+docker exec "$backpack_container" psql -X -U postgres -v ON_ERROR_STOP=1 -q -c "delete from backpack.policy_review_requests; delete from backpack.policies where catalogue_version='2026-11-committee-v2'; delete from backpack.catalogues where version='2026-11-committee-v2';"
 docker exec -i "$backpack_container" psql -X -U postgres -v ON_ERROR_STOP=1 -q < supabase/tests/backpack.sql
 
 # Independent database sessions: both members qualify the same household at once.
@@ -38,7 +39,17 @@ SQL
 # Fresh schema for coordinator workflows, independent of the original suite.
 docker exec "$backpack_container" createdb -U postgres backpack_coordinator_test
 node scripts/backpack-test-fixture.mjs --reuse-roles | docker exec -i "$backpack_container" psql -X -U postgres -d backpack_coordinator_test -v ON_ERROR_STOP=1 -q
-for migration in supabase/migrations/*backpack*.sql; do
+for migration in supabase/migrations/*.sql; do
   docker exec -i "$backpack_container" psql -X -U postgres -d backpack_coordinator_test -v ON_ERROR_STOP=1 -q < "$migration"
 done
+docker exec "$backpack_container" psql -X -U postgres -d backpack_coordinator_test -v ON_ERROR_STOP=1 -q -c "delete from backpack.policy_review_requests; delete from backpack.policies where catalogue_version='2026-11-committee-v2'; delete from backpack.catalogues where version='2026-11-committee-v2';"
 docker exec -i "$backpack_container" psql -X -U postgres -d backpack_coordinator_test -v ON_ERROR_STOP=1 -q < supabase/tests/backpack_coordinator.sql
+
+# New rules and historical reconciliation have their own fresh database.
+docker exec "$backpack_container" createdb -U postgres backpack_committee_test
+node scripts/backpack-test-fixture.mjs --reuse-roles | docker exec -i "$backpack_container" psql -X -U postgres -d backpack_committee_test -v ON_ERROR_STOP=1 -q
+# Filename order is essential: questionnaire migration precedes reconciliation.
+for migration in supabase/migrations/*.sql; do
+  docker exec -i "$backpack_container" psql -X -U postgres -d backpack_committee_test -v ON_ERROR_STOP=1 -q < "$migration"
+done
+docker exec -i "$backpack_container" psql -X -U postgres -d backpack_committee_test -v ON_ERROR_STOP=1 -q < supabase/tests/committee.sql

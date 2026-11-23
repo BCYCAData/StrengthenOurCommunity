@@ -7,7 +7,7 @@ notification history. Account/profile answers remain in their existing tables.
 
 ## Defaults and prerequisites
 
-- The initial policy has no cutoff, question scope or exclusion list. It is not
+- The original initial policy has no cutoff, question scope or exclusion list. It is not
   approved; assessment and email switches are false. Unset exclusions differ from
   an explicitly empty list. Unconfigured assessments return no qualification verdict.
 - [config/survey-questions.json](../config/survey-questions.json) is the
@@ -24,7 +24,7 @@ notification history. Account/profile answers remain in their existing tables.
 - Draft cutoff semantics are registered **at or after** the configured instant for
   new entrants; older kit recipients need their own sign-in at or after that
   instant. Confirm this boundary and timezone with the coordinator before activation.
-- `raw_app_meta_data.kit_date` remains historical kit evidence. Its raw value is
+- `raw_app_meta_data.kit_date` and `kitdate` remain historical kit evidence. Its raw value is
   preserved in reports; no backpack award is inferred from it. Confirm historical
   date quality and import known backpack awards before any sending.
 - SQL uses `public.profile` and the hosted project's existing `auth.users` fields.
@@ -206,3 +206,17 @@ choose scheduling/headroom that preserves authentication email availability.
 - Compare/refactor legacy reports only after adopting and validating the new rules.
 - Deploy reviewed migrations and code, run the controlled baseline and enable an
   authenticated schedule only when authorised. No deployment is part of this change.
+
+## Committee-v2 completion
+
+The 23 November migrations seed a separate **unapproved, disabled** committee-v2
+policy, including explicit pending confirmations. They add the new form fields,
+reviewed kit/backpack evidence, reversible account exclusions, participant-only
+status/dismissal and coordinator notification history. No historical source row is
+automatically treated as an award or deletion. See the
+[committee reconciliation and rollout instructions](coordinator-operations.md#committee-returns-and-revised-policy-23-november-2026).
+
+The database harness now uses three independent synthetic databases, including
+committee rules, metadata aliases, provenance/idempotence, account exclusions and
+own-account privacy. `npm run test:backpack` also checks the CSV parser and bounded
+scheduler. Real delivery webhooks and hosted rollout remain outstanding.

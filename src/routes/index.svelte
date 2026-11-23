@@ -17,8 +17,10 @@
 			Strengthen OUR Community
 		</h1>
 		<p class="unstyled text-base mt-3 mb-0 sm:text-lg text-grey-900">
-			This project, funded by the Bushfire Community Recovery Resilience Fund, is a response to the
-			community’s feedback following the 2019 bushfires.
+			This community led project developed to address the community's feedback from the 2019
+			bushfires, was initially funded by the Bushfire Community Recovery Resilience Fund. It
+			continues due to the commitment of the community and the support of The Burrell Creek Youth
+			and Community Association Inc. Thank you all.
 		</p>
 		<p class="text-base sm:text-lg  mt-1 mb-0">
 			As a community we share the same environment.&nbsp; We want our community to feel prepared for

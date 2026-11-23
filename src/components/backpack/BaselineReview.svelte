@@ -73,6 +73,12 @@
 	</p>{/if}
 <section class="panel">
 	<h3>Programme rules</h3>
+	{#if snapshot?.pending_confirmations?.length}<p>
+			Committee decisions awaiting final confirmation:
+		</p>
+		<ul>
+			{#each snapshot.pending_confirmations as item}<li>{item}</li>{/each}
+		</ul>{/if}
 	<dl>
 		<dt>Cutoff</dt>
 		<dd>{policy?.cutoff_at ? dateText(policy.cutoff_at) : 'Not provided'}</dd>

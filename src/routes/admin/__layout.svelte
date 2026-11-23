@@ -120,20 +120,17 @@
 				<b>and</b>
 				check your answers to all the questions.
 			</p>
-			<p class="ml-2 ">
-				Remember this is <b>your</b>
-				data. To help keep
-				<b>you</b>
-				prepared.
-			</p>
+			<p class="ml-2 ">Remember this is your information. To help you prepare.</p>
 		{/if}
 	</aside>
 	{#if !backpackPage}
 		<div class="messaging bg-stone-200">
 			<div class="flex flex-row justify-around pt-2 text-xl">Messages</div>
 			<div class="flex flex-col h-full my-4 mx-4">
-				<p class="m-2">Congratulations you are now eligible for your FREE Emergency Starter Kit.</p>
-				<p class="m-2">We will be in touch soon.</p>
+				<p class="m-2">
+					Backpack qualification and delivery are managed in the Backpack programme.
+				</p>
+				<p class="m-2">Review the household status before arranging delivery.</p>
 			</div>
 		</div>
 	{/if}

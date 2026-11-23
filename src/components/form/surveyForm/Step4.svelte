@@ -1,7 +1,7 @@
 <script>
+	import CriticalAssets from '$components/form/CriticalAssets.svelte';
 	import { yesNoMaybeOptions, yesNoOptions } from '$lib/profileOptions';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
-	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 
 	export let surveyData;
 
@@ -102,14 +102,7 @@
 	{/if}
 {/if}
 
-<TextAreaInput
-	lableClass="font-bold text-base sm:text-lg"
-	headingText="If there are assets, other than the residence, that you consider essential (eg crops, sheds with equipment or antique cars) please describe them here."
-	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
-	nameText="other_essential_assets"
-	textAreaClass="w-full resize-y sm:text-lg"
-	bind:inputValue={surveyData.other_essential_assets}
-/>
+<CriticalAssets answers={surveyData} prefix="survey-assets" />
 
 <style>
 	ul {

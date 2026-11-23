@@ -1,4 +1,5 @@
 <script>
+	import PropertyAccess from '$components/form/PropertyAccess.svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import { yesNoOptions, residencyOptions, accessOptions } from '$lib/profileOptions';
 
@@ -182,6 +183,7 @@
 		</div>
 	</div>
 
+	<PropertyAccess answers={profileMyPlace} prefix="profile-access" />
 	<!-- truck_access -->
 	<div class="flex flex-row justify-between items-center px-4 mt-2">
 		<label class="text-lg font-bold mb-1" for="truck_access_list">

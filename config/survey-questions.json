@@ -1,6 +1,6 @@
 {
-	"version": "2026-11-proposed-v1",
-	"status": "pending_coordinator_approval",
+	"version": "2026-11-committee-v2",
+	"status": "pending_final_confirmation",
 	"questions": [
 		{
 			"id": "Q1",
@@ -19,7 +19,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q2",
@@ -42,7 +43,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q3",
@@ -57,7 +59,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q3a",
@@ -77,7 +80,8 @@
 					"field": "property_rented",
 					"values": [true]
 				}
-			]
+			],
+			"active": true
 		},
 		{
 			"id": "Q3b",
@@ -101,7 +105,8 @@
 					"field": "property_rented",
 					"values": [true]
 				}
-			]
+			],
+			"active": true
 		},
 		{
 			"id": "Q4",
@@ -116,7 +121,46 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
+		},
+		{
+			"id": "Q36",
+			"step": 2,
+			"label": "Is access to your property restricted?",
+			"section": "My Place",
+			"fields": [
+				{
+					"field": "property_access_restricted",
+					"kind": "boolean"
+				}
+			],
+			"match": "all",
+			"parent_id": null,
+			"applies_when": [],
+			"active": true
+		},
+		{
+			"id": "Q36a",
+			"step": 2,
+			"label": "If yes, which access restrictions apply?",
+			"section": "My Place",
+			"fields": [
+				{
+					"field": "property_access_restrictions",
+					"kind": "array",
+					"values": [1, 2, 3]
+				}
+			],
+			"match": "all",
+			"parent_id": "Q36",
+			"applies_when": [
+				{
+					"field": "property_access_restricted",
+					"values": [true]
+				}
+			],
+			"active": true
 		},
 		{
 			"id": "Q5",
@@ -132,7 +176,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q5a",
@@ -152,7 +197,8 @@
 					"field": "truck_access",
 					"values": [4]
 				}
-			]
+			],
+			"active": true
 		},
 		{
 			"id": "Q6",
@@ -171,7 +217,8 @@
 			],
 			"match": "any",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q7",
@@ -187,7 +234,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q8",
@@ -203,7 +251,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q9",
@@ -230,7 +279,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q10",
@@ -245,7 +295,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q11",
@@ -272,7 +323,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q12",
@@ -287,7 +339,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q12a",
@@ -308,7 +361,8 @@
 					"field": "live_stock_present",
 					"values": [true]
 				}
-			]
+			],
+			"active": true
 		},
 		{
 			"id": "Q12b",
@@ -333,22 +387,24 @@
 					"field": "live_stock_safe_area",
 					"values": ["Y"]
 				}
-			]
+			],
+			"active": true
 		},
 		{
 			"id": "Q13",
 			"step": 4,
-			"label": "If there are assets, other than the residence, that you consider essential (eg crops, sheds with equipment or antique cars) please describe them here.",
+			"label": "Your house may not be the only critical asset. If there are others (e.g. sheds, machinery, crops, livestock), please select Yes. Otherwise select No.",
 			"section": "My Place / Assets",
 			"fields": [
 				{
-					"field": "other_essential_assets",
-					"kind": "text"
+					"field": "has_other_critical_assets",
+					"kind": "boolean"
 				}
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q14",
@@ -365,7 +421,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q15",
@@ -381,7 +438,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q15a",
@@ -401,7 +459,8 @@
 					"field": "have_stortz",
 					"values": ["Y"]
 				}
-			]
+			],
+			"active": true
 		},
 		{
 			"id": "Q16",
@@ -418,7 +477,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q17",
@@ -429,13 +489,14 @@
 				{
 					"field": "site_hazards",
 					"kind": "array",
-					"values": [0, 1, 2, 3, 4],
+					"values": [0, 1, 2, 3, 4, 5],
 					"none_value": 0
 				}
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q18",
@@ -450,7 +511,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q19",
@@ -467,7 +529,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q20",
@@ -483,7 +546,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q21",
@@ -498,7 +562,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q22",
@@ -514,7 +579,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q23",
@@ -530,7 +596,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q24",
@@ -545,7 +612,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q25",
@@ -561,7 +629,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q26",
@@ -577,7 +646,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q27",
@@ -593,7 +663,9 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": false,
+			"retirement_reason": "Replaced by committee information content; historical answers retained."
 		},
 		{
 			"id": "Q28",
@@ -608,7 +680,9 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": false,
+			"retirement_reason": "Replaced by committee information content; historical answers retained."
 		},
 		{
 			"id": "Q29",
@@ -623,7 +697,9 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": false,
+			"retirement_reason": "Replaced by committee information content; historical answers retained."
 		},
 		{
 			"id": "Q30",
@@ -639,7 +715,9 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": false,
+			"retirement_reason": "Replaced by committee information content; historical answers retained."
 		},
 		{
 			"id": "Q31",
@@ -654,7 +732,9 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": false,
+			"retirement_reason": "Replaced by committee information content; historical answers retained."
 		},
 		{
 			"id": "Q32",
@@ -670,7 +750,9 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": false,
+			"retirement_reason": "Replaced by committee information content; historical answers retained."
 		},
 		{
 			"id": "Q33",
@@ -685,7 +767,9 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": false,
+			"retirement_reason": "Replaced by committee information content; historical answers retained."
 		},
 		{
 			"id": "Q34",
@@ -701,7 +785,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		},
 		{
 			"id": "Q35",
@@ -716,7 +801,8 @@
 			],
 			"match": "all",
 			"parent_id": null,
-			"applies_when": []
+			"applies_when": [],
+			"active": true
 		}
 	]
 }

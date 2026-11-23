@@ -1,4 +1,5 @@
 <script>
+	import ParticipantStatus from '$components/backpack/ParticipantStatus.svelte';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import Breadcrumbs from '$components/Breadcrumbs.svelte';
@@ -13,7 +14,7 @@
 		mycommunity: ['My Community', 'carbon:group'],
 		information: ['Information', 'carbon:group'],
 		events: ['Events', 'carbon:group'],
-		workshops: ['Workshops', 'carbon:group'],
+		workshops: ['Getting Ready Together', 'carbon:group'],
 		map: ['Community Map', 'carbon:group'],
 		settings: ['Settings', 'carbon:settings'],
 		password: ['Change Password', 'carbon:settings'],
@@ -78,11 +79,9 @@
 							<a href="/profile/mycommunity/information">Information</a>
 						</li>
 						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/mycommunity/workshops">Workshops</a>
+							<a href="/profile/mycommunity/workshops">Getting Ready Together</a>
 						</li>
-						<li class="hover:bg-orange-300 rounded mt-1">
-							<a href="/profile/mycommunity/events">Events</a>
-						</li>
+
 						<li class="hover:bg-orange-300 rounded mt-1">
 							<a href="/profile/mycommunity/map">Community Map</a>
 						</li>
@@ -111,20 +110,9 @@
 			<b>and</b>
 			check your answers to all the questions.
 		</p>
-		<p class="ml-2 ">
-			Remember this is <b>your</b>
-			data. To help keep
-			<b>you</b>
-			prepared.
-		</p>
+		<p class="ml-2 ">Remember this is your information. To help you prepare.</p>
 	</aside>
-	<div class="messaging bg-stone-200">
-		<div class="flex flex-row justify-around pt-2 text-xl">Messages</div>
-		<div class="flex flex-col h-full my-4 mx-4">
-			<p class="m-2">Congratulations you are now on the way to being better prepared.</p>
-			<p class="m-2">We will be in touch soon.</p>
-		</div>
-	</div>
+	<div class="messaging bg-stone-200"><ParticipantStatus /></div>
 </div>
 
 <style>

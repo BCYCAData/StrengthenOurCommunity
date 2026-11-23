@@ -90,13 +90,6 @@ export async function resetProfile(survey, locals, request) {
 					fire_fighting_experience: survey.fireFightingExperience,
 					plan_to_leave_before_fire: survey.planToLeaveBeforeFire,
 					plan_to_leave_before_flood: survey.planToLeaveBeforeFlood,
-					community_workshop_choices: setArray(survey.communityWorkshopChoices),
-					other_community_workshop: survey.otherCommunityWorkshop,
-					will_run_community_workshops: survey.willRunCommunityWorkshops,
-					information_sheet_choices: setArray(survey.informationSheetChoices),
-					other_information_sheet: survey.otherInformationSheet,
-					community_meeting_choices: setArray(survey.communityMeetingChoices),
-					other_community_meeting: survey.communityMeeting,
 					stay_in_touch_choices: setArray(survey.stayInTouchChoices),
 					other_comments: survey.otherComments
 				})

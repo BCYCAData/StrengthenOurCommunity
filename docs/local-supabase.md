@@ -72,8 +72,7 @@ worker gates prevent external backpack emails.
 The first earlier hosted `.env.local` is preserved as `.env.hosted.local`, which
 is also ignored and is not automatically loaded by Vite. Restore that file to
 `.env.local` and restart Vite when intentionally returning to the hosted project.
-The Supabase MCP connection still targets the hosted project; use local Studio
-for the test instance.
+Use local Studio for the test instance; this setup does not configure a Supabase MCP connection.
 
 ## Management
 
@@ -97,3 +96,15 @@ npm run supabase:seed
 ```
 
 The setup follows the official [Supabase CLI local development workflow](https://supabase.com/docs/guides/local-development/cli/getting-started).
+
+## Committee-v2 testing
+
+`npm run supabase:start` stages and applies the additive committee migrations while
+preserving existing local accounts, households and awards. It enables the participant
+status panel locally; submission hooks and the email worker stay disabled. The
+new policy remains unapproved/disabled with pending confirmations, so an
+unconfigured status is expected until synthetic rules are deliberately approved.
+Use the disposable end-to-end suite for an approved-policy demonstration without
+changing this normal local database. The coordinator now has **Committee returns**
+and **Emails** tabs; source-report preparation and safe review are documented in
+[coordinator operations](../supabase/coordinator-operations.md).

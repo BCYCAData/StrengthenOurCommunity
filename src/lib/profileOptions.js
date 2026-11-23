@@ -38,7 +38,8 @@ export const siteHazardsOptions = [
 	{ value: 2, lable: 'Fuel stores' },
 	{ value: 3, lable: 'Chemical stores' },
 	{ value: 4, lable: 'Bottled gas' },
-	{ value: 0, lable: 'None' }
+	{ value: 5, lable: 'Electric vehicles' },
+	{ value: 0, lable: 'None of the above' }
 ];
 export const fireHazardReductionOptions = [
 	{ value: 1, lable: 'Fire breaks' },

@@ -122,7 +122,7 @@
 		lableClass="font-bold pl-4 pt-4 text-base sm:text-lg"
 		headingText="If you have any other comments, add them here."
 		divClass="px-4 pt-2 rounded-lg sm:text-lg"
-		nameText="other_community_workshop"
+		nameText="other_comments"
 		textAreaClass="w-full resize-y sm:text-lg"
 		bind:inputValue={profileCommunity.other_comments}
 	/>

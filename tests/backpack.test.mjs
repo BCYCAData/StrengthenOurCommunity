@@ -16,18 +16,24 @@ const catalogue = JSON.parse(
 );
 test('catalogue covers every named survey field once, with valid parent/conditional references', () => {
 	const sourceFields = new Set();
-	for (let step = 2; step <= 11; step++) {
-		const source = readFileSync(`src/components/form/surveyForm/Step${step}.svelte`, 'utf8');
+	for (const path of [
+		...[2, 3, 4, 5, 6, 7, 11].map((step) => `src/components/form/surveyForm/Step${step}.svelte`),
+		'src/components/form/PropertyAccess.svelte',
+		'src/components/form/CriticalAssets.svelte'
+	]) {
+		const source = readFileSync(path, 'utf8');
 		for (const match of source.matchAll(/\b(?:name|nameText)="([^"]+)"/g))
 			sourceFields.add(match[1]);
 	}
-	const fields = catalogue.questions.flatMap((q) => q.fields.map((r) => r.field));
-	assert.equal(catalogue.questions.length, 41);
-	assert.equal(new Set(fields).size, 52);
-	assert.equal(fields.length, 52);
+	const fields = catalogue.questions
+		.filter((q) => q.active !== false)
+		.flatMap((q) => q.fields.map((r) => r.field));
+	assert.equal(catalogue.questions.length, 43);
+	assert.equal(new Set(fields).size, 47);
+	assert.equal(fields.length, 47);
 	assert.deepEqual(new Set(fields), sourceFields);
 	const ids = new Set(catalogue.questions.map((q) => q.id));
-	for (const q of catalogue.questions) {
+	for (const q of catalogue.questions.filter((q) => q.active !== false)) {
 		if (q.parent_id) assert(ids.has(q.parent_id));
 		for (const c of q.applies_when) assert(sourceFields.has(c.field));
 	}
@@ -60,6 +66,8 @@ test('None remains exclusive for loaded string values and new selections', () =>
 });
 test('edited survey and profile forms compile', () => {
 	for (const path of [
+		'src/components/form/PropertyAccess.svelte',
+		'src/components/form/CriticalAssets.svelte',
 		'src/components/form/surveyForm/Step2.svelte',
 		'src/components/form/surveyForm/Step4.svelte',
 		'src/components/form/surveyForm/Step5.svelte',

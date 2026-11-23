@@ -8,14 +8,15 @@
 		"preview": "vite preview",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"test:backpack": "node tests/backpack.test.mjs && node tests/backpack-coordinator.test.mjs && node tests/backpack-ui.test.mjs && node scripts/generate-backpack-catalogue.mjs --check",
+		"test:backpack": "node tests/backpack.test.mjs && node tests/backpack-coordinator.test.mjs && node tests/backpack-ui.test.mjs && node tests/committee.test.mjs && node scripts/generate-backpack-catalogue.mjs --check",
 		"test:backpack:db": "bash scripts/test-backpack-db.sh",
 		"test:backpack:ui": "node scripts/test-backpack-ui.mjs",
 		"supabase:start": "node scripts/local-supabase.mjs start",
 		"supabase:stop": "node scripts/local-supabase.mjs stop",
 		"supabase:status": "node scripts/local-supabase.mjs status",
 		"supabase:seed": "node scripts/local-supabase.mjs seed",
-		"test:backpack:e2e": "node scripts/test-backpack-e2e.mjs"
+		"test:backpack:e2e": "node scripts/test-backpack-e2e.mjs",
+		"committee:prepare": "node scripts/prepare-committee-reconciliation.mjs"
 	},
 	"devDependencies": {
 		"@iconify-json/carbon": "^1.1.7",

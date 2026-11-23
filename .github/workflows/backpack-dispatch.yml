@@ -1,0 +1,31 @@
+name: Backpack email dispatch
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backpack-email-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    # Explicit rollout gate; unset means this job is skipped, including manual runs.
+    if: vars.BACKPACK_SCHEDULE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Dispatch a bounded batch
+        env:
+          BACKPACK_DISPATCH_URL: ${{ vars.BACKPACK_DISPATCH_URL }}
+          BACKPACK_WORKER_SECRET: ${{ secrets.BACKPACK_WORKER_SECRET }}
+          BACKPACK_BATCH_SIZE: '5'
+        run: node scripts/dispatch-backpack-batch.mjs

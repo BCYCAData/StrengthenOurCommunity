@@ -111,6 +111,11 @@ export function createBackpackFixture() {
 	function execute(action, args = {}) {
 		calls.push(clone({ action, arguments: args }));
 		let result;
+		if (action === 'list_notifications')
+			return {
+				status: 200,
+				body: { result: { notifications: [], total: 0, processing_error_count: 0 } }
+			};
 		if (action === 'snapshot') {
 			const query = (args.search || '').toLowerCase();
 			const filtered = members
@@ -195,6 +200,9 @@ export function createBackpackFixture() {
 					is_contact: m.user_id === args.contact_user_id
 				});
 			result = { revision: 'b'.repeat(32) };
+		} else if (action === 'record_kit') {
+			result = { already_recorded: false };
+			policy.baseline_completed_at = null;
 		} else if (action === 'decide_special_case') {
 			Object.assign(
 				members.find((m) => m.user_id === args.user_id),

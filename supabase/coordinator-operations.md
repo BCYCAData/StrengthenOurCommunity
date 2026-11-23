@@ -317,5 +317,92 @@ delivery, revoked access and mobile layout. It does not validate real Auth cooki
 production data or email delivery.
 
 The rollout inputs, real Auth sign-in/refresh validation and staging deployment
-remain outstanding, along with provider delivery webhooks, a scheduler and final
-policy configuration. No automatic email activation is included.
+remain outstanding, along with provider delivery webhooks and final
+policy configuration. A disabled scheduler is supplied; activation remains a rollout step. No automatic email activation is included.
+
+## Committee returns and revised policy (23 November 2026)
+
+The two additive `20261123*` migrations add nullable questionnaire columns,
+committee-v2 configuration, reviewed historical evidence/exclusions, own-account
+status and bounded notification history. Historical catalogue seeds are immutable;
+`config/catalogues/2026-11-proposed-v1.json` preserves the original definition.
+The current seed and policy are generated/checked by
+`node scripts/generate-backpack-catalogue.mjs [--check]`.
+
+The proposed policy requires Q2, Q4, Q5, Q6, Q9, Q10, Q13, Q14, Q17, Q36 and
+conditional Q36a. It excludes the other 25 active IDs. Q27–Q33 are retired without
+erasing answers. Q13 is a new nullable boolean; its old asset description remains
+available as historical text. No/zero/None remain valid answers where applicable.
+
+**The policy is unapproved, disabled and email-disabled.** Its pending-confirmation
+record also blocks qualification/readiness until reviewed. Confirm:
+
+- 1 October 2025 cutoff, including timezone and boundary. The draft uses midnight
+  Sydney (`2025-09-30T14:00:00Z`).
+- Whether Q36a is required when Q36 is Yes, and whether Q5a remains optional.
+- Award type for the 19 post-cutoff marked rows and the malformed source date.
+- Final email wording, verified sender, reply-to and coordinator BCC.
+
+The private source spreadsheet contains 70 rows: 49 marked awards (29 pre-cutoff,
+19 post-cutoff and one invalid date), 15 deletion requests and six unknowns.
+These are evidence for review, not instructions to delete accounts or inferred
+award types. Prepare the ignored local report with:
+
+```bash
+npm run committee:prepare -- 'data/committee/<source.csv>'
+```
+
+Optional `--match-local` adds a read-only inventory match against the fixed local
+Supabase instance on port 54821. It refuses hosted URLs. Normal local sample
+accounts will not match real committee participants. The report includes private
+source details and must remain ignored. Its summary contains no personal details.
+The command makes no database changes; every decision starts pending.
+
+In **Committee returns**, load that report, choose a row and explicitly choose
+starter kit, backpack, or reviewed exclusion. Resolve the current account, compare
+its registration/history and confirm the identity (including possible reused email
+addresses). A date correction needs a separate explanation; the original source
+value is retained in provenance. Unknown dates stay unknown. No batch import runs.
+Backpack records require a reviewed household; email and address alone do not merge
+households. Existing `kit_date` and `kitdate` values are shown and preserved.
+Reviewed kit evidence is separate from Auth metadata. Historical backpack dates
+use `source_awarded_on`; no award/delivery timestamp is invented from a calendar date.
+
+A SHA-256 source hash and row number identify each reviewed decision. Repeating
+that decision is idempotent; reusing the same reference for another person, award
+type or date is rejected. An exclusion preserves Auth/profile/history and can be
+reviewed/restored through coordinator operations. It suppresses safe pending jobs;
+uncertain delivery still requires manual reconciliation. No deletion is implemented.
+
+After historical reconciliation, review policy inputs and sender settings, record
+approval, and clear the private policy's pending confirmations through the existing
+restricted policy-administration process. Any changed input invalidates the baseline
+fingerprint. Run and review a fresh silent baseline before enabling email. Existing
+users receive assessments without an email-assessed/sent timestamp. Confirm policy
+and baseline readiness on staging before production; migrations alone do not approve
+rules or send messages.
+
+## Participant status and email operations
+
+`BACKPACK_PARTICIPANT_STATUS_ENABLED` defaults to false. Local setup enables it
+after migrations. `/api/backpack/status` uses the authenticated user's JWT and
+returns only their own missing IDs/labels and coarse household state. The profile
+panel links to the relevant sections; a qualifying participant can dismiss its
+congratulations message. Dismissal is per account/policy and never marks email sent.
+Unapproved policy inputs do not show a qualifying verdict.
+
+**Emails** provides bounded, status-filtered history, intended/frozen recipients,
+BCC, provider acknowledgements and processing errors. Provider acceptance means
+accepted for processing, not delivered; there is no manual “mark sent” action and
+no delivery webhook yet. Reconcile uncertain results before retrying.
+
+`.github/workflows/backpack-dispatch.yml` supplies a 15-minute schedule with at most
+five dispatch requests per run. Both scheduled and manual runs skip unless repository
+variable `BACKPACK_SCHEDULE_ENABLED=true`. Before an explicitly approved activation,
+configure `BACKPACK_DISPATCH_URL` (HTTPS `/api/backpack/dispatch`) and secret
+`BACKPACK_WORKER_SECRET`, plus the application/DB worker and policy email gates.
+The runner stops on disabled/quota/error responses, never logs the secret, and
+preserves server-side claims/idempotency. GitHub schedules may run late; monitor
+workflow failures and the Emails view. The existing Vercel keepalive is unchanged.
+No repository variables, secrets, hosted migrations or schedule activation are
+performed by this implementation.

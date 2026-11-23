@@ -1,134 +1,60 @@
 <script>
 	export let steps = [];
 	export let currentActive = 1;
-	let circles, progress;
-
-	export const handleProgress = (/** @type {number} */ stepIncrement) => {
-		circles = document.querySelectorAll('.circle');
-		if (stepIncrement == 1) {
-			currentActive++;
-
-			if (currentActive > circles.length) {
-				currentActive = circles.length;
-			}
-		} else {
-			currentActive--;
-
-			if (currentActive < 1) {
-				currentActive = 1;
-			}
-		}
-		update();
-	};
-
-	function update() {
-		circles.forEach(
-			(
-				/** @type {{ classList: { add: (arg0: string) => void; remove: (arg0: string) => void; }; }} */ circle,
-				/** @type {number} */ idx
-			) => {
-				if (idx < currentActive) {
-					circle.classList.add('active');
-				} else {
-					circle.classList.remove('active');
-				}
-			}
-		);
-
-		const actives = document.querySelectorAll('.active');
-
-		progress.style.width = ((actives.length - 1) / (circles.length - 1)) * 100 + '%';
+	export function handleProgress(increment) {
+		currentActive = Math.max(1, Math.min(steps.length, Number(currentActive) + increment));
 	}
-
-	export const skipTo = (
-		/** @type {MouseEvent & { currentTarget: EventTarget & HTMLDivElement; }} */ e
-	) => {
-		circles = document.querySelectorAll('.circle');
-		currentActive = e.currentTarget.attributes['data-title'].value;
-		update();
-	};
+	export function skipTo(event) {
+		currentActive = Number(event.currentTarget.dataset.index);
+	}
 </script>
 
-<div class="progress-container z-50">
-	<div class="progress" bind:this={progress} />
-	{#each steps as step, i}
-		<div
-			class="circle {i == 0 ? 'active' : ''}"
-			data-title={step}
-			on:click={(e) => {
-				skipTo(e);
-			}}
-			on:keydown={(e) => {
-				skipTo(e);
-			}}
-			tabindex="0"
-			role="button"
-		>
-			.
-		</div>
-	{/each}
-</div>
+<nav aria-label="Survey progress">
+	<p>Step {currentActive} of {steps.length}</p>
+	<ol>
+		{#each steps as step, index}<li>
+				<button
+					type="button"
+					class:active={index + 1 === Number(currentActive)}
+					data-index={index + 1}
+					aria-label={`Go to survey step ${index + 1} of ${steps.length}`}
+					aria-current={index + 1 === Number(currentActive) ? 'step' : undefined}
+					on:click={skipTo}
+				>
+					{index + 1}
+				</button>
+			</li>{/each}
+	</ol>
+</nav>
 
 <style>
-	.progress-container {
+	nav {
+		margin: 1rem auto;
+		text-align: center;
+	}
+	ol {
 		display: flex;
-		justify-content: space-between;
-		position: relative;
-		margin-top: 30px;
-		margin-bottom: 10px;
-	}
-
-	.progress-container::before {
-		content: '';
-		background-color: #e0e0e0;
-		position: absolute;
-		top: 50%;
-		left: 0;
-		transform: translateY(-50%);
-		height: 4px;
-		width: 100%;
-		z-index: -1;
-	}
-
-	.progress {
-		background-color: #fdba74;
-		position: absolute;
-		top: 50%;
-		left: 0;
-		transform: translateY(-50%);
-		height: 4px;
-		width: 0%;
-		z-index: -1;
-		transition: 0.4s ease;
-	}
-
-	.circle {
-		background-color: #fff;
-		color: #999;
-		border-radius: 50%;
-		height: 15px;
-		width: 15px;
-		display: flex;
-		align-items: center;
+		flex-wrap: wrap;
 		justify-content: center;
-		border: 3px solid #e0e0e0;
-		transition: 0.4s ease;
-		cursor: pointer;
+		gap: 0.3rem;
+		list-style: none;
+		padding: 0;
 	}
-
-	.circle::after {
-		content: attr(data-title) ' ';
-		position: absolute;
-		bottom: 20px;
-		color: #999;
-		transition: 0.4s ease;
+	button {
+		min-width: 44px;
+		min-height: 48px;
+		border: 2px solid #a56a3a;
+		border-radius: 0.5rem;
+		background: #fff8ed;
+		color: #542b0a;
 	}
-
-	.circle.active::after {
-		color: #f97316;
+	button.active {
+		background: #a64d05;
+		color: white;
+		font-weight: 700;
 	}
-
-	.circle.active {
-		border-color: #f97316;
+	button:focus-visible {
+		outline: 3px solid #16534a;
+		outline-offset: 3px;
 	}
 </style>

@@ -1,4 +1,5 @@
 <script>
+	import PropertyAccess from '$components/form/PropertyAccess.svelte';
 	import { yesNoOptions, accessOptions } from '$lib/profileOptions';
 	import { formatMobile, formatPhone } from '$lib/utils';
 
@@ -166,6 +167,8 @@
 		</li>
 	{/each}
 </div>
+
+<PropertyAccess answers={surveyData} prefix="survey-access" />
 
 <h3 class="text-base sm:text-lg">
 	Is there easy truck access to the buildings, boundaries and paddocks?

@@ -24,9 +24,15 @@ const escapeHTML = (text) =>
 	);
 
 async function main() {
-	const catalogue = JSON.parse(await readFile(join(root, 'config/survey-questions.json'), 'utf8'));
-	assert.equal(catalogue.questions.length, 41);
-	assert.equal(new Set(catalogue.questions.map((q) => q.id)).size, 41);
+	const originalCatalogue = JSON.parse(
+		await readFile(join(root, 'config/survey-questions.json'), 'utf8')
+	);
+	const catalogue = {
+		...originalCatalogue,
+		questions: originalCatalogue.questions.filter((q) => q.active !== false)
+	};
+	assert.equal(catalogue.questions.length, 36);
+	assert.equal(new Set(catalogue.questions.map((q) => q.id)).size, 36);
 	const prepared = argument('--date')
 		? new Date(`${argument('--date')}T12:00:00+11:00`)
 		: new Date();
@@ -43,7 +49,7 @@ async function main() {
 		Q11: 'Counts of dogs, cats, birds and other pets. A deliberate zero is an answer.',
 		Q15a: 'Size of the Stortz fitting.',
 		Q16: 'Fire trailers, pumps, hoses, trailers with spray equipment, generator, or None.',
-		Q17: 'Solar batteries, fuel stores, chemical stores, bottled gas, or None.',
+		Q17: 'Solar batteries, fuel stores, chemical stores, bottled gas, Electric vehicles, or None of the above.',
 		Q19: 'Fire breaks, slashed areas, backup pump, driveway clearance, truck access, or None.',
 		Q25: 'Staying; leaving as early as possible; or unsure depending on severity.',
 		Q26: 'Staying; leaving as early as possible; or unsure depending on severity.'
@@ -54,13 +60,14 @@ async function main() {
 		Q5a: 'Only if Q5 = Other.',
 		Q12a: 'Only if Q12 = Yes (livestock).',
 		Q12b: 'Only if Q12 = Yes AND Q12a = Yes.',
-		Q15a: 'Only if Q15 = Yes (Stortz fitting).'
+		Q15a: 'Only if Q15 = Yes (Stortz fitting).',
+		Q36a: 'Only if Q36 = Yes (restricted access).'
 	};
 	const groups = [
-		{ title: 'Identity, address and contact', start: 'Q1', end: 'Q7' },
-		{ title: 'Residents, animals, assets and water', start: 'Q8', end: 'Q15a' },
-		{ title: 'Resources, hazards and emergency planning', start: 'Q16', end: 'Q26' },
-		{ title: 'Community participation and contact preferences', start: 'Q27', end: 'Q35' }
+		{ title: 'Identity, address and restricted access', start: 'Q1', end: 'Q36a' },
+		{ title: 'Contact, residents and animals', start: 'Q5', end: 'Q12b' },
+		{ title: 'Critical assets, resources and hazards', start: 'Q13', end: 'Q21' },
+		{ title: 'Emergency planning and contact preferences', start: 'Q22', end: 'Q35' }
 	];
 	const ids = [];
 	const sections = groups.map((group, index) => {
@@ -80,7 +87,7 @@ async function main() {
 		)}</span></div></header>
 		${
 			index === 0
-				? `<div class="instructions"><p><strong>Tick ONE box for every row:</strong> “Required” means an answer is needed when the question applies; “May remain unanswered” permits a blank answer. Leave both blank only if the decision is deferred, and explain in Notes.</p><p>“No”, zero and an offered “None” can be valid answers. Conditional follow-ups apply only as stated. If a parent is exempt, its follow-ups are non-blocking under the current draft rules. One household member must independently meet the required answers; other eligibility and review rules still apply.</p><p><strong>Question references:</strong> the project catalogue contains 35 main questions plus six follow-ups. Numbering and requirements remain subject to committee approval. No decisions are preselected.</p></div>`
+				? `<div class="instructions"><p><strong>Tick ONE box for every row:</strong> “Required” means an answer is needed when the question applies; “May remain unanswered” permits a blank answer. Leave both blank only if the decision is deferred, and explain in Notes.</p><p>“No”, zero and an offered “None” can be valid answers. Conditional follow-ups apply only as stated. If a parent is exempt, its follow-ups are non-blocking under the current draft rules. One household member must independently meet the required answers; other eligibility and review rules still apply.</p><p><strong>Question references:</strong> the revised catalogue contains 36 active questions and follow-ups. Q27–Q33 are retired with historical answers retained. Final rule confirmation is pending. No decisions are preselected.</p></div>`
 				: ''
 		}
 		<div class="group"><strong>${index + 1}. ${escapeHTML(group.title)}</strong><span>${group.start}–${
@@ -88,11 +95,11 @@ async function main() {
 		}</span></div>
 		${
 			index === 3
-				? '<p class="scope-note">These questions are in <strong>My Community</strong>, outside the proposed About Me / My Place scope. The committee must explicitly decide whether they affect qualification.</p>'
+				? '<p class="scope-note">Q34/Q35 retain contact preferences and comments. Q27–Q33 have been retired. The committee key-question mapping does not require these community answers.</p>'
 				: ''
 		}
 		<table><colgroup><col class="id"><col class="question"><col class="section"><col class="applies"><col class="required"><col class="optional"><col class="notes"></colgroup>
-		<thead><tr><th>ID</th><th>Survey question / prompt</th><th>Profile section</th><th>Applies when / answer note</th><th class="center">Required</th><th class="center">May remain<br>unanswered</th><th>Committee notes</th></tr></thead>
+		<thead><tr><th scope="col">ID</th><th scope="col">Survey question / prompt</th><th scope="col">Profile section</th><th scope="col">Applies when / answer note</th><th scope="col" class="center">Required</th><th scope="col" class="center">May remain<br>unanswered</th><th scope="col">Committee notes</th></tr></thead>
 		<tbody>${questions
 			.map(
 				(q) =>
@@ -170,8 +177,8 @@ async function main() {
 	</style></head><body>${sections.join('')}</body></html>`;
 	const directory = join(root, 'docs/committee');
 	await mkdir(directory, { recursive: true });
-	const htmlPath = join(directory, 'backpack-required-questions.html');
-	const pdfPath = join(directory, 'backpack-required-questions.pdf');
+	const htmlPath = join(directory, 'backpack-required-questions-committee-v2.html');
+	const pdfPath = join(directory, 'backpack-required-questions-committee-v2.pdf');
 	const formatting = await prettier.resolveConfig(htmlPath);
 	await writeFile(htmlPath, prettier.format(html, { ...formatting, parser: 'html' }));
 	const modulePath = argument('--playwright-module') || process.env.PLAYWRIGHT_MODULE;

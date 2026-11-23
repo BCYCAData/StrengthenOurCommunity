@@ -228,7 +228,10 @@
 							<br />
 							<small>{award.historical ? 'Historical' : 'Allocation'}</small>
 						</td>
-						<td>{dateText(award.awarded_at)}</td>
+						<td>
+							{dateText(award.awarded_at)}{#if award.source_awarded_on}<br />
+								<small>Register date: {award.source_awarded_on} (time unknown)</small>{/if}
+						</td>
 						<td>
 							{#if award.delivered_at}{dateText(award.delivered_at)}{:else}<button
 									type="button"

@@ -1,4 +1,5 @@
 <script>
+	import { onMount, tick } from 'svelte';
 	import Step1 from '$components/form/surveyForm/Step1.svelte';
 	import Step2 from '$components/form/surveyForm/Step2.svelte';
 	import Step3 from '$components/form/surveyForm/Step3.svelte';
@@ -8,12 +9,28 @@
 	import Step7 from '$components/form/surveyForm/Step7.svelte';
 	import Step8 from '$components/form/surveyForm/Step8.svelte';
 	import Step9 from '$components/form/surveyForm/Step9.svelte';
-	import Step10 from '$components/form/surveyForm/Step10.svelte';
 	import Step11 from '$components/form/surveyForm/Step11.svelte';
 	import Step12 from '$components/form/surveyForm/Step12.svelte';
 
 	export let active_step;
 	export let surveyData;
+	let mounted = false;
+	let lastStep = active_step;
+	onMount(() => {
+		mounted = true;
+	});
+	$: if (mounted && lastStep !== active_step) {
+		lastStep = active_step;
+		tick().then(() => {
+			const heading = document.querySelector(
+				'#surveyForm > div:not([hidden]) h2, #surveyForm > div:not([hidden]) h3'
+			);
+			if (heading) {
+				heading.setAttribute('tabindex', '-1');
+				heading.focus();
+			}
+		});
+	}
 </script>
 
 <div class="mx-auto w-full sm:w-21/24">
@@ -26,7 +43,7 @@
 		>
 			Save My Answers
 		</span>
-		at Step 12
+		on the final step
 	</div>
 	<form method="post" action="/survey" id="surveyForm">
 		<div hidden={active_step != '1'}>
@@ -55,9 +72,6 @@
 		</div>
 		<div hidden={active_step != '9'}>
 			<Step9 {surveyData} />
-		</div>
-		<div hidden={active_step != '10'}>
-			<Step10 {surveyData} />
 		</div>
 		<div hidden={active_step != '11'}>
 			<Step11 {surveyData} />

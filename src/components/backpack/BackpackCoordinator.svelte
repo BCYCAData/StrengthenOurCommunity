@@ -1,4 +1,6 @@
 <script>
+	import Notifications from './Notifications.svelte';
+	import CommitteeReconciliation from './CommitteeReconciliation.svelte';
 	import { tick } from 'svelte';
 	import HouseholdReview from './HouseholdReview.svelte';
 	import SpecialCases from './SpecialCases.svelte';
@@ -25,14 +27,17 @@
 		['households', 'Households'],
 		['cases', 'Special cases'],
 		['awards', 'Backpacks'],
-		['baseline', 'Baseline']
+		['baseline', 'Baseline'],
+		['committee', 'Committee returns'],
+		['emails', 'Emails']
 	];
 	const readActions = [
 		'snapshot',
 		'household_details',
 		'list_awards',
 		'preview_household',
-		'baseline_preview'
+		'baseline_preview',
+		'list_notifications'
 	];
 	let mode = 'baseline';
 	$: policy = snapshot?.policy;
@@ -143,7 +148,7 @@
 		</section>
 	{:else}
 		{#if !ready.configured}<p class="notice">
-				Qualification is waiting for the cutoff date and approved question rules. You can still
+				Qualification is waiting for final approval of the cutoff and question rules. You can still
 				prepare households and import known historical awards.
 			</p>{/if}
 		{#if policy?.email_enabled && !workerEnabled}<p class="notice">
@@ -204,7 +209,7 @@
 				</button>{/each}
 		</div>
 		{#if error}<p class="notice error" role="alert">{error}</p>{/if}
-		{#if tab !== 'baseline'}
+		{#if !['baseline', 'committee', 'emails'].includes(tab)}
 			<form class="search" on:submit|preventDefault={() => refresh(0)}>
 				<div class="query">
 					<label for="participant-search">
@@ -293,6 +298,22 @@
 				enabled={mutationsEnabled}
 				on:saved={saved}
 			/>
+		</section>
+		<section
+			id="backpack-panel-committee"
+			role="tabpanel"
+			aria-labelledby="backpack-tab-committee"
+			hidden={tab !== 'committee'}
+		>
+			<CommitteeReconciliation {api} {mode} enabled={mutationsEnabled} on:saved={saved} />
+		</section>
+		<section
+			id="backpack-panel-emails"
+			role="tabpanel"
+			aria-labelledby="backpack-tab-emails"
+			hidden={tab !== 'emails'}
+		>
+			<Notifications {api} {refreshKey} />
 		</section>
 		<section
 			id="backpack-panel-baseline"

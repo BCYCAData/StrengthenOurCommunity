@@ -1,3 +1,4 @@
+import { accessAnswers } from '$lib/committeeAnswers';
 import { env } from '$env/dynamic/private';
 import { recordBackpackSubmission } from '$lib/server/backpack/submission';
 import { optionalCount } from '$lib/surveyAnswerValues';
@@ -13,7 +14,7 @@ export const GET = async ({ locals, request }) =>
 			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.select(
-					'property_address_street,property_address_suburb,property_address_postcode,residency_profile,property_rented,agent_name,agent_mobile,agent_phone,sign_posted,truck_access,truck_access_other_information,residents0_18,residents19_50,residents51_70,residents71_,vulnerable_residents'
+					'property_access_restricted,property_access_restrictions,property_address_street,property_address_suburb,property_address_postcode,residency_profile,property_rented,agent_name,agent_mobile,agent_phone,sign_posted,truck_access,truck_access_other_information,residents0_18,residents19_50,residents51_70,residents71_,vulnerable_residents'
 				)
 				.eq('id', locals.user.id);
 			if (error) {
@@ -45,9 +46,16 @@ export const POST = async ({ locals, request }) =>
 		},
 		async () => {
 			const body = await request.formData();
+			let committeeAnswers;
+			try {
+				committeeAnswers = accessAnswers(body);
+			} catch (error) {
+				return { status: 400, body: { error: error.message } };
+			}
 			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
+					...committeeAnswers,
 					property_address_street: body.get('property_address_street'),
 					property_address_suburb: body.get('property_address_suburb'),
 					property_address_postcode: body.get('property_address_postcode'),

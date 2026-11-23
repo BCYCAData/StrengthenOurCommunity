@@ -1,8 +1,7 @@
 <script>
+	import CriticalAssets from '$components/form/CriticalAssets.svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import { yesNoOptions, yesNoMaybeOptions } from '$lib/profileOptions';
-
-	import TextAreaInput from '$components/form/inputs/TextAreaInput.svelte';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 	import Modal from '$components/Modal.svelte';
 	import SaveProfilePrompt from '$components/form/SaveProfilePrompt.svelte';
@@ -146,14 +145,7 @@
 			</div>
 		</div>
 	</div>
-	<TextAreaInput
-		lableClass="font-bold px-4 pt-4 text-base sm:text-lg"
-		headingText="If there are assets, other than the residence, that you consider essential (eg crops, sheds with equipment or antique cars) please describe them here."
-		divClass="px-4 pt-2 rounded-lg sm:text-lg"
-		nameText="other_essential_assets"
-		textAreaClass="w-full resize-y sm:text-lg"
-		bind:inputValue={profileAssets.other_essential_assets}
-	/>
+	<CriticalAssets answers={profileAssets} prefix="profile-assets" />
 
 	<div class="sticky mt-5 bottom-2">
 		<div class="flex flex-row">

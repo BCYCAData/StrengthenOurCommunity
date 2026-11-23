@@ -175,10 +175,12 @@ async function main() {
 			);
 		}
 		await sql(`
+		 delete from backpack.policy_review_requests;
+		 delete from backpack.policies where catalogue_version='2026-11-committee-v2';
 		 insert into backpack.coordinators(user_id,note) values('${users.coordinator}','LOCAL E2E TEST ONLY');
 		 update auth.users set created_at='1999-01-01',raw_app_meta_data=raw_app_meta_data || '{"kit_date":"1999-02-01"}' where id='${users.kit}';
 		 insert into backpack.catalogues(version,definition)
-		 select 'LOCAL-E2E-TEST-ONLY',definition || '{"version":"LOCAL-E2E-TEST-ONLY","status":"local_test_only"}' from backpack.catalogues limit 1;
+		 select 'LOCAL-E2E-TEST-ONLY',definition || '{"version":"LOCAL-E2E-TEST-ONLY","status":"local_test_only"}' from backpack.catalogues where version='2026-11-proposed-v1';
 		 update backpack.policies set catalogue_version='LOCAL-E2E-TEST-ONLY',cutoff_at='2000-01-01T00:00:00Z',
 		 scope_question_ids=array['Q1','Q6'],excluded_question_ids='{}',approved_at=now(),enabled=true,
 		 sender='LOCAL TEST <sender@backpack-e2e.test>',reply_to='reply@backpack-e2e.test',
@@ -230,6 +232,7 @@ async function main() {
 				VITE_SUPABASE_ANON_KEY: config.ANON_KEY,
 				VITE_SUPABASE_REDIRECT_URL_BASE: origin,
 				BACKPACK_ADMIN_ENABLED: 'true',
+				BACKPACK_PARTICIPANT_STATUS_ENABLED: 'true',
 				BACKPACK_ASSESSMENT_ENABLED: 'true',
 				BACKPACK_EMAIL_WORKER_ENABLED: 'true',
 				SUPABASE_URL: api,
@@ -287,7 +290,7 @@ async function main() {
 		for (let attempt = 0; attempt < 100; attempt++) {
 			if (app.exitCode !== null) throw new Error(`Test app exited: ${logs}`);
 			try {
-				if ((await fetch(`${origin}/auth/signin`)).ok) {
+				if ((await fetch(`${origin}/api/backpack/status`)).status === 401) {
 					ready = true;
 					break;
 				}
@@ -490,6 +493,116 @@ async function main() {
 		check(
 			'Historical kit recipient qualifies on real sign-in; refresh adds no review or duplicate notification'
 		);
+
+		// Exercise the real committee schema and save paths after the frozen-rule scenarios.
+		const committee = JSON.parse(
+			await readFile(join(root, 'config/backpack-committee-policy.json'), 'utf8')
+		);
+		await sql(
+			'update backpack.policies set email_enabled=false; update backpack.policies set enabled=false;'
+		);
+		const committeePolicy = Number(
+			await scalar(`insert into backpack.policies(version,catalogue_version,cutoff_at,scope_question_ids,excluded_question_ids,approved_at,enabled)
+		 values(2,'2026-11-committee-v2','${committee.cutoff_at}',array[${committee.scope_question_ids
+				.map((id) => "'" + id + "'")
+				.join(',')}],array[${committee.excluded_question_ids
+				.map((id) => "'" + id + "'")
+				.join(',')}],now(),true) returning id;`)
+		);
+		await sql(`update public.profile set sign_posted=false,truck_access=3,residents0_18=0,residents19_50=0,residents51_70=0,residents71_=0,vulnerable_residents=false,
+		 static_water_available=array[5]::smallint[],site_hazards=array[0]::smallint[],property_access_restricted=false,has_other_critical_assets=null;
+		 update public.profile set other_essential_assets='Preserve earlier shed description',community_workshop_choices=array[1]::smallint[],information_sheet_choices=array[2]::smallint[],community_meeting_choices=array[3]::smallint[] where id='${users.alice}';`);
+		const committeeRun = await admin('run_baseline', {
+			policy_id: committeePolicy,
+			note: 'LOCAL E2E TEST ONLY: committee mapping with new fields'
+		});
+		await admin('review_baseline', {
+			run_id: committeeRun.id,
+			note: 'LOCAL E2E TEST ONLY: reviewed committee-schema baseline'
+		});
+		const ownStatus = async (cookie) => {
+			const response = await fetch(`${origin}/api/backpack/status`, {
+				headers: { Cookie: cookie }
+			});
+			assert.equal(response.status, 200);
+			return response.json();
+		};
+		const incomplete = await ownStatus(alice);
+		assert.equal(incomplete.state, 'incomplete');
+		assert(incomplete.missing_questions.some((q) => q.id === 'Q13'));
+		const survey = new URLSearchParams({
+			first_name: 'LOCAL TEST alice',
+			family_name: 'Synthetic',
+			mobile: '0400000000',
+			phone: '',
+			property_address_street: 'TEST alice road',
+			property_address_suburb: 'Synthetic',
+			property_address_postcode: '2429',
+			sign_posted: 'false',
+			truck_access: '3',
+			residents0_18: '0',
+			residents19_50: '0',
+			residents51_70: '0',
+			residents71_: '0',
+			vulnerable_residents: 'false',
+			has_other_critical_assets: 'false',
+			property_access_restricted: 'true',
+			property_access_restrictions: '99',
+			static_water_available: '5',
+			site_hazards: '5'
+		});
+		let saved = await fetch(`${origin}/survey`, {
+			method: 'POST',
+			redirect: 'manual',
+			headers: { Cookie: alice, Origin: origin },
+			body: survey
+		});
+		assert.equal(saved.status, 400, 'Unknown gate code must not partially save');
+		survey.set('property_access_restrictions', '2');
+		saved = await fetch(`${origin}/survey`, {
+			method: 'POST',
+			redirect: 'manual',
+			headers: { Cookie: alice, Origin: origin },
+			body: survey
+		});
+		assert.equal(saved.status, 302, `Committee survey save: ${await saved.text()}`);
+		assert.equal(
+			await scalar(
+				`select (has_other_critical_assets=false and property_access_restricted=true and property_access_restrictions=array[2]::smallint[] and site_hazards=array[5]::smallint[] and other_essential_assets='Preserve earlier shed description' and community_workshop_choices=array[1]::smallint[] and information_sheet_choices=array[2]::smallint[] and community_meeting_choices=array[3]::smallint[])::text from public.profile where id='${users.alice}';`
+			),
+			'true'
+		);
+		assert.equal((await ownStatus(alice)).state, 'qualified');
+		assert.equal(
+			(await ownStatus(bob)).state,
+			'qualified',
+			'A confirmed member may see coarse household qualification without seeing another member answers'
+		);
+		const dismissal = await fetch(`${origin}/api/backpack/status`, {
+			method: 'POST',
+			headers: { Cookie: alice, Origin: origin, 'Content-Type': 'application/json' },
+			body: JSON.stringify({ dismiss: true })
+		});
+		assert.equal(dismissal.status, 200);
+		assert.equal((await ownStatus(alice)).notice_dismissed, true);
+		const retired = await fetch(`${origin}/profile/mycommunity/workshops`, {
+			method: 'POST',
+			headers: { Cookie: alice, Origin: origin },
+			body: new URLSearchParams({ community_workshop_choices: '6' })
+		});
+		assert.equal(retired.status, 410);
+		assert.equal(
+			await scalar('select count(*) from backpack.notifications;'),
+			'3',
+			'Committee baseline and notices must not fabricate email history'
+		);
+		assert.equal((await dispatch()).status, 'idle');
+		assert.equal(captures.length, 4);
+		assert.equal(await scalar('select count(*) from backpack.processing_errors;'), '0');
+		check(
+			'Committee survey saves gates/No/zero/EV, preserves retired answers, exposes safe participant status and keeps notice dismissal separate from emails'
+		);
+
 		await mkdir(join(root, '.supabase-local/e2e-artifacts'), { recursive: true });
 		await writeFile(
 			join(root, '.supabase-local/e2e-artifacts/last-run.json'),

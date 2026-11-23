@@ -2,6 +2,15 @@ const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const schemas = {
 	snapshot: { limit: 'page?', offset: 'offset?', search: 'search?', filter: 'filter?' },
 	household_details: { household_id: 'uuid' },
+	list_notifications: { limit: 'page?', offset: 'offset?', status: 'notification_status?' },
+	record_kit: { user_id: 'uuid', reference: 'text', awarded_on: 'day?', note: 'note' },
+	record_committee_backpack: {
+		user_id: 'uuid',
+		reference: 'text',
+		awarded_on: 'day?',
+		note: 'note'
+	},
+	set_account_exclusion: { user_id: 'uuid', reference: 'text', excluded: 'boolean', note: 'note' },
 	list_awards: { limit: 'page?', offset: 'offset?', search: 'search?' },
 	preview_household: { household_id: 'uuid', member_ids: 'members' },
 	confirm_household: {
@@ -41,6 +50,23 @@ function valid(value, rule) {
 	if (rule.endsWith('?') && value === undefined) return true;
 	if (rule.endsWith('?') && value === null) return rule !== 'mode?';
 	const type = rule.replace('?', '');
+	if (type === 'notification_status')
+		return [
+			'all',
+			'pending',
+			'processing',
+			'accepted',
+			'failed',
+			'needs_review',
+			'suppressed'
+		].includes(value);
+	if (type === 'day')
+		return (
+			typeof value === 'string' &&
+			/^\d{4}-\d{2}-\d{2}$/.test(value) &&
+			!Number.isNaN(Date.parse(value)) &&
+			new Date(value).toISOString().slice(0, 10) === value
+		);
 	if (type === 'search') return typeof value === 'string' && value.length <= 120;
 	if (type === 'filter')
 		return ['all', 'pending', 'special_case', 'incomplete', 'qualified', 'awarded'].includes(value);
@@ -111,7 +137,7 @@ const errorMessages = {
 	]
 };
 
-async function readLimitedJSON(request) {
+export async function readLimitedJSON(request) {
 	const reader = request.body?.getReader();
 	if (!reader) throw new SyntaxError('Empty request');
 	const chunks = [];
