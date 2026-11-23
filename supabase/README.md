@@ -11,8 +11,8 @@ notification history. Account/profile answers remain in their existing tables.
   approved; assessment and email switches are false. Unset exclusions differ from
   an explicitly empty list. Unconfigured assessments return no qualification verdict.
 - [config/survey-questions.json](../config/survey-questions.json) is the
-  machine-readable catalogue. Numbering, scope, exclusions and draft conditional
-  rules require coordinator approval before policy activation. The SQL seed is
+  machine-readable catalogue. The committee-v2 question requirements and cutoff are adopted. Operational
+  approval is still required before policy activation. The SQL seed is
   generated from this file, checked by `npm run test:backpack`.
 - Existing property IDs are candidate evidence, not authoritative household IDs.
   Each candidate starts separately and pending review, even when another account
@@ -21,9 +21,9 @@ notification history. Account/profile answers remain in their existing tables.
   independently meet the answer and historical/review requirements. A nominated
   confirmed contact receives the household message. Partial answers and sign-in
   evidence are never combined between members.
-- Draft cutoff semantics are registered **at or after** the configured instant for
+- Adopted cutoff semantics are registered **at or after** the configured instant for
   new entrants; older kit recipients need their own sign-in at or after that
-  instant. Confirm this boundary and timezone with the coordinator before activation.
+  instant. The committee-v2 instant is midnight Australia/Sydney on 1 October 2025.
 - `raw_app_meta_data.kit_date` and `kitdate` remain historical kit evidence. Its raw value is
   preserved in reports; no backpack award is inferred from it. Confirm historical
   date quality and import known backpack awards before any sending.
@@ -220,3 +220,10 @@ The database harness now uses three independent synthetic databases, including
 committee rules, metadata aliases, provenance/idempotence, account exclusions and
 own-account privacy. `npm run test:backpack` also checks the CSV parser and bounded
 scheduler. Real delivery webhooks and hosted rollout remain outstanding.
+
+The subsequent `20261123020000_adopt_committee_requirements.sql` migration removes
+three unnecessary requirement-confirmation gates and records their adoption. It
+leaves the three historical/email rollout decisions pending and does not approve
+the policy, baseline, or sending. The initial policy and v2 catalogue are frozen
+for migration-history checks. Database regressions cover the exact cutoff instant,
+conditional gate selections and optional truck-access details under these rules.

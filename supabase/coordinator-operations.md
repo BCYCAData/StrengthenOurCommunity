@@ -6,7 +6,7 @@ production baselines, awards or emails have been performed by this change.
 This phase replaces direct private-table editing for household review, special
 cases, backpack records and baseline approval. The interface is at
 `/admin/backpacks`, linked from the admin navigation. See [backend setup](README.md)
-for prerequisites and the still-outstanding cutoff/question policy.
+for prerequisites, adopted committee requirements and outstanding rollout work.
 
 ## Authorization and activation
 
@@ -322,26 +322,42 @@ policy configuration. A disabled scheduler is supplied; activation remains a rol
 
 ## Committee returns and revised policy (23 November 2026)
 
-The two additive `20261123*` migrations add nullable questionnaire columns,
+The first two additive `20261123*` migrations add nullable questionnaire columns,
 committee-v2 configuration, reviewed historical evidence/exclusions, own-account
 status and bounded notification history. Historical catalogue seeds are immutable;
 `config/catalogues/2026-11-proposed-v1.json` preserves the original definition.
 The current seed and policy are generated/checked by
 `node scripts/generate-backpack-catalogue.mjs [--check]`.
 
-The proposed policy requires Q2, Q4, Q5, Q6, Q9, Q10, Q13, Q14, Q17, Q36 and
+The adopted committee requirements are Q2, Q4, Q5, Q6, Q9, Q10, Q13, Q14, Q17, Q36 and
 conditional Q36a. It excludes the other 25 active IDs. Q27–Q33 are retired without
 erasing answers. Q13 is a new nullable boolean; its old asset description remains
 available as historical text. No/zero/None remain valid answers where applicable.
 
-**The policy is unapproved, disabled and email-disabled.** Its pending-confirmation
-record also blocks qualification/readiness until reviewed. Confirm:
+The committee’s supplied requirements are adopted: the cutoff is **1 October 2025
+at 00:00 Australia/Sydney** (`2025-09-30T14:00:00Z`), including registrations at that
+instant as new entrants. Q36a requires at least one gate type only when Q36 is Yes;
+Q5a is optional, including when truck access is Other. These need no further
+committee confirmation.
 
-- 1 October 2025 cutoff, including timezone and boundary. The draft uses midnight
-  Sydney (`2025-09-30T14:00:00Z`).
-- Whether Q36a is required when Q36 is Yes, and whether Q5a remains optional.
-- Award type for the 19 post-cutoff marked rows and the malformed source date.
+`20261123020000_adopt_committee_requirements.sql` records these three requirements
+and removes their obsolete confirmation entries for matching committee-v2 policies.
+It retains any other pending entries and preserves approval/activation flags.
+Earlier migrations remain unchanged; the initial policy snapshot is retained in
+`config/policies/2026-11-committee-v2.initial.json`. The catalogue is also frozen in
+`config/catalogues/2026-11-committee-v2.json`; its draft status is historical metadata,
+not the current policy-adoption state. Both seed and adoption migration are checked
+by the catalogue generator.
+
+**Operational approval, qualification activation and sending remain disabled.**
+The remaining three confirmation entries are rollout work:
+
+- Award type for the 19 post-cutoff marked rows.
+- The malformed source date.
 - Final email wording, verified sender, reply-to and coordinator BCC.
+
+These continue to gate qualification/readiness until resolved. Adopting the supplied
+question rules does not import historical records or approve a baseline.
 
 The private source spreadsheet contains 70 rows: 49 marked awards (29 pre-cutoff,
 19 post-cutoff and one invalid date), 15 deletion requests and six unknowns.
@@ -374,7 +390,7 @@ type or date is rejected. An exclusion preserves Auth/profile/history and can be
 reviewed/restored through coordinator operations. It suppresses safe pending jobs;
 uncertain delivery still requires manual reconciliation. No deletion is implemented.
 
-After historical reconciliation, review policy inputs and sender settings, record
+After historical reconciliation, review remaining rollout inputs and sender settings, record
 approval, and clear the private policy's pending confirmations through the existing
 restricted policy-administration process. Any changed input invalidates the baseline
 fingerprint. Run and review a fresh silent baseline before enabling email. Existing

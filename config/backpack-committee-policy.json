@@ -1,6 +1,6 @@
 {
 	"catalogue_version": "2026-11-committee-v2",
-	"status": "pending_final_confirmation",
+	"status": "requirements_adopted_pending_rollout",
 	"cutoff_local_date": "2025-10-01",
 	"timezone": "Australia/Sydney",
 	"cutoff_at": "2025-09-30T14:00:00Z",
@@ -83,11 +83,13 @@
 		"Q36a"
 	],
 	"pending_confirmations": [
-		"Midnight Australia/Sydney cutoff; registrations at or after cutoff are new entrants.",
-		"Q36a is required only when access is restricted.",
-		"Q5a remains optional when truck access is Other.",
 		"Award type for post-cutoff Has Kit spreadsheet rows.",
 		"Malformed spreadsheet date 26/1123.",
 		"Final sender/reply-to/BCC addresses and email wording."
+	],
+	"adopted_requirements": [
+		"Midnight Australia/Sydney cutoff; registrations at or after cutoff are new entrants.",
+		"Q36a is required only when access is restricted.",
+		"Q5a remains optional when truck access is Other."
 	]
 }

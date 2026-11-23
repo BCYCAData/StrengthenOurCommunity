@@ -9,7 +9,12 @@ end $$;
 
 select pg_temp.assert((select count(*)=2 from backpack.catalogues),'original catalogue retained');
 select pg_temp.assert((select approved_at is null and not enabled and not email_enabled from backpack.policies where id=2),'committee policy is unapproved and disabled');
-select pg_temp.assert((select cutoff_at='2025-09-30T14:00:00Z' from backpack.policies where id=2),'Sydney midnight cutoff proposed explicitly');
+select pg_temp.assert((select cutoff_at='2025-09-30T14:00:00Z' from backpack.policies where id=2),'Sydney midnight cutoff adopted');
+select pg_temp.assert((select jsonb_array_length(adopted_requirements)=3 and jsonb_array_length(pending_confirmations)=3 from backpack.policy_review_requests where policy_id=2),'upgrade adopts three supplied requirements and preserves three rollout decisions');
+select pg_temp.assert(not exists(
+ select 1 from backpack.policy_review_requests r,
+ jsonb_array_elements(r.adopted_requirements) a(value),jsonb_array_elements(r.pending_confirmations) p(value)
+ where r.policy_id=2 and a.value=p.value),'adopted requirements are no longer confirmation gates');
 
 create function pg_temp.answers() returns jsonb language sql as $$ select '{
  "first_name":"Synthetic", "family_name":"Committee test", "mobile":"0400000000",
@@ -28,7 +33,7 @@ select pg_temp.assert(pg_temp.assess(pg_temp.answers() || '{"property_access_res
 select pg_temp.assert((pg_temp.assess(pg_temp.answers() || '{"property_access_restricted":true,"property_access_restrictions":[2]}')->>'answers_complete')::boolean,'coded gate answers conditional follow-up');
 select pg_temp.assert((pg_temp.assess(pg_temp.answers() || '{"site_hazards":[5]}')->>'answers_complete')::boolean,'electric vehicle option accepted');
 select pg_temp.assert(not (pg_temp.assess(pg_temp.answers() || '{"site_hazards":[0,5]}')->>'answers_complete')::boolean,'None and EV cannot be combined');
-select pg_temp.assert((pg_temp.assess(pg_temp.answers() || '{"truck_access":4}')->>'answers_complete')::boolean,'truck Other detail remains optional pending decision');
+select pg_temp.assert((pg_temp.assess(pg_temp.answers() || '{"truck_access":4}')->>'answers_complete')::boolean,'truck Other detail is optional under adopted committee requirements');
 
 insert into auth.users(id,email,created_at,email_confirmed_at,raw_app_meta_data) values
  ('00000000-0000-0000-0000-000000000001','one@committee.test','2026-01-01',now(),'{}'),
@@ -41,6 +46,14 @@ select pg_temp.assert((select other_essential_assets='Earlier asset description'
 update backpack.policies set approved_at=now(),enabled=true,sender='TEST <sender@committee.test>',reply_to='reply@committee.test',coordinator_email='coordinator@committee.test',profile_url='https://committee.test/profile' where id=2;
 select pg_temp.assert(not (backpack.baseline_readiness(2)->>'configured')::boolean,'pending decisions remain a gate even if approval is set');
 update backpack.policy_review_requests set pending_confirmations='[]' where policy_id=2;
+select pg_temp.assert((backpack.baseline_readiness(2)->>'configured')::boolean,'clearing actual rollout decisions needs no further cutoff or conditional approval');
+update auth.users set created_at='2025-09-30T13:59:59.999999Z' where id='00000000-0000-0000-0000-000000000001';
+select pg_temp.assert(backpack.assess_user('00000000-0000-0000-0000-000000000001','baseline')->>'outcome'='special_case','registration before cutoff without kit needs special review');
+update auth.users set created_at='2025-09-30T14:00:00Z' where id='00000000-0000-0000-0000-000000000001';
+select pg_temp.assert(backpack.assess_user('00000000-0000-0000-0000-000000000001','baseline')->>'outcome'='qualified','registration exactly at cutoff is a new entrant');
+update auth.users set created_at='2025-09-30T14:00:00.000001Z' where id='00000000-0000-0000-0000-000000000001';
+select pg_temp.assert(backpack.assess_user('00000000-0000-0000-0000-000000000001','baseline')->>'outcome'='qualified','registration after cutoff is a new entrant');
+update auth.users set created_at='2026-01-01' where id='00000000-0000-0000-0000-000000000001';
 select public.backpack_baseline();
 select pg_temp.assert(backpack.has_historical_kit('00000000-0000-0000-0000-000000000002'),'legacy kitdate alias recognised');
 select pg_temp.assert((select count(*)=0 from backpack.notifications),'baseline creates no emails');

@@ -108,3 +108,10 @@ Use the disposable end-to-end suite for an approved-policy demonstration without
 changing this normal local database. The coordinator now has **Committee returns**
 and **Emails** tabs; source-report preparation and safe review are documented in
 [coordinator operations](../supabase/coordinator-operations.md).
+
+Restarting with `npm run supabase:start` also applies the requirement-adoption
+migration to an existing local database. It records the supplied cutoff and
+conditional rules as adopted, reducing the original six confirmations to the three
+actual historical/email rollout decisions. Qualification remains unavailable until
+those decisions and operational approval are complete; this migration does not
+activate sending.

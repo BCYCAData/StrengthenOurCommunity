@@ -1,12 +1,12 @@
 # Survey question catalogue — committee revision
 
-Version: `2026-11-committee-v2`. Final policy confirmation remains pending.
+Version: `2026-11-committee-v2`. Committee question requirements are adopted; operational rollout remains pending.
 
 Existing IDs are retained. Q36/Q36a are the new property-access questions; Q13 now uses a new nullable Yes/No field. Earlier free-text asset answers remain in `other_essential_assets`. Q27–Q33 are retired from the participant workflow, with historical fields and the original catalogue preserved.
 
-The committee mapping proposes 11 required IDs (Q36a applies only when access is restricted) and 25 allowed-unanswered IDs across 36 active entries. The policy remains unapproved, disabled and email-disabled until its pending decisions are resolved.
+The adopted committee mapping has 11 required IDs (Q36a applies only when access is restricted) and 25 allowed-unanswered IDs across 36 active entries. The policy remains unapproved, disabled and email-disabled until its pending decisions are resolved.
 
-| ID   | Question / prompt                                                                                                                                     | Profile section                                 | Answer fields                                                                     | Draft qualification                                    |
+| ID   | Question / prompt                                                                                                                                     | Profile section                                 | Answer fields                                                                     | Adopted qualification                                  |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------ |
 | Q1   | What is your name?                                                                                                                                    | About Me                                        | `first_name`, `family_name`                                                       | May remain unanswered                                  |
 | Q2   | What is your property address?                                                                                                                        | My Place                                        | `property_address_street`, `property_address_suburb`, `property_address_postcode` | Required when applicable                               |
@@ -45,14 +45,24 @@ The committee mapping proposes 11 required IDs (Q36a applies only when access is
 | Q34  | How would you prefer to stay in touch?                                                                                                                | My Community (contact preferences and comments) | `stay_in_touch_choices`                                                           | May remain unanswered                                  |
 | Q35  | Do you have any other comments that you would like to add?                                                                                            | My Community (contact preferences and comments) | `other_comments`                                                                  | May remain unanswered                                  |
 
-## Policy draft
+## Adopted requirements and rollout
 
-Proposed cutoff: **1 October 2025 at 00:00 Australia/Sydney**, represented as `2025-09-30T14:00:00Z`. Boundary and timezone confirmation remain pending.
+Adopted cutoff: **1 October 2025 at 00:00 Australia/Sydney**, represented as `2025-09-30T14:00:00Z`. Registrations on or after that instant are new entrants; earlier registrations follow the historical kit/review rules.
 
 Allowed unanswered IDs: `Q1`, `Q3`, `Q3a`, `Q3b`, `Q5a`, `Q7`, `Q8`, `Q11`, `Q12`, `Q12a`, `Q12b`, `Q15`, `Q15a`, `Q16`, `Q18`, `Q19`, `Q20`, `Q21`, `Q22`, `Q23`, `Q24`, `Q25`, `Q26`, `Q34`, `Q35`.
 
-The complete draft and outstanding decisions are in [backpack-committee-policy.json](../config/backpack-committee-policy.json). The original 41-entry catalogue remains in [the frozen v1 file](../config/catalogues/2026-11-proposed-v1.json); its migration is not rewritten.
+The adopted configuration and remaining rollout decisions are in [backpack-committee-policy.json](../config/backpack-committee-policy.json). The original 41-entry catalogue remains in [the frozen v1 file](../config/catalogues/2026-11-proposed-v1.json); its migration is not rewritten.
 
-No/false, explicit zero counts and an offered None are valid answers. An absent answer remains unanswered. Q36a accepts one or more of Locked, Coded or Electric gates; it is not applicable when Q36 is No. Q5a is currently allowed unanswered pending the explicit committee decision. Electric vehicles uses new hazard option 5; None remains option 0 and is mutually exclusive with other hazards.
+No/false, explicit zero counts and an offered None are valid answers. An absent answer remains unanswered. Q36a accepts one or more of Locked, Coded or Electric gates; it is not applicable when Q36 is No. Q5a is optional, including when truck access is Other, because it is not among the committee’s key questions. Electric vehicles uses new hazard option 5; None remains option 0 and is mutually exclusive with other hazards.
 
 Q34/Q35 remain active but optional. Removed workshop/information/event input fields are no longer written by full-survey saves or legacy imports. Account-registration and profile-only fields such as postal addresses are not assigned question IDs by this catalogue.
+
+The additive `20261123020000_adopt_committee_requirements.sql` migration removes
+the cutoff/Q36a/Q5a confirmation entries and records them as adopted requirements.
+It preserves historical migration seeds and the policy’s activation/approval flags.
+The frozen v2 catalogue’s original `status` label describes its creation-time draft;
+current adoption is recorded in `config/backpack-committee-policy.json` and private
+`backpack.policy_review_requests.adopted_requirements`. Remaining gates concern
+historical award classification, the malformed source date and email settings.
+They must be resolved before operational approval; these are separate from the
+adopted question rules.

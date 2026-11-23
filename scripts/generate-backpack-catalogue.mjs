@@ -4,6 +4,11 @@ import assert from 'node:assert/strict';
 
 const catalogue = JSON.parse(readFileSync('config/survey-questions.json', 'utf8'));
 const policy = JSON.parse(readFileSync('config/backpack-committee-policy.json', 'utf8'));
+// Preserve the first migration's policy seed after requirements are adopted.
+const initialPath = `config/policies/${policy.catalogue_version}.initial.json`;
+const initialPolicy = existsSync(initialPath)
+	? JSON.parse(readFileSync(initialPath, 'utf8'))
+	: policy;
 const literal = (value) => `'${String(value).replaceAll("'", "''")}'`;
 const array = (values) => `array[${values.map(literal).join(',')}]::text[]`;
 const migrations = readdirSync('supabase/migrations').filter((name) => name.endsWith('.sql'));
@@ -41,6 +46,14 @@ if (existsSync(frozenCurrent))
 		'Create a new catalogue version rather than editing a frozen one'
 	);
 assert.equal(policy.catalogue_version, catalogue.version);
+for (const key of [
+	'catalogue_version',
+	'cutoff_at',
+	'scope_question_ids',
+	'excluded_question_ids',
+	'required_question_ids'
+])
+	assert.deepEqual(policy[key], initialPolicy[key], `Changed ${key} needs a new policy version`);
 const active = catalogue.questions.filter((q) => q.active !== false).map((q) => q.id);
 assert(
 	policy.scope_question_ids.every((id) => active.includes(id)),
@@ -58,12 +71,12 @@ const seed = `-- BEGIN GENERATED CATALOGUE\ninsert into backpack.catalogues(vers
 const policySeed = `-- BEGIN GENERATED POLICY
 insert into backpack.policies(version,catalogue_version,cutoff_at,scope_question_ids,excluded_question_ids)
 select coalesce(max(version),0)+1,${literal(catalogue.version)},${literal(
-	policy.cutoff_at
-)},${array(policy.scope_question_ids)},${array(
-	policy.excluded_question_ids
+	initialPolicy.cutoff_at
+)},${array(initialPolicy.scope_question_ids)},${array(
+	initialPolicy.excluded_question_ids
 )} from backpack.policies;
 insert into backpack.policy_review_requests select id,${literal(
-	JSON.stringify(policy.pending_confirmations)
+	JSON.stringify(initialPolicy.pending_confirmations)
 )}::jsonb from backpack.policies where catalogue_version=${literal(catalogue.version)};
 -- END GENERATED POLICY`;
 const sql = existsSync(path)
@@ -83,3 +96,50 @@ if (process.argv.includes('--check'))
 		'Catalogue/policy migration is stale; run node scripts/generate-backpack-catalogue.mjs'
 	);
 else writeFileSync(path, updated);
+
+if (policy.adopted_requirements?.length) {
+	assert(
+		policy.adopted_requirements.every((item) => initialPolicy.pending_confirmations.includes(item))
+	);
+	assert.deepEqual(
+		policy.pending_confirmations,
+		initialPolicy.pending_confirmations.filter(
+			(item) => !policy.adopted_requirements.includes(item)
+		),
+		'Adoption must retain all outstanding rollout decisions'
+	);
+	const adoptionPath = 'supabase/migrations/20261123020000_adopt_committee_requirements.sql';
+	const adoption = `-- BEGIN GENERATED POLICY ADOPTION
+update backpack.policy_review_requests r
+set pending_confirmations=(
+ select coalesce(jsonb_agg(value order by ord),'[]'::jsonb)
+ from jsonb_array_elements(r.pending_confirmations) with ordinality as items(value,ord)
+ where not ${literal(
+		JSON.stringify(policy.adopted_requirements)
+ )}::jsonb @> jsonb_build_array(value)
+), adopted_requirements=(
+ select coalesce(jsonb_agg(value order by first_ord),'[]'::jsonb) from (
+  select value,min(ord) as first_ord
+  from jsonb_array_elements(r.adopted_requirements || ${literal(
+		JSON.stringify(policy.adopted_requirements)
+	)}::jsonb)
+   with ordinality as items(value,ord) group by value
+ ) adopted
+)
+from backpack.policies p where p.id=r.policy_id and p.catalogue_version=${literal(
+		policy.catalogue_version
+	)}
+ and p.cutoff_at=${literal(policy.cutoff_at)}::timestamptz
+ and p.scope_question_ids=${array(policy.scope_question_ids)}
+ and p.excluded_question_ids=${array(policy.excluded_question_ids)};
+-- END GENERATED POLICY ADOPTION`;
+	const before = readFileSync(adoptionPath, 'utf8');
+	assert(before.includes('-- BEGIN GENERATED POLICY ADOPTION'));
+	const after = before.replace(
+		/-- BEGIN GENERATED POLICY ADOPTION[\s\S]*?-- END GENERATED POLICY ADOPTION/,
+		adoption
+	);
+	if (process.argv.includes('--check'))
+		assert.equal(after, before, 'Policy adoption migration is stale');
+	else writeFileSync(adoptionPath, after);
+}

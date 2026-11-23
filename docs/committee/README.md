@@ -8,7 +8,8 @@ and [HTML](backpack-required-questions.html) remain historical references.
 The current catalogue retains seven retired IDs (Q27–Q33) for historical answers.
 The revised four-page worksheet has blank decision boxes; it does not approve or
 activate the proposed committee policy. See [the catalogue](../survey-question-catalogue.md)
-for required/excluded IDs and outstanding confirmations. Keep completed worksheets
+for adopted required/excluded IDs and outstanding rollout decisions. The blank
+worksheet predates adoption; its pending-rule wording is a historical snapshot. Keep completed worksheets
 and personal committee returns in ignored `data/committee/`.
 
 Regenerate with an available Playwright installation and Chromium:

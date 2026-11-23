@@ -42,7 +42,17 @@ test('committee mapping has an exact required/excluded partition and preserves h
 		new Set(policy.scope_question_ids)
 	);
 	assert.equal(policy.cutoff_at, '2025-09-30T14:00:00Z');
-	assert.equal(policy.status, 'pending_final_confirmation');
+	assert.equal(policy.status, 'requirements_adopted_pending_rollout');
+	assert.equal(policy.cutoff_local_date, '2025-10-01');
+	assert.equal(policy.timezone, 'Australia/Sydney');
+	const initialPolicy = JSON.parse(
+		readFileSync('config/policies/2026-11-committee-v2.initial.json')
+	);
+	assert.deepEqual(policy.adopted_requirements, initialPolicy.pending_confirmations.slice(0, 3));
+	assert.deepEqual(policy.pending_confirmations, initialPolicy.pending_confirmations.slice(3));
+	assert.equal(policy.pending_confirmations.length, 3);
+	assert(policy.required_question_ids.includes('Q36a'));
+	assert(policy.excluded_question_ids.includes('Q5a'));
 });
 test('new form answers distinguish missing and No, clear inapplicable restrictions and reject unknown options', () => {
 	assert.deepEqual(assetAnswers(new FormData()), { has_other_critical_assets: null });
