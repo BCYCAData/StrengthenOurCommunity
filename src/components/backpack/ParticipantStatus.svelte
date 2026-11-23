@@ -66,7 +66,8 @@
 	<h2 id="backpack-status-title">Your backpack status</h2>
 	{#if !status}<p>Your status is temporarily unavailable. Your saved answers are unaffected.</p>
 	{:else if status.state === 'unconfigured'}<p>
-			The backpack programme is being prepared. You can save and review your answers now.
+			Backpack eligibility checks are not active yet, so we cannot tell you whether your household
+			qualifies. You can still save and update your survey answers.
 		</p>
 	{:else if status.state === 'excluded'}<p>
 			Please contact the programme coordinator about your participation.
