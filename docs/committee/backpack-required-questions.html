@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Backpack qualification — committee question checklist</title>
+		<style>
+			@page {
+				size: A4 landscape;
+				margin: 10mm;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				color: #172b29;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 9pt;
+				-webkit-print-color-adjust: exact;
+				print-color-adjust: exact;
+			}
+			.sheet {
+				position: relative;
+				width: 277mm;
+				height: 190mm;
+				padding-bottom: 8mm;
+				break-after: page;
+			}
+			.sheet:last-child {
+				break-after: auto;
+			}
+			header {
+				border-top: 1.6mm solid #234c43;
+				padding-top: 2.4mm;
+				margin-bottom: 2mm;
+			}
+			.eyebrow {
+				margin: 0 0 1.2mm;
+				text-transform: uppercase;
+				letter-spacing: 1.1px;
+				font-size: 8pt;
+				color: #385850;
+			}
+			h1 {
+				font-size: 17pt;
+				margin: 0 0 1.8mm;
+				line-height: 1.12;
+				color: #193b32;
+			}
+			.meta {
+				display: flex;
+				justify-content: space-between;
+				font-size: 8.3pt;
+			}
+			.instructions {
+				background: #f2f5f3;
+				border-left: 1mm solid #b87927;
+				padding: 1.6mm 2.5mm;
+				margin: 2.2mm 0;
+				font-size: 8.2pt;
+				line-height: 1.26;
+			}
+			.instructions p {
+				margin: 0 0 1mm;
+			}
+			.instructions p:last-child {
+				margin-bottom: 0;
+			}
+			.group {
+				display: flex;
+				justify-content: space-between;
+				padding: 1.5mm 0;
+				font-size: 10pt;
+			}
+			.group span {
+				color: #4a5b57;
+				font-size: 8.5pt;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				table-layout: fixed;
+			}
+			col.id {
+				width: 14mm;
+			}
+			col.question {
+				width: 100mm;
+			}
+			col.section {
+				width: 30mm;
+			}
+			col.applies {
+				width: 36mm;
+			}
+			col.required {
+				width: 18mm;
+			}
+			col.optional {
+				width: 24mm;
+			}
+			col.notes {
+				width: 55mm;
+			}
+			th {
+				background: #e7eeea;
+				border: 0.25mm solid #9baaa4;
+				padding: 1.3mm 1.8mm;
+				font-size: 8.2pt;
+				font-weight: bold;
+				text-align: left;
+				line-height: 1.15;
+			}
+			td {
+				border: 0.25mm solid #b4bdb8;
+				padding: 1mm 1.8mm;
+				vertical-align: middle;
+				line-height: 1.2;
+				height: 9.5mm;
+			}
+			tr {
+				break-inside: avoid;
+			}
+			tbody tr:nth-child(even) td {
+				background: #fafbf9;
+			}
+			.qid {
+				font-weight: bold;
+				font-size: 10pt;
+				color: #193b32;
+			}
+			.prompt {
+				display: block;
+				font-size: 8.9pt;
+			}
+			.context {
+				display: block;
+				margin-top: 0.8mm;
+				font-size: 7.7pt;
+				color: #4b5552;
+			}
+			.small {
+				font-size: 8pt;
+			}
+			.center {
+				text-align: center;
+			}
+			.checkbox {
+				display: inline-block;
+				width: 4.4mm;
+				height: 4.4mm;
+				border: 0.3mm solid #43564e;
+				background: white;
+			}
+			.writing-line {
+				display: block;
+				height: 6mm;
+				width: 100%;
+				border-bottom: 0.2mm dotted #aab3ad;
+			}
+			.page-notes {
+				display: flex;
+				gap: 2mm;
+				margin-top: 3.5mm;
+				font-size: 8.2pt;
+			}
+			.line {
+				display: inline-block;
+				border-bottom: 0.2mm solid #a8b2ab;
+				flex: 1;
+				min-width: 65mm;
+				height: 4mm;
+			}
+			footer {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				display: flex;
+				justify-content: space-between;
+				border-top: 0.25mm solid #aeb8b2;
+				padding-top: 1.7mm;
+				font-size: 7.6pt;
+				color: #4b5b53;
+			}
+			.scope-note {
+				font-size: 8.2pt;
+				margin: 0 0 2mm;
+			}
+			.decision-summary {
+				margin-top: 3mm;
+				font-size: 8.2pt;
+			}
+			.decision-summary > div:first-child {
+				display: flex;
+				justify-content: space-between;
+			}
+			.decision-summary p {
+				margin: 2mm 0 0;
+				display: flex;
+				gap: 2mm;
+				align-items: baseline;
+			}
+			.full-line {
+				height: 5mm;
+				border-bottom: 0.2mm solid #a8b2ab;
+			}
+			.signoff {
+				display: flex;
+				justify-content: space-between;
+			}
+			.signoff > span {
+				display: flex;
+				gap: 2mm;
+				width: 31%;
+			}
+			.signoff i {
+				flex: 1;
+				border-bottom: 0.2mm solid #a8b2ab;
+			}
+			@media screen {
+				body {
+					background: #e7e9e6;
+					padding: 8mm;
+				}
+				.sheet {
+					background: white;
+					box-shadow: 0 1mm 5mm #0002;
+					margin: 0 auto 8mm;
+					outline: 10mm solid white;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<section class="sheet">
+			<header>
+				<p class="eyebrow">Strengthen Our Community · Backpack programme</p>
+				<h1>Backpack qualification question checklist</h1>
+				<div class="meta">
+					<strong>Committee decision worksheet</strong>
+					<span>Prepared 17 November 2026</span>
+				</div>
+			</header>
+			<div class="instructions">
+				<p>
+					<strong>Tick ONE box for every row:</strong>
+					“Required” means an answer is needed when the question applies; “May remain unanswered”
+					permits a blank answer. Leave both blank only if the decision is deferred, and explain in
+					Notes.
+				</p>
+				<p>
+					“No”, zero and an offered “None” can be valid answers. Conditional follow-ups apply only
+					as stated. If a parent is exempt, its follow-ups are non-blocking under the current draft
+					rules. One household member must independently meet the required answers; other
+					eligibility and review rules still apply.
+				</p>
+				<p>
+					<strong>Question references:</strong>
+					the project catalogue contains 35 main questions plus six follow-ups. Numbering and
+					requirements remain subject to committee approval. No decisions are preselected.
+				</p>
+			</div>
+			<div class="group">
+				<strong>1. Identity, address and contact</strong>
+				<span>Q1–Q7</span>
+			</div>
+
+			<table>
+				<colgroup>
+					<col class="id" />
+					<col class="question" />
+					<col class="section" />
+					<col class="applies" />
+					<col class="required" />
+					<col class="optional" />
+					<col class="notes" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Survey question / prompt</th>
+						<th>Profile section</th>
+						<th>Applies when / answer note</th>
+						<th class="center">Required</th>
+						<th class="center">
+							May remain
+							<br />
+							unanswered
+						</th>
+						<th>Committee notes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-question="Q1">
+						<td class="qid">Q1</td>
+						<td><span class="prompt">What is your name?</span></td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q1 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q1 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q2">
+						<td class="qid">Q2</td>
+						<td><span class="prompt">What is your property address?</span></td>
+						<td class="small">My Place</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q2 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q2 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q3">
+						<td class="qid">Q3</td>
+						<td><span class="prompt">Are you renting this property?</span></td>
+						<td class="small">My Place</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q3 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q3 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q3a">
+						<td class="qid">Q3a</td>
+						<td><span class="prompt">Agent (name)</span></td>
+						<td class="small">My Place</td>
+						<td class="small">Only if Q3 = Yes (renting).</td>
+						<td class="center"><span class="checkbox" aria-label="Q3a required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q3a may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q3b">
+						<td class="qid">Q3b</td>
+						<td><span class="prompt">Agent Mobile / Landline</span></td>
+						<td class="small">My Place</td>
+						<td class="small">Only if Q3 = Yes. Either agent mobile or landline.</td>
+						<td class="center"><span class="checkbox" aria-label="Q3b required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q3b may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q4">
+						<td class="qid">Q4</td>
+						<td>
+							<span class="prompt">
+								Is your property well sign-posted and numbered clearly from the road?
+							</span>
+						</td>
+						<td class="small">My Place</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q4 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q4 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q5">
+						<td class="qid">Q5</td>
+						<td>
+							<span class="prompt">
+								Is there easy truck access to the buildings, boundaries and paddocks?
+							</span>
+						</td>
+						<td class="small">My Place</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q5 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q5 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q5a">
+						<td class="qid">Q5a</td>
+						<td><span class="prompt">Other truck access information</span></td>
+						<td class="small">My Place</td>
+						<td class="small">Only if Q5 = Other.</td>
+						<td class="center"><span class="checkbox" aria-label="Q5a required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q5a may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q6">
+						<td class="qid">Q6</td>
+						<td>
+							<span class="prompt">What is your phone number?</span>
+							<span class="context">Either a mobile or landline number answers this question.</span>
+						</td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q6 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q6 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q7">
+						<td class="qid">Q7</td>
+						<td>
+							<span class="prompt">
+								What is the quality of your mobile reception at the property?
+							</span>
+						</td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q7 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q7 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="page-notes">
+				Additional committee notes:
+				<span class="line"></span>
+			</div>
+			<footer>
+				<span>Reference catalogue 2026-11-proposed-v1 · decisions not yet applied</span>
+				<span>Page 1 of 4</span>
+			</footer>
+		</section>
+		<section class="sheet">
+			<header>
+				<p class="eyebrow">Strengthen Our Community · Backpack programme</p>
+				<h1>Backpack qualification question checklist · continued</h1>
+				<div class="meta">
+					<strong>Committee decision worksheet</strong>
+					<span>Prepared 17 November 2026</span>
+				</div>
+			</header>
+
+			<div class="group">
+				<strong>2. Residents, animals, assets and water</strong>
+				<span>Q8–Q15a</span>
+			</div>
+
+			<table>
+				<colgroup>
+					<col class="id" />
+					<col class="question" />
+					<col class="section" />
+					<col class="applies" />
+					<col class="required" />
+					<col class="optional" />
+					<col class="notes" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Survey question / prompt</th>
+						<th>Profile section</th>
+						<th>Applies when / answer note</th>
+						<th class="center">Required</th>
+						<th class="center">
+							May remain
+							<br />
+							unanswered
+						</th>
+						<th>Committee notes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-question="Q8">
+						<td class="qid">Q8</td>
+						<td>
+							<span class="prompt">Are you:</span>
+							<span class="context">Residency: how often the person is at the property.</span>
+						</td>
+						<td class="small">My Place</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q8 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q8 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q9">
+						<td class="qid">Q9</td>
+						<td>
+							<span class="prompt">
+								Please record the number of people who usually live at this property:
+							</span>
+							<span class="context">
+								Counts for ages 0–18, 19–50, 51–70 and 71+. A deliberate zero is an answer.
+							</span>
+						</td>
+						<td class="small">My Place</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q9 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q9 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q10">
+						<td class="qid">Q10</td>
+						<td>
+							<span class="prompt">
+								Do you consider any person on the property to be vulnerable?
+							</span>
+						</td>
+						<td class="small">My Place</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q10 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q10 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q11">
+						<td class="qid">Q11</td>
+						<td>
+							<span class="prompt">Please record the number of pets you have on this property</span>
+							<span class="context">
+								Counts of dogs, cats, birds and other pets. A deliberate zero is an answer.
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Assets
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q11 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q11 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q12">
+						<td class="qid">Q12</td>
+						<td><span class="prompt">Do you have livestock?</span></td>
+						<td class="small">
+							My Place
+							<br />
+							Assets
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q12 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q12 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q12a">
+						<td class="qid">Q12a</td>
+						<td>
+							<span class="prompt">
+								Do you have an area which would be safe for stock in the event of a bushfire or
+								flood?
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Assets
+						</td>
+						<td class="small">Only if Q12 = Yes (livestock).</td>
+						<td class="center"><span class="checkbox" aria-label="Q12a required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q12a may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q12b">
+						<td class="qid">Q12b</td>
+						<td>
+							<span class="prompt">
+								Would you be happy for other people to leave their stock on your property, in your
+								safe area, for a short period in an emergency?
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Assets
+						</td>
+						<td class="small">Only if Q12 = Yes AND Q12a = Yes.</td>
+						<td class="center"><span class="checkbox" aria-label="Q12b required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q12b may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q13">
+						<td class="qid">Q13</td>
+						<td>
+							<span class="prompt">
+								If there are assets, other than the residence, that you consider essential (eg
+								crops, sheds with equipment or antique cars) please describe them here.
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Assets
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q13 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q13 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q14">
+						<td class="qid">Q14</td>
+						<td>
+							<span class="prompt">Are there any static water supplies on the property?</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Resources
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q14 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q14 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q15">
+						<td class="qid">Q15</td>
+						<td>
+							<span class="prompt">Do you have a Stortz fitting attached to a water tank?</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Resources
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q15 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q15 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q15a">
+						<td class="qid">Q15a</td>
+						<td>
+							<span class="prompt">Please include the size</span>
+							<span class="context">Size of the Stortz fitting.</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Resources
+						</td>
+						<td class="small">Only if Q15 = Yes (Stortz fitting).</td>
+						<td class="center"><span class="checkbox" aria-label="Q15a required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q15a may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="page-notes">
+				Additional committee notes:
+				<span class="line"></span>
+			</div>
+			<footer>
+				<span>Reference catalogue 2026-11-proposed-v1 · decisions not yet applied</span>
+				<span>Page 2 of 4</span>
+			</footer>
+		</section>
+		<section class="sheet">
+			<header>
+				<p class="eyebrow">Strengthen Our Community · Backpack programme</p>
+				<h1>Backpack qualification question checklist · continued</h1>
+				<div class="meta">
+					<strong>Committee decision worksheet</strong>
+					<span>Prepared 17 November 2026</span>
+				</div>
+			</header>
+
+			<div class="group">
+				<strong>3. Resources, hazards and emergency planning</strong>
+				<span>Q16–Q26</span>
+			</div>
+
+			<table>
+				<colgroup>
+					<col class="id" />
+					<col class="question" />
+					<col class="section" />
+					<col class="applies" />
+					<col class="required" />
+					<col class="optional" />
+					<col class="notes" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Survey question / prompt</th>
+						<th>Profile section</th>
+						<th>Applies when / answer note</th>
+						<th class="center">Required</th>
+						<th class="center">
+							May remain
+							<br />
+							unanswered
+						</th>
+						<th>Committee notes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-question="Q16">
+						<td class="qid">Q16</td>
+						<td>
+							<span class="prompt">Do you have any of the following at this property?</span>
+							<span class="context">
+								Fire trailers, pumps, hoses, trailers with spray equipment, generator, or None.
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Resources
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q16 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q16 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q17">
+						<td class="qid">Q17</td>
+						<td>
+							<span class="prompt">Do you have any of the following on your property?</span>
+							<span class="context">
+								Solar batteries, fuel stores, chemical stores, bottled gas, or None.
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Hazards
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q17 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q17 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q18">
+						<td class="qid">Q18</td>
+						<td>
+							<span class="prompt">
+								Are there any other hazards on the property that should be noted?
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Hazards
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q18 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q18 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q19">
+						<td class="qid">Q19</td>
+						<td>
+							<span class="prompt">Does your property have?</span>
+							<span class="context">
+								Fire breaks, slashed areas, backup pump, driveway clearance, truck access, or None.
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Hazards
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q19 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q19 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q20">
+						<td class="qid">Q20</td>
+						<td><span class="prompt">Does any adjoining land represent a hazard?</span></td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Hazards
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q20 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q20 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q21">
+						<td class="qid">Q21</td>
+						<td>
+							<span class="prompt">
+								Are there other areas that concern you or represent a potential threat?
+							</span>
+						</td>
+						<td class="small">
+							My Place
+							<br />
+							Firefighting Hazards
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q21 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q21 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q22">
+						<td class="qid">Q22</td>
+						<td><span class="prompt">Have you completed a RFS Bushfire survival plan?</span></td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q22 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q22 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q23">
+						<td class="qid">Q23</td>
+						<td><span class="prompt">What is your level of firefighting experience?</span></td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q23 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q23 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q24">
+						<td class="qid">Q24</td>
+						<td>
+							<span class="prompt">Have you had unpleasant traumatic experience of bushfire?</span>
+						</td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q24 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q24 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q25">
+						<td class="qid">Q25</td>
+						<td>
+							<span class="prompt">If your property is threatened by fire, are you:</span>
+							<span class="context">
+								Staying; leaving as early as possible; or unsure depending on severity.
+							</span>
+						</td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q25 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q25 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q26">
+						<td class="qid">Q26</td>
+						<td>
+							<span class="prompt">If your property is threatened by flood, are you:</span>
+							<span class="context">
+								Staying; leaving as early as possible; or unsure depending on severity.
+							</span>
+						</td>
+						<td class="small">About Me</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q26 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q26 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="page-notes">
+				Additional committee notes:
+				<span class="line"></span>
+			</div>
+			<footer>
+				<span>Reference catalogue 2026-11-proposed-v1 · decisions not yet applied</span>
+				<span>Page 3 of 4</span>
+			</footer>
+		</section>
+		<section class="sheet">
+			<header>
+				<p class="eyebrow">Strengthen Our Community · Backpack programme</p>
+				<h1>Backpack qualification question checklist · continued</h1>
+				<div class="meta">
+					<strong>Committee decision worksheet</strong>
+					<span>Prepared 17 November 2026</span>
+				</div>
+			</header>
+
+			<div class="group">
+				<strong>4. Community participation and contact preferences</strong>
+				<span>Q27–Q35</span>
+			</div>
+			<p class="scope-note">
+				These questions are in
+				<strong>My Community</strong>
+				, outside the proposed About Me / My Place scope. The committee must explicitly decide
+				whether they affect qualification.
+			</p>
+			<table>
+				<colgroup>
+					<col class="id" />
+					<col class="question" />
+					<col class="section" />
+					<col class="applies" />
+					<col class="required" />
+					<col class="optional" />
+					<col class="notes" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Survey question / prompt</th>
+						<th>Profile section</th>
+						<th>Applies when / answer note</th>
+						<th class="center">Required</th>
+						<th class="center">
+							May remain
+							<br />
+							unanswered
+						</th>
+						<th>Committee notes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-question="Q27">
+						<td class="qid">Q27</td>
+						<td>
+							<span class="prompt">
+								Which of these community initiated workshops would be useful to you?
+							</span>
+						</td>
+						<td class="small">
+							My Community
+							<br />
+							Workshops
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q27 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q27 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q28">
+						<td class="qid">Q28</td>
+						<td>
+							<span class="prompt">
+								If there are other workshops that you would like to see run, please add the details
+								here
+							</span>
+						</td>
+						<td class="small">
+							My Community
+							<br />
+							Workshops
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q28 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q28 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q29">
+						<td class="qid">Q29</td>
+						<td>
+							<span class="prompt">
+								If you would like to help run any of the workshops, please indicate which ones
+								below.
+							</span>
+						</td>
+						<td class="small">
+							My Community
+							<br />
+							Workshops
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q29 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q29 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q30">
+						<td class="qid">Q30</td>
+						<td><span class="prompt">What information would be useful to you?</span></td>
+						<td class="small">
+							My Community
+							<br />
+							Information
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q30 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q30 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q31">
+						<td class="qid">Q31</td>
+						<td>
+							<span class="prompt">Is there other information which you would find useful?</span>
+						</td>
+						<td class="small">
+							My Community
+							<br />
+							Information
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q31 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q31 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q32">
+						<td class="qid">Q32</td>
+						<td><span class="prompt">What Community Events are you interested in?</span></td>
+						<td class="small">
+							My Community
+							<br />
+							Events
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q32 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q32 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q33">
+						<td class="qid">Q33</td>
+						<td>
+							<span class="prompt">
+								If there are other events you would be interested in, please add them below.
+							</span>
+						</td>
+						<td class="small">
+							My Community
+							<br />
+							Events
+						</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q33 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q33 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q34">
+						<td class="qid">Q34</td>
+						<td><span class="prompt">How would you prefer to stay in touch?</span></td>
+						<td class="small">My Community (contact preferences and comments)</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q34 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q34 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+					<tr data-question="Q35">
+						<td class="qid">Q35</td>
+						<td>
+							<span class="prompt">Do you have any other comments that you would like to add?</span>
+						</td>
+						<td class="small">My Community (contact preferences and comments)</td>
+						<td class="small">All respondents.</td>
+						<td class="center"><span class="checkbox" aria-label="Q35 required"></span></td>
+						<td class="center">
+							<span class="checkbox" aria-label="Q35 may remain unanswered"></span>
+						</td>
+						<td><span class="writing-line"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="decision-summary">
+				<div>
+					<strong>Record the agreed decision</strong>
+					<span>Complete after reviewing all four pages.</span>
+				</div>
+				<p>
+					Qualification scope (sections or question IDs):
+					<span class="line"></span>
+				</p>
+				<p>IDs allowed to remain unanswered (including lettered follow-ups where relevant):</p>
+				<div class="full-line"></div>
+				<div class="full-line"></div>
+				<p class="signoff">
+					<span>
+						Approved by:
+						<i></i>
+					</span>
+					<span>
+						Meeting date:
+						<i></i>
+					</span>
+					<span>
+						Signature:
+						<i></i>
+					</span>
+				</p>
+			</div>
+			<footer>
+				<span>Reference catalogue 2026-11-proposed-v1 · decisions not yet applied</span>
+				<span>Page 4 of 4</span>
+			</footer>
+		</section>
+	</body>
+</html>
